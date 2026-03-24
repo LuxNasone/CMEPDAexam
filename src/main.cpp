@@ -7,22 +7,8 @@
 #include <Rtypes.h>
 #include <TCanvas.h>
 #include <TH1D.h>
-#include <TLeaf.h>
+#include <TLorentzVector.h>
 #include <ROOT/RDataFrame.hxx>
-
-Float_t M_inv(Float_t pt[100], Float_t eta[100], Float_t m[100]){
-
-    Float_t pT = pt[0] + pt[1];
-
-    Float_t pl = pt[0] * std::sinh(eta[0]) + pt[1] * std::sinh(eta[1]);
-
-    Float_t p_sq = pT*pT + pl*pl;
-
-    Float_t E = std::sqrt(pt[0] * pt[0] * cosh(eta[0]) * cosh(eta[0]) + m[0] * m[0]) + std::sqrt(pt[1] * pt[1] * cosh(eta[1]) * cosh(eta[1]) + m[1] * m[1]); 
-
-    return std::sqrt(E*E - p_sq);
-
-}
 
 void console(const char* fname){
 
@@ -48,29 +34,19 @@ void console(const char* fname){
 
     ULong64_t N = t->GetEntries();
 
-    //Branch for muon number
+    //Muon number, charge, tranverse momentum, pseudorapidity, phi and mass variables
 
     UInt_t n;
-    t->SetBranchAddress("nMuon", &n);
-
-    //Branch for muon charges
-
     Int_t q[100];
+    Float_t pt[100], eta[100], phi[100], m[100];
+
+    //Address setting
+
+    t->SetBranchAddress("nMuon", &n);
     t->SetBranchAddress("Muon_charge", &q);
-
-    //Branch for transverse momentum
-
-    Float_t pt[100];
     t->SetBranchAddress("Muon_pt", &pt);
-
-    //Branch for pseudorapdity
-
-    Float_t eta[100];
     t->SetBranchAddress("Muon_eta", &eta);
-
-    //Branch for muon masses
-
-    Float_t m[100];
+    t->SetBranchAddress("Muon_phi", &phi);
     t->SetBranchAddress("Muon_mass", &m);
 
     //Histogram setup
@@ -83,7 +59,6 @@ void console(const char* fname){
 
         t->GetEntry(k);
 
-        
         bool selection = (n == 2 && 
                     q[0] + q[1] == 0 &&
                     pt[0] >= 25 && pt[1] >=25 &&
@@ -91,7 +66,13 @@ void console(const char* fname){
         
         if (selection){
 
-            h->Fill(M_inv(pt, eta, m));
+            TLorentzVector p_1;
+            p_1.SetPtEtaPhiM(pt[0], eta[0], phi[0], m[0]);
+
+            TLorentzVector p_2;
+            p_2.SetPtEtaPhiM(pt[1], eta[1], phi[1], m[1]);
+
+            h->Fill((p_1 + p_2).M());
 
         }
         
