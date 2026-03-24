@@ -17,7 +17,7 @@ void console(const char* fname){
     TFile *f = TFile::Open(fname);
 
     if (!f || f->IsZombie()) { 
-        std::cerr << "Error: file not found or corrupted\n"; 
+        std::cerr << "Error: file not opened\n"; 
         return;
     }
 
@@ -26,7 +26,7 @@ void console(const char* fname){
     TTree *t = (TTree*)f->Get("Events");
 
     if (!t) {
-        std::cerr << "Error: tree not found in file\n";
+        std::cerr << "Error: tree not opened\n";
         return;
     }
 
@@ -51,13 +51,15 @@ void console(const char* fname){
 
     //Histogram setup
 
-    TH1D *h = new TH1D("H M_inv", "DiMuon mass", 100, 0, 100);
+    TH1D *h = new TH1D("H M_inv", "DiMuon mass", 100, 40, 140);
 
-    //Event selection
+    //Event loop
 
     for (ULong64_t k = 0; k < N; k++){
 
         t->GetEntry(k);
+
+        //Selection : two muon tracks, with opposite charges, high transverse momentum and in certain eta range(article for explanation)
 
         bool selection = (n == 2 && 
                     q[0] + q[1] == 0 &&
@@ -65,6 +67,8 @@ void console(const char* fname){
                     abs(eta[0]) <= 2.4 && abs(eta[1]) <= 2.4);
         
         if (selection){
+
+            //4-impulse of the two muons, with hist fill of invariant mass
 
             TLorentzVector p_1;
             p_1.SetPtEtaPhiM(pt[0], eta[0], phi[0], m[0]);
@@ -78,10 +82,14 @@ void console(const char* fname){
         
     }
 
+    //Resonance plot
+
     TCanvas *c = new TCanvas("Canvas M_in", "DiMuon canvas", 800, 600);
     h->Draw();
     c->Update();
-    c->SaveAs("DiMuonMass.png");
+    c->SaveAs("/home/lux_n/CMEPDA/Exam/Repo/graphs/DiMuonMass.png");
+
+    //Clear
 
     f->Close();
     delete f;

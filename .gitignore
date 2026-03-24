@@ -1,0 +1,8 @@
+# --- Compilazione C++ ---
+*.o
+*.so
+*.a
+*.exe
+
+# --- ROOT files generati ---
+*.root
