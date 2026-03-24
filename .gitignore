@@ -3,6 +3,8 @@
 *.so
 *.a
 *.exe
+*.d
+*.pcm
 
 # --- ROOT files generati ---
 *.root
