@@ -12,20 +12,23 @@
 #include <TLorentzVector.h>
 #include <ROOT/RDataFrame.hxx>
 
-void Main(const char* fname, std::string outname){
+//Macro to reconstruct Z^0 peak and obtain histograms of pt, eta and phi;
 
-    //Necessary imports for 4-vectors, compile macro with + at the end
+void Main(const char* fname, std::string outname, bool MT = true){
+
+    //Necessary imports for 4-vectors, compile macro with + at the end;
 
     gSystem->Load("libPhysics"); 
 
-    //Chrono counter
+    //Chrono counter;
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    //Activating parallel execution by multithreading (kind of a black box ... maybe put it as an option?)
-    ROOT::EnableImplicitMT();
+    //Activating parallel execution by multithreading, if MT is true;
 
-    //Initializing DataFrame, fname must be to a .root file
+    if (MT){ROOT::EnableImplicitMT();}
+
+    //Initializing DataFrame, fname must be to a .root file;
 
     ROOT::RDataFrame df("Events", fname);
 
@@ -39,7 +42,7 @@ void Main(const char* fname, std::string outname){
     4) High transverse momentum (Muon_pt > 25 GeV)
     5) Defined region of Pseudorapidity (|Muon_eta| < 2.4)
 
-    Then a new column is added for invariant mass, selected with abs(Dimuon_mass - 91.1817) < 15
+    Then a new column is added for invariant mass, selected with abs(Dimuon_mass - 91.1817) < 15;
 
     */
 
@@ -59,7 +62,7 @@ void Main(const char* fname, std::string outname){
                       .Define("Muon0_phi", "Muon_phi[0]")
                       .Define("Muon1_phi", "Muon_phi[1]");
 
-    //Histogram for Invariant Mass
+    //Histogram for Invariant Mass;
 
     auto h_dmm = new_df.Histo1D({"M_inv", "DiMuon_mass", 100, 70, 110}, "Dimuon_mass");
     TCanvas *c_dmm = new TCanvas("M_inv", "DiMuon_mass_canvas", 800, 600);
@@ -69,14 +72,14 @@ void Main(const char* fname, std::string outname){
 
     delete c_dmm;
 
-    //Variables necessary for loop
+    //Variables necessary for drawing histograms;
 
     std::vector<std::string> vars = {"pt", "eta", "phi"};
     std::vector<std::pair<Float_t, Float_t>> bounds = {{15, 200},
                                               {-3, 3},
                                               {-4, 4}};
 
-    //Loop for diMuon kinematic variables histogram
+    //Loop for diMuon kinematic variables histograms;
 
     for (int i = 0; i < 3; i++){
 
@@ -100,12 +103,12 @@ void Main(const char* fname, std::string outname){
     }
 
 
-    //Ending Chrono counter e elapsed time
+    //Ending Chrono counter e elapsed time;
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
 
-    //Print del tempo
+    //Elapsed time printing
 
     std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
 
