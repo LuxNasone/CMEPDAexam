@@ -14,7 +14,7 @@
 
 //Macro to reconstruct Z^0 peak and obtain histograms of pt, eta and phi;
 
-std::vector<Float_t> DataSel(const char* fname, std::string outname, bool MT = true){
+void DataSel(const char* fname, std::string outname, bool MT = true){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -68,17 +68,6 @@ std::vector<Float_t> DataSel(const char* fname, std::string outname, bool MT = t
 
     auto h_dmm = new_df.Histo1D({"M_inv", "DiMuon_mass", 100, 70, 110}, "Dimuon_mass");
 
-    //Observed events vector
-
-    std::vector<Float_t> N_o;
-    N_o.reserve(100);
-
-    for(int i = 0; i < h_dmm->GetNbinsX(); i++){
-
-        N_o.push_back(h_dmm->GetBinContent(i));
-
-    }
-
     TCanvas *c_dmm = new TCanvas("M_inv", "DiMuon_mass_canvas", 800, 600);
     h_dmm->Draw();
     c_dmm->Update();
@@ -124,9 +113,4 @@ std::vector<Float_t> DataSel(const char* fname, std::string outname, bool MT = t
     //Elapsed time printing
 
     std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
-
-    //Returning vector
-
-    return N_o;
-
 }
