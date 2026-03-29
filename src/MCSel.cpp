@@ -1,8 +1,6 @@
-#include "main.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <chrono>
 
 #include <TSystem.h> 
 #include <TFile.h>
@@ -10,20 +8,27 @@
 #include <Rtypes.h>
 #include <TCanvas.h>
 #include <TH1D.h>
+#include <TH2D.h>
 #include <TLorentzVector.h>
 #include <ROOT/RDataFrame.hxx>
 
-void unfolding(const char* fname, std::string outname){
+//Reconstruction at generator level of Z^0 decays
 
-    //Necessary for 4 vectors
+std::vector<std::vector<Float_t>> MCSel(const char* fname, std::string outname, bool MT = true){
+
+    //Necessary for 4 vectors and other utilities, compile with + at the end
 
     gSystem->Load("libPhysics");
     gSystem->Load("libMathCore");
+    gROOT->SetBatch(kTRUE);
+
+    //Optional: activate multithreading
+
+    if (MT){ROOT::EnableImplicitMT();}
 
     //Initializing DataFrame, fname must be to a .root file;
 
     ROOT::RDataFrame df("Events", fname);
-
     
     /* Reconstructing Z^0 peak by MC tagging at generator level:
 
@@ -60,7 +65,13 @@ void unfolding(const char* fname, std::string outname){
                                                         }
                                                     }
                                                     return Minv;
-                        }, {"Muon_From_Z", "GenPart_pdgId", "GenPart_genPartIdxMother"});
+                        }, {"Muon_From_Z", "GenPart_pdgId", "GenPart_genPartIdxMother"})
+                        .Filter([](const ROOT::RVec<Float_t>& masses) {
+                                    for (auto m : masses) {
+                                        if (std::abs(m - 91.1817) < 15) {return true;}
+                                        }
+                                    return false;
+                                    }, {"DiMuonMass"});
 
     //Final histogram
     auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "DiMuonMass");
@@ -68,15 +79,5 @@ void unfolding(const char* fname, std::string outname){
     TCanvas c("M_invMC_canvas", "DiMuon Mass MC", 800, 600);
     h_mc->Draw();
     c.SaveAs((outname + "MCDiMuonMass.png").c_str());
-
-    //Vector of true events
-    std::vector<Float_t> N_t;
-    N_t.reserve(100);
-
-    for(int i = 0; i < h_mc->GetNbinsX(); i++){
-
-        N_t.push_back(h_mc->GetBinContent(i));
-
-    }
 
 }
