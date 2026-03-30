@@ -4,14 +4,12 @@
 #include <chrono>
 
 #include <TSystem.h> 
-#include <TFile.h>
-#include <TTree.h>
-#include <Rtypes.h>
 #include <TCanvas.h>
 #include <TH1D.h>
 #include <TH2D.h>
-#include <TLorentzVector.h>
 #include <ROOT/RDataFrame.hxx>
+#include <ROOT/RVec.hxx>
+#include <Math/Vector4D.h>
 
 //Reconstruction at generator level of Z^0 decays
 
@@ -48,6 +46,7 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
                                                 const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
 
                                                     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
+                                                    vecs.reserve(n);
 
                                                     for (UInt_t i = 0; i < n; i++){
                                                         
@@ -61,17 +60,12 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
                                                     }
                                                     return vecs;
                                                 }, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
-                        .Define("DiMuonMass", [](const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p,  const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid){
+                        .Define("DiMuonMass", [](const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
                                                     ROOT::RVec<Float_t> Minv;
                                                     for (size_t i = 0; i < p.size(); i++){
-                                                        for (size_t j = i + 1; j < p.size(); ++j){
-                                                            if (id[i] + id[j] == 0 && mid[i] == mid[j]){
-                                                                Minv.push_back((p[i] + p[j]).M());
-                                                            }
-                                                        }
-                                                    }
+                                                        for (size_t j = i + 1; j < p.size(); ++j){Minv.push_back((p[i] + p[j]).M());}}
                                                     return Minv;
-                        }, {"Muon_From_Z", "GenPart_pdgId", "GenPart_genPartIdxMother"})
+                        }, {"Muon_From_Z"})
                         .Filter([](const ROOT::RVec<Float_t>& masses) {
                                     for (auto m : masses) {
                                         if (std::abs(m - 91.1817) < 15) {return true;}
@@ -106,9 +100,9 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
         TCanvas *c = new TCanvas((vars[i] + "canvas").c_str(), vars[i].c_str(), 800, 600);
 
         auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100 ,bounds[i].first, bounds[i].second), 
-                                  ("Muon" + to_string(0) + "_" + vars[i]).c_str());
+                                  Form("Muon%d_%s", 0, vars[i].c_str()));
         auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100 , bounds[i].first, bounds[i].second), 
-                                  ("Muon" + to_string(1) + "_" + vars[i]).c_str());
+                                 Form("Muon%d_%s", 1, vars[i].c_str()));
 
         h_1->SetLineColor(kBlue);
         h_2->SetLineColor(kRed);
