@@ -1,17 +1,8 @@
-#include "DataSel.h"
-#include "MCSel.h"
+#include "Sel.h"
 
-//Unfolding procedure, it requires Montecarlo data
+void Unfolding(const char *fname){
 
-void Unfolding(const char* fname){
-
-    //Montecarlo analysis
-
-    MCSel(fname, "Repo/graphs/", true);
-
-    //Data analysis
-
-    DataSel(fname, "Repo/graphs/", true);
-
+    OutH outDS = DataSel(fname, "Repo/graphs/");
+    OutH outMC = MCSel(fname, "Repo/graphs/");
 
 }
