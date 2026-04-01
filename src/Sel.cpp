@@ -11,17 +11,14 @@
 #include <TSystem.h> 
 #include <TCanvas.h>
 #include <TH1D.h>
+#include <TFile.h>
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 
-//Custom data structure
-
-#include "HistStruct.h"
-
 //Macro to reconstruct Z^0 peak and obtain histograms of pt, eta and phi;
 
-OutH DataSel(const char* fname, std::string outname, bool MT = true){
+void DataSel(const char* fname, std::string outname, bool MT = true){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -71,22 +68,16 @@ OutH DataSel(const char* fname, std::string outname, bool MT = true){
                       .Define("Muon0_phi", "Muon_phi[0]")
                       .Define("Muon1_phi", "Muon_phi[1]");
 
-    //Output structure
+    //Output file
 
-    OutH output;
+    TFile output(outname.c_str(), "RECREATE");
 
     //Histogram for Invariant Mass;
 
     auto h_dmm = new_df.Histo1D({"M_inv", "DiMuon_mass", 100, 70, 110}, "Dimuon_mass");
-
-    TCanvas *c_dmm = new TCanvas("M_inv", "DiMuon_mass_canvas", 800, 600);
     h_dmm->Draw();
+    h_dmm->Write("InvMass");
 
-    output.Fill({h_dmm.GetPtr()});
-    c_dmm->Update();
-    c_dmm->SaveAs((outname+"Mass.png").c_str());
-
-    delete c_dmm;
 
     //Variables necessary for drawing histograms;
 
@@ -99,26 +90,22 @@ OutH DataSel(const char* fname, std::string outname, bool MT = true){
 
     for (int i = 0; i < 3; i++){
 
-        TCanvas *c = new TCanvas((vars[i] + "canvas").c_str(), vars[i].c_str(), 800, 600);
-
         auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100 ,bounds[i].first, bounds[i].second), 
                                    Form("Muon%d_%s", 0, vars[i].c_str()));
         auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100 , bounds[i].first, bounds[i].second), 
                                    Form("Muon%d_%s", 1, vars[i].c_str()));
 
-        h_1->SetLineColor(kBlue);
-        h_2->SetLineColor(kRed);
 
         h_1->Draw();
         h_2->Draw("SAME");
 
-        output.Fill({h_1.GetPtr(), h_2.GetPtr()});
-
-        c->Update();
-        c->SaveAs((outname + vars[i] + ".png").c_str());
-
-        delete c;
+        h_1->Write((vars[i] + to_string(1)).c_str());
+        h_2->Write((vars[i] + to_string(2)).c_str());
     }
+
+    //Closing output file
+
+    output.Close();
 
     //Ending Chrono counter e elapsed time;
 
@@ -129,12 +116,13 @@ OutH DataSel(const char* fname, std::string outname, bool MT = true){
 
     std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
 
-    //Returning histograms
+    //Deactivating batch mode
 
-    return output;
+    gROOT->SetBatch(kFALSE);
+
 }
 
-OutH MCSel(const char* fname, std::string outname, bool MT = true){
+void MCSel(const char* fname, std::string outname, bool MT = true){
 
     //Necessary for 4 vectors and other utilities, compile with + at the end
 
@@ -145,7 +133,6 @@ OutH MCSel(const char* fname, std::string outname, bool MT = true){
     //Chrono counter;
 
     auto start = std::chrono::high_resolution_clock::now();
-
 
     //Optional: activate multithreading
 
@@ -200,17 +187,14 @@ OutH MCSel(const char* fname, std::string outname, bool MT = true){
                         .Define("Muon0_phi", "Muon_From_Z[0].Phi()")
                         .Define("Muon1_phi", "Muon_From_Z[1].Phi()");
 
-    //Output structure
+    //Output file
 
-    OutH output;
+    TFile output(outname.c_str(), "RECREATE");
 
     //Final histogram
     auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "DiMuonMass");
-
-    TCanvas c("M_invMC_canvas", "DiMuon Mass MC", 800, 600);
     h_mc->Draw();
-    output.Fill({h_mc.GetPtr()});
-    c.SaveAs((outname + "MCMass.png").c_str());
+    h_mc->Write("InvMass_MC");
 
     //Variables necessary for drawing histograms;
 
@@ -223,26 +207,22 @@ OutH MCSel(const char* fname, std::string outname, bool MT = true){
 
     for (int i = 0; i < 3; i++){
 
-        TCanvas *c = new TCanvas((vars[i] + "canvas").c_str(), vars[i].c_str(), 800, 600);
-
         auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100 ,bounds[i].first, bounds[i].second), 
                                   Form("Muon%d_%s", 0, vars[i].c_str()));
         auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100 , bounds[i].first, bounds[i].second), 
                                  Form("Muon%d_%s", 1, vars[i].c_str()));
 
-        h_1->SetLineColor(kBlue);
-        h_2->SetLineColor(kRed);
-
         h_1->Draw();
         h_2->Draw("SAME");
 
-        output.Fill({h_1.GetPtr(), h_2.GetPtr()});
+        h_1->Write((vars[i] + to_string(1) + "_MC").c_str());
+        h_2->Write((vars[i] + to_string(2) + "_MC").c_str());
 
-        c->Update();
-        c->SaveAs((outname + vars[i] + "MC.png").c_str());
-
-        delete c;
     }
+
+    //Closing output file
+
+    output.Close();
 
     //Ending Chrono counter e elapsed time;
 
@@ -253,8 +233,7 @@ OutH MCSel(const char* fname, std::string outname, bool MT = true){
 
     std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
 
-    //Return value
+    //Deactivating batch mode
 
-    return output;
-
+    gROOT->SetBatch(kFALSE);
 }
