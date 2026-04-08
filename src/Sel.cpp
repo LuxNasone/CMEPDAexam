@@ -1,5 +1,4 @@
-
-//Standard dependiecies 
+//Standard include
 
 #include <iostream>
 #include <fstream>
@@ -16,9 +15,66 @@
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 
+//Useful functions:
+
+//Invariant mass calculator
+
+ROOT::RVec<Float_t> Minv_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
+    ROOT::RVec<Float_t> Minv;
+    for (size_t i = 0; i < p.size(); i++){for (size_t j = i + 1; j < p.size(); ++j){Minv.push_back((p[i] + p[j]).M());}}
+    return Minv;
+}
+
+//Selection at generator level (used in MCSel)
+
+ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid, const ROOT::RVecF &pt, const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
+
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
+    vecs.reserve(n);
+
+    for (UInt_t i = 0; i < n; i++){
+                                                        
+        if ((id[i] == 13 || id[i] == -13) && mid[i] >= 0 && id[mid[i]] == 23){
+
+            ROOT::Math::PtEtaPhiMVector p(pt[i],eta[i],phi[i], mass[i]);
+
+            vecs.push_back(p);
+
+            }
+        }
+        return vecs;
+}
+
+//Selection applied in the article
+
+ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> phi,const ROOT::RVec<float> &mass){
+
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
+
+    if (n == 2){
+        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4){
+
+            vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[0],eta[0],phi[0], mass[0]));
+
+            vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[1],eta[1], phi[1], mass[1]));
+
+        }
+    }
+
+    return vecs;
+
+}
+
+//Selection on invariant mass
+
+bool Minv_Range(const ROOT::RVec<Float_t>& masses) {
+    for (auto m : masses) {if (std::abs(m - 91.1817) < 15) {return true;}}
+    return false;
+}
+
 //Macro to reconstruct Z^0 peak and obtain histograms of pt, eta and phi;
 
-void DataSel(const char* fname, std::string outname, bool MT = true){
+void DataSel(const char* fname, std::string outname = "Repo/outFiles/OutDS.root", bool MT = true){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -60,13 +116,18 @@ void DataSel(const char* fname, std::string outname, bool MT = true){
                       .Define("Dimuon_mass", [](const ROOT::RVecF &pt, const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
                                ROOT::Math::PtEtaPhiMVector p_1(pt[0],eta[0],phi[0], mass[0]), p_2(pt[1],eta[1], phi[1], mass[1]);
                                return (Float_t)(p_1 + p_2).M();}, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
-                      .Filter("abs(Dimuon_mass - 91.1817) < 15")
-                      .Define("Muon0_pt",  "Muon_pt[0]")
-                      .Define("Muon1_pt",  "Muon_pt[1]")
-                      .Define("Muon0_eta", "Muon_eta[0]")
-                      .Define("Muon1_eta", "Muon_eta[1]")
-                      .Define("Muon0_phi", "Muon_phi[0]")
-                      .Define("Muon1_phi", "Muon_phi[1]");
+                      .Filter("abs(Dimuon_mass - 91.1817) < 15");
+
+    std::vector<std::string> vars = {"pt", "eta", "phi"};
+
+    for (int i = 0; i < 2; i++){
+
+        for (auto v : vars){
+
+            new_df = new_df.Define(Form("Muon%d_%s", i, v.c_str()), Form("Muon_%s[%d]", v.c_str(), i));
+
+            }
+        }
 
     //Output file
 
@@ -79,20 +140,16 @@ void DataSel(const char* fname, std::string outname, bool MT = true){
     h_dmm->Write("InvMass");
 
 
-    //Variables necessary for drawing histograms;
-
-    std::vector<std::string> vars = {"pt", "eta", "phi"};
-    std::vector<std::pair<Float_t, Float_t>> bounds = {{15, 200},
-                                              {-3, 3},
-                                              {-4, 4}};
+    //Bounds for drawing histograms;
+    std::vector<std::pair<Float_t, Float_t>> bounds = {{15, 200}, {-3, 3}, {-4, 4}};
 
     //Loop for diMuon kinematic variables histograms;
 
     for (int i = 0; i < 3; i++){
 
-        auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100 ,bounds[i].first, bounds[i].second), 
+        auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100, bounds[i].first, bounds[i].second), 
                                    Form("Muon%d_%s", 0, vars[i].c_str()));
-        auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100 , bounds[i].first, bounds[i].second), 
+        auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100, bounds[i].first, bounds[i].second), 
                                    Form("Muon%d_%s", 1, vars[i].c_str()));
 
 
@@ -122,7 +179,9 @@ void DataSel(const char* fname, std::string outname, bool MT = true){
 
 }
 
-void MCSel(const char* fname, std::string outname, bool MT = true){
+//Macro to extract dimuon at generator level, and obtain reco efficiency
+
+void MCSel(const char* fname, std::string outname = "Repo/outFiles/OutMS.root", bool MT = true){
 
     //Necessary for 4 vectors and other utilities, compile with + at the end
 
@@ -150,42 +209,25 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
 
     */
 
-    auto new_df = df.Define("Muon_From_Z", [] (const UInt_t &n, const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid, const ROOT::RVecF &pt,
-                                                const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
+    auto new_df = df.Define("Muon_From_Z", GenSel, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
+                    .Define("WR", Reco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
+                    .Define("DiMuonMass", Minv_calculator, {"Muon_From_Z"})
+                    .Filter(Minv_Range, {"DiMuonMass"})
+                    .Define("WRMass", Minv_calculator, {"WR"})
+                    .Filter(Minv_Range, {"WRMass"});
 
-                                                    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
-                                                    vecs.reserve(n);
+    std::vector<std::string> vars = {"pt", "eta", "phi"};
 
-                                                    for (UInt_t i = 0; i < n; i++){
-                                                        
-                                                        if ((id[i] == 13 || id[i] == -13) && mid[i] >= 0 && id[mid[i]] == 23){
+    for (int i = 0; i < 2; i++){
 
-                                                            ROOT::Math::PtEtaPhiMVector p(pt[i],eta[i],phi[i], mass[i]);
+        for (auto v : vars){
 
-                                                            vecs.push_back(p);
+            new_df = new_df.Define(Form("Muon%d_%s", i, v.c_str()), Form("Muon_From_Z[%d].%s()", i, v.c_str()));
+            new_df = new_df.Define(Form("Muon%d%sWR", i, v.c_str()), Form("WR[%d].%s()", i, v.c_str()));
 
-                                                        }
-                                                    }
-                                                    return vecs;
-                                                }, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
-                        .Define("DiMuonMass", [](const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
-                                                    ROOT::RVec<Float_t> Minv;
-                                                    for (size_t i = 0; i < p.size(); i++){
-                                                        for (size_t j = i + 1; j < p.size(); ++j){Minv.push_back((p[i] + p[j]).M());}}
-                                                    return Minv;
-                        }, {"Muon_From_Z"})
-                        .Filter([](const ROOT::RVec<Float_t>& masses) {
-                                    for (auto m : masses) {
-                                        if (std::abs(m - 91.1817) < 15) {return true;}
-                                        }
-                                    return false;
-                                    }, {"DiMuonMass"})
-                        .Define("Muon0_pt",  "Muon_From_Z[0].Pt()")
-                        .Define("Muon1_pt",  "Muon_From_Z[1].Pt()")
-                        .Define("Muon0_eta", "Muon_From_Z[0].Eta()")
-                        .Define("Muon1_eta", "Muon_From_Z[1].Eta()")
-                        .Define("Muon0_phi", "Muon_From_Z[0].Phi()")
-                        .Define("Muon1_phi", "Muon_From_Z[1].Phi()");
+            }
+        }
+                    
 
     //Output file
 
@@ -196,20 +238,16 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
     h_mc->Draw();
     h_mc->Write("InvMass_MC");
 
-    //Variables necessary for drawing histograms;
-
-    std::vector<std::string> vars = {"pt", "eta", "phi"};
-    std::vector<std::pair<Float_t, Float_t>> bounds = {{15, 200},
-                                              {-3, 3},
-                                              {-4, 4}};
+    //Bounds for drawing histograms;
+    std::vector<std::pair<Float_t, Float_t>> bounds = {{15, 200}, {-3, 3}, {-4, 4}};
 
     //Loop for diMuon kinematic variables histograms;
 
     for (int i = 0; i < 3; i++){
 
-        auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100 ,bounds[i].first, bounds[i].second), 
+        auto h_1 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(1)).c_str(), 100, bounds[i].first, bounds[i].second), 
                                   Form("Muon%d_%s", 0, vars[i].c_str()));
-        auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100 , bounds[i].first, bounds[i].second), 
+        auto h_2 = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), (vars[i] + to_string(2)).c_str(), 100, bounds[i].first, bounds[i].second), 
                                  Form("Muon%d_%s", 1, vars[i].c_str()));
 
         h_1->Draw();
@@ -219,6 +257,13 @@ void MCSel(const char* fname, std::string outname, bool MT = true){
         h_2->Write((vars[i] + to_string(2) + "_MC").c_str());
 
     }
+
+    //Response matrix
+
+    auto T = new_df.Histo2D({"hT", "Response Matrix", 100, 70, 110, 100, 70, 110}, "WRMass", "DiMuonMass"); 
+    T->Draw();
+    T->Write("InvMass_Response");
+
 
     //Closing output file
 
