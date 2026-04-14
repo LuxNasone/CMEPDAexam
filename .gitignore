@@ -5,6 +5,8 @@
 *.exe
 *.d
 *.pcm
+*.in
+*.out
 
 # --- ROOT files generati ---
 *.root

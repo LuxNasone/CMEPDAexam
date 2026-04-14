@@ -16,10 +16,7 @@
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 #include "RooUnfoldResponse.h"
-
-//Include functions
-
-#include "Functions.h"
+#include "RooUnfoldBayes.h"
 
 //Global variables
 
@@ -33,7 +30,7 @@ std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 
 //Bounds for drawing histograms;
 
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 500}, {0, 15}, {0, 3}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 15}, {0, 2.5}};
 
 //Luminosità integrata [pb^{-1}]
 
@@ -41,7 +38,10 @@ double L = 35900;
 
 //Macro to reconstruct Z^0 peak and cross section and obtain histograms of pt, eta and phi;
 
-void CrossSection(const char* fname, std::string outname = "Repo/outFiles/OutDS.root", bool MT = true){
+void CrossSection(const char* fname, 
+                  const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root" ,
+                  std::string outname = "Repo/outFiles/Out.root", 
+                  bool MT = true){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -101,6 +101,47 @@ void CrossSection(const char* fname, std::string outname = "Repo/outFiles/OutDS.
 
                                                                 }, {"Muon_phi", "Muon_eta"});
 
+    //Opening file with response matrices
+
+    TFile* Rfile = TFile::Open(rpath);
+
+    //Getting TH2Ds
+
+    TH2D* Response_pt  = (TH2D*)Rfile->Get("Response_pt");
+    TH2D* Response_phieta  = (TH2D*)Rfile->Get("Response_phieta");
+    TH2D* Response_y  = (TH2D*)Rfile->Get("Response_y");
+
+    //Initializing Response matrices
+
+    RooUnfoldResponse T_pt(100, 0, 100, 100, 0, 100);
+    RooUnfoldResponse T_phieta(100, 0, 15, 100, 0, 15);
+    RooUnfoldResponse T_y(100, 0, 2.5, 100, 0, 2.5);
+
+    for (int i = 1; i <= 100; i++){
+
+        for (int j = 1; j <= 100; j++){
+
+            double weight_pt = Response_pt->GetBinContent(i,j);
+
+            T_pt.Fill(j-1, i-1, weight_pt);
+
+            double weight_phieta = Response_phieta->GetBinContent(i,j);
+
+            T_phieta.Fill(j-1, i-1, weight_phieta);
+
+            double weight_y = Response_y->GetBinContent(i,j);
+
+            T_y.Fill(j-1, i-1, weight_y);
+
+        }
+    }
+
+    std::vector<RooUnfoldResponse> T = {T_pt, T_phieta, T_y};
+
+    //Closing file
+
+    Rfile->Close();
+
     //Output file
 
     TFile output(outname.c_str(), "RECREATE");
@@ -115,17 +156,20 @@ void CrossSection(const char* fname, std::string outname = "Repo/outFiles/OutDS.
 
     for (int i = 0; i < 3; i++){
 
-        auto h = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), 100, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
+        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), 100, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
 
-        h->Scale(1./L);
+        TH1D* h = h_tmp.GetPtr();
+        RooUnfoldBayes unfold(&T[i], h, 4);
 
-        h->Draw("E1 P");
-        h->GetXaxis()->SetTitle(xlabels[i].c_str());
-        h->GetYaxis()->SetTitle(ylabels[i].c_str());
-        h->SetMarkerStyle(20);
-        h->SetLineColor(kBlack);
+        TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
-        h->Write(vars[i].c_str());
+        hUnfold->Draw("E1 P");
+        hUnfold->GetXaxis()->SetTitle(xlabels[i].c_str());
+        hUnfold->GetYaxis()->SetTitle(ylabels[i].c_str());
+        hUnfold->SetMarkerStyle(20);
+        hUnfold->SetLineColor(kBlack);
+
+        hUnfold->Write(vars[i].c_str());
 
     }
 
@@ -146,95 +190,4 @@ void CrossSection(const char* fname, std::string outname = "Repo/outFiles/OutDS.
 
     gROOT->SetBatch(kFALSE);
 
-}
-
-//Macro to extract dimuon at generator level, and obtain reco efficiency
-
-void MCSel(const char* fname, std::string outname = "Repo/outFiles/OutMS.root", bool MT = true){
-
-    //Necessary for 4 vectors and other utilities, compile with + at the end
-
-    gSystem->Load("libPhysics");
-    gSystem->Load("libMathCore");
-    gSystem->Load("libMatrix");
-    gSystem->Load("libHist");
-    gSystem->Load("libMinuit");
-    gSystem->Load("libMathCore");
-    gSystem->Load("libRooUnfold");
-    gROOT->SetBatch(kTRUE);
-
-    //Chrono counter;
-
-    auto start = std::chrono::high_resolution_clock::now();
-
-    //Optional: activate multithreading
-
-    if (MT){ROOT::EnableImplicitMT();}
-
-    //Initializing DataFrame, fname must be to a .root file;
-
-    ROOT::RDataFrame df("Events", fname);
-
-    //Response matrix
-
-    RooUnfoldResponse response(100, 70, 110, 100, 70, 110);
-    
-    /*
-
-    Reconstructing Z^0 peak by MC tagging at generator level:
-
-    Loop on GenPart_pdgId, need at least a +13 and -13 con GenPart_pdgId(GenPart_genPartIdxMother) == 23 
-
-    We then compute invariant mass for the pair
-
-    */
-
-    auto new_df = df.Define("genMuon", GenSel, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
-                    .Define("gen_mass", Minv_calculator, {"genMuon"})
-                    .Filter(Minv_Range, {"gen_mass"})
-                    .Define("gen_pt", Pt_calculator, {"genMuon"})
-                    .Define("gen_y", y_calculator, {"genMuon"})
-                    .Define("gen_phieta", phi_eta_calculator, {"genMuon"})
-                    .Define("recoMuon", Reco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
-                    .Define("reco_mass", Minv_calculator, {"recoMuon"})
-                    .Filter(Minv_Range, {"reco_mass"})
-                    .Define("reco_pt", Pt_calculator, {"recoMuon"})
-                    .Define("reco_y", y_calculator, {"recoMuon"})
-                    .Define("reco_phieta", phi_eta_calculator, {"recoMuon"});
-
-    new_df.Foreach([&](Double_t genM, Double_t recoM) {response.Fill((double)recoM, (double)genM);},{"gen_mass", "reco_mass"});
-
-    //Output file
-
-    TFile output(outname.c_str(), "RECREATE");
-
-    //Final histogram
-    auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "gen_mass");
-    h_mc->Draw();
-    h_mc->Write("InvMass_MC");
-
-    //Visualization of response matrix
-
-    TH2D* h_response = (TH2D*) response.Hresponse();
-
-    h_response->Draw("COLZ");
-
-    h_response->Write("Response_mass");
-
-    //Closing output file
-
-    output.Close();
-
-    //Ending Chrono counter e elapsed time;
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-
-    //Elapsed time printing
-
-    std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
-
-    //Deactivating batch mode
-
-    gROOT->SetBatch(kFALSE);
 }
