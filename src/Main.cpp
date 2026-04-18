@@ -34,7 +34,7 @@ std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 
 //Bounds for drawing histograms;
 
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 1.5}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
 //Luminosità integrata [pb^{-1}]
 
@@ -115,9 +115,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 
         TH1D h = h_tmp.GetValue(); 
 
-         h_v[i] = h;
-
-        h.Scale(1./L);
+        h_v[i] = h;
 
     }
 
@@ -135,7 +133,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 
         //Writing for other histograms
 
-        for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("Cross_section(%s)", vars[i].c_str()));}
+        for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i].c_str()));}
 
         //Closing output file
 
@@ -170,28 +168,30 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     TFile* Rfile = TFile::Open(rpath);
 
-    //Response matrix vectors
+    //Response matrix vector
 
     std::vector<RooUnfoldResponse> T(vars.size());
+
+    //Efficiency histogram vector
+
+    std::vector<TH1D> Eff(vars.size());
 
     //Filling matrices
 
     for(size_t i = 0; i < vars.size(); i++){
 
-        TH2D* M = (TH2D*) Rfile->Get(Form("Response_%s", vars[i].c_str()));
+        RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile->Get(Form("Response_%s", vars[i].c_str()));
+
+        TH1D* h_eff = (TH1D*) Rfile->Get(Form("Efficiency for %s", vars[i].c_str()));
 
         if (!M) {
             std::cerr << "Errore: Response_" << vars[i] << " non trovato!" << std::endl;
             continue;
         }
 
-        TH2D* M_copy = (TH2D*) M->Clone();
-                
-        RooUnfoldResponse response;
+        T[i] = *M;
 
-        response.Setup(nullptr, nullptr, M_copy);
-
-        T[i] = response;
+        Eff[i] = *h_eff;
     }
 
     //Closing file
@@ -215,11 +215,11 @@ std::vector<TH1D> Unfolded(const char* fname,
         TH1D* h = (TH1D*)h_v[i].Clone();
 
         if (!h) {
-            std::cerr << "Histogram nullo per i=" << i << std::endl;
+            std::cerr << "Istogramma nullo per i=" << i << std::endl;
             continue;
         }
 
-        RooUnfoldBayes unfold(&T[i], h, 20);
+        RooUnfoldBayes unfold(&T[i], h, 4);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
@@ -228,7 +228,19 @@ std::vector<TH1D> Unfolded(const char* fname,
             continue;
         }
 
-        h_u[i] = *hUnfold;
+        TH1D* hCorr = (TH1D*)hUnfold->Clone("hCorr");
+
+        for (int n = 0; n < n_b; n++){
+
+            double v1 = hUnfold->GetBinContent(n);
+
+            double v2 = Eff[i].GetBinContent(n);
+
+            hCorr->SetBinContent(n, v1 * v2);
+
+        }
+
+        h_u[i] = *hCorr;
 
         hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
 
@@ -261,17 +273,21 @@ void Comp(const char* fname,
 
             h_nu[i].SetLineColor(kBlue);
             h_nu[i].SetMarkerColor(kBlue);
+            h_nu[i].SetMarkerStyle(20);
 
             h_nu[i].Draw("E");
 
             h_u[i].SetLineColor(kRed);
             h_u[i].SetMarkerColor(kRed);
+            h_u[i].SetMarkerStyle(20);
 
             h_u[i].Draw("E SAME");
 
             c->Update();
 
             c->Write();
+
+            std::cout << h_nu[i].Integral() << " , " << h_u[i].Integral() << std::endl;
 
         }
 

@@ -19,6 +19,7 @@
 //Include functions
 
 #include "RooUnfoldResponse.h"
+#include "RooUnfoldBayes.h"
 #include "Vars.h"
 
 //Global variables
@@ -33,11 +34,11 @@ int n_b = 100;
 
 //Ranges for variables
 
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 1.5}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
-void MCSel(const char* fname, std::string outname = "Repo/outFiles/Response.root", bool MT = true){
+void Response(const char* fname, std::string outname = "Repo/outFiles/Response.root", bool MT = true){
 
     //Necessary for 4 vectors and other utilities, compile with + at the end
 
@@ -86,7 +87,6 @@ void MCSel(const char* fname, std::string outname = "Repo/outFiles/Response.root
                     .Define("reco_mass", Minv_calculator, {"recoMuon"})
                     .Define("gen_mass", Minv_calculator, {"genMuon"})
                     .Filter(Minv_Range, {"gen_mass"})
-                    .Filter(Minv_Range, {"reco_mass"})
                     .Define("gen_pt", Pt_calculator, {"genMuon"})
                     .Define("gen_y", y_calculator, {"genMuon"})
                     .Define("gen_phi_eta", phi_eta_calculator, {"genMuon"})
@@ -121,9 +121,9 @@ void MCSel(const char* fname, std::string outname = "Repo/outFiles/Response.root
 
     for (size_t i = 1; i < vars.size(); i++){
 
-        TH2D* M = (TH2D*) T[i - 1].Hresponse();
+        T[i - 1].Write(Form("Response_%s", vars[i].c_str()));
 
-        M->Write(Form("Response_%s", vars[i].c_str()));
+        TH2D* M = (TH2D*) T[i - 1].Hresponse();
 
         TH1D* h_true = (TH1D*) T[i - 1].Htruth();
 
@@ -134,6 +134,39 @@ void MCSel(const char* fname, std::string outname = "Repo/outFiles/Response.root
         h_eff->Divide(h_matched, h_true, 1.0, 1.0, "B");
 
         h_eff->Write(Form("Efficiency for %s", vars[i].c_str()));
+
+
+    }
+
+    //Validation for response matrix
+
+    for (size_t i = 1; i < vars.size(); i++){
+
+        TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
+
+        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i].c_str()), Form("%s_MC", vars[i].c_str()), 100, bounds[i - 1].first, bounds[i - 1].second}, Form("gen_%s", vars[i].c_str()));
+
+        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i].c_str()), Form("%s_Reco", vars[i].c_str()), 100, bounds[i - 1].first, bounds[i - 1].second}, Form("reco_%s", vars[i].c_str()));
+
+        TH1D h_true = *h_true_ptr;
+        TH1D h_obt = *h_obt_ptr;
+
+        RooUnfoldBayes unfold(&T[i-1], &h_obt, 20);
+
+        TH1D* hUnfold = (TH1D*) unfold.Hunfold();
+
+        hUnfold->SetLineColor(kBlue);
+        hUnfold->SetMarkerColor(kBlue);
+        hUnfold->SetMarkerStyle(20);
+
+        hUnfold->Draw("P E");
+
+        h_true.Draw("SAME");
+
+        c->Update();
+
+        c->Write(Form("%s_unfolded", vars[i].c_str()));
+
 
     }
 
