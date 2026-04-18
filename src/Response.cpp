@@ -25,7 +25,7 @@
 
 //Variables name
 
-std::vector<std::string> vars = {"mass", "pt", "y", "phieta"};
+std::vector<std::string> vars = {"mass", "pt", "phi_eta", "y"};
 
 //Number of bins
 
@@ -33,11 +33,11 @@ int n_b = 100;
 
 //Ranges for variables
 
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 150}, {0, 3}, {0, 1.5}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 1.5}};
 
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
-void MCSel(const char* fname, std::string outname = "Repo/outFiles/OutMS.root", bool MT = true){
+void MCSel(const char* fname, std::string outname = "Repo/outFiles/Response.root", bool MT = true){
 
     //Necessary for 4 vectors and other utilities, compile with + at the end
 
@@ -89,10 +89,10 @@ void MCSel(const char* fname, std::string outname = "Repo/outFiles/OutMS.root", 
                     .Filter(Minv_Range, {"reco_mass"})
                     .Define("gen_pt", Pt_calculator, {"genMuon"})
                     .Define("gen_y", y_calculator, {"genMuon"})
-                    .Define("gen_phieta", phi_eta_calculator, {"genMuon"})
+                    .Define("gen_phi_eta", phi_eta_calculator, {"genMuon"})
                     .Define("reco_pt", Pt_calculator, {"recoMuon"})
                     .Define("reco_y", y_calculator, {"recoMuon"})
-                    .Define("reco_phieta", phi_eta_calculator, {"recoMuon"});
+                    .Define("reco_phi_eta", phi_eta_calculator, {"recoMuon"});
 
     for (size_t i = 1; i < vars.size(); i++){
 

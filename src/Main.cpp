@@ -20,6 +20,10 @@
 
 //Global variables
 
+//Number of bins
+
+int n_b = 100;
+
 //Variable names and axis labels
 
 std::vector<std::string> vars = {"pt", "phi_eta", "y"};
@@ -30,7 +34,7 @@ std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 
 //Bounds for drawing histograms;
 
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 15}, {0, 2.5}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 1.5}};
 
 //Luminosità integrata [pb^{-1}]
 
@@ -38,10 +42,10 @@ double L = 35900;
 
 //Macro to reconstruct Z^0 peak and cross section and obtain histograms of pt, eta and phi;
 
-void CrossSection(const char* fname, 
-                  const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root" ,
-                  std::string outname = "Repo/outFiles/Out.root", 
-                  bool MT = true){
+std::vector<TH1D> CrossSection(const char* fname,
+                                std::string outname = "Repo/outFiles/NotUnfolded.root", 
+                                bool MT = true,
+                                bool kw = true){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -101,81 +105,43 @@ void CrossSection(const char* fname,
 
                                                                 }, {"Muon_phi", "Muon_eta"});
 
-    //Opening file with response matrices
+    //Loop for histograms;
 
-    TFile* Rfile = TFile::Open(rpath);
-
-    //Getting TH2Ds
-
-    TH2D* Response_pt  = (TH2D*)Rfile->Get("Response_pt");
-    TH2D* Response_phieta  = (TH2D*)Rfile->Get("Response_phieta");
-    TH2D* Response_y  = (TH2D*)Rfile->Get("Response_y");
-
-    //Initializing Response matrices
-
-    RooUnfoldResponse T_pt(100, 0, 100, 100, 0, 100);
-    RooUnfoldResponse T_phieta(100, 0, 15, 100, 0, 15);
-    RooUnfoldResponse T_y(100, 0, 2.5, 100, 0, 2.5);
-
-    for (int i = 1; i <= 100; i++){
-
-        for (int j = 1; j <= 100; j++){
-
-            double weight_pt = Response_pt->GetBinContent(i,j);
-
-            T_pt.Fill(j-1, i-1, weight_pt);
-
-            double weight_phieta = Response_phieta->GetBinContent(i,j);
-
-            T_phieta.Fill(j-1, i-1, weight_phieta);
-
-            double weight_y = Response_y->GetBinContent(i,j);
-
-            T_y.Fill(j-1, i-1, weight_y);
-
-        }
-    }
-
-    std::vector<RooUnfoldResponse> T = {T_pt, T_phieta, T_y};
-
-    //Closing file
-
-    Rfile->Close();
-
-    //Output file
-
-    TFile output(outname.c_str(), "RECREATE");
-
-    //Histogram for Invariant Mass;
-
-    auto h_m = new_df.Histo1D({"M_inv", "Z0_mass", 100, 70, 110}, "mass");
-    h_m->Draw();
-    h_m->Write("InvMass");
-
-    //Loop for diMuon kinematic variables histograms;
+    std::vector<TH1D> h_v(3);
 
     for (int i = 0; i < 3; i++){
 
-        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), 100, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
+        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
 
-        TH1D* h = h_tmp.GetPtr();
-        RooUnfoldBayes unfold(&T[i], h, 4);
+        TH1D h = h_tmp.GetValue(); 
 
-        TH1D* hUnfold = (TH1D*) unfold.Hunfold();
+         h_v[i] = h;
 
-        hUnfold->Draw("E1 P");
-        hUnfold->GetXaxis()->SetTitle(xlabels[i].c_str());
-        hUnfold->GetYaxis()->SetTitle(ylabels[i].c_str());
-        hUnfold->SetMarkerStyle(20);
-        hUnfold->SetLineColor(kBlack);
-
-        hUnfold->Write(vars[i].c_str());
+        h.Scale(1./L);
 
     }
 
-    //Closing output file
+    //Saving on file, optional if kw is True
 
-    output.Close();
+    if(kw){
+
+        TFile output(outname.c_str(), "RECREATE");
+
+        //Histogram for Invariant Mass;
+
+        auto h_m = new_df.Histo1D({"M_inv", "Z0_mass", n_b, 70, 110}, "mass");
+        
+        h_m->Write("InvMass");
+
+        //Writing for other histograms
+
+        for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("Cross_section(%s)", vars[i].c_str()));}
+
+        //Closing output file
+
+        output.Close();
+
+    }
 
     //Ending Chrono counter e elapsed time;
 
@@ -189,5 +155,128 @@ void CrossSection(const char* fname,
     //Deactivating batch mode
 
     gROOT->SetBatch(kFALSE);
+
+    //return value
+
+    return h_v;
+
+}
+
+std::vector<TH1D> Unfolded(const char* fname,
+              const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
+              const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root"){
+
+    //Matrices file
+
+    TFile* Rfile = TFile::Open(rpath);
+
+    //Response matrix vectors
+
+    std::vector<RooUnfoldResponse> T(vars.size());
+
+    //Filling matrices
+
+    for(size_t i = 0; i < vars.size(); i++){
+
+        TH2D* M = (TH2D*) Rfile->Get(Form("Response_%s", vars[i].c_str()));
+
+        if (!M) {
+            std::cerr << "Errore: Response_" << vars[i] << " non trovato!" << std::endl;
+            continue;
+        }
+
+        TH2D* M_copy = (TH2D*) M->Clone();
+                
+        RooUnfoldResponse response;
+
+        response.Setup(nullptr, nullptr, M_copy);
+
+        T[i] = response;
+    }
+
+    //Closing file
+
+    Rfile->Close();
+
+    //Executing CrossSection
+
+    std::vector<TH1D> h_v = CrossSection(fname, "Repo/outFiles/NotUnfolded.root", true, false);
+
+    TFile* output = new TFile(outname, "RECREATE");
+
+    std::vector<TH1D> h_u(h_v.size());
+
+    //Unfolding
+
+    for (size_t i = 0; i < h_v.size(); i++){
+
+        if (h_v.size() != vars.size()) {std::cerr << "Mismatch size: vars=" << vars.size() << " h_v=" << h_v.size() << std::endl;}
+
+        TH1D* h = (TH1D*)h_v[i].Clone();
+
+        if (!h) {
+            std::cerr << "Histogram nullo per i=" << i << std::endl;
+            continue;
+        }
+
+        RooUnfoldBayes unfold(&T[i], h, 20);
+
+        TH1D* hUnfold = (TH1D*) unfold.Hunfold();
+
+        if (!hUnfold) {
+            std::cerr << "Unfold fallito per i=" << i << std::endl;
+            continue;
+        }
+
+        h_u[i] = *hUnfold;
+
+        hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
+
+    }
+
+    return h_u;
+
+}
+
+void Comp(const char* fname, 
+          const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root"){
+
+    //Results not-unfolded and unfolded
+
+    std::vector<TH1D> h_nu = CrossSection(fname); 
+
+    std::vector<TH1D> h_u = Unfolded(fname);
+
+    //Outfile
+
+    TFile* output = new TFile(outname, "RECREATE");
+
+    //Plotting 
+
+    if (h_nu.size() == h_u.size()){
+
+        for (size_t i = 0; i < h_u.size(); i++){
+
+            TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
+
+            h_nu[i].SetLineColor(kBlue);
+            h_nu[i].SetMarkerColor(kBlue);
+
+            h_nu[i].Draw("E");
+
+            h_u[i].SetLineColor(kRed);
+            h_u[i].SetMarkerColor(kRed);
+
+            h_u[i].Draw("E SAME");
+
+            c->Update();
+
+            c->Write();
+
+        }
+
+    }
+
+    output->Close();
 
 }
