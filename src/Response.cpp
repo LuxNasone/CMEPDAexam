@@ -127,7 +127,7 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
 
         TH1D* h_true = (TH1D*) T[i - 1].Htruth();
 
-        TH1D* h_matched = M->ProjectionX();
+        TH1D* h_matched = M->ProjectionY();
 
         TH1D* h_eff = (TH1D*) h_matched->Clone();
 

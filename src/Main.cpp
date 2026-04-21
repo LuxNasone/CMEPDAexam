@@ -10,6 +10,7 @@
 
 #include <TSystem.h> 
 #include <TCanvas.h>
+#include <TLegend.h>
 #include <TH1D.h>
 #include <TFile.h>
 #include <ROOT/RDataFrame.hxx>
@@ -35,6 +36,10 @@ std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 //Bounds for drawing histograms;
 
 std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
+
+//Range for y axis (purely aesthetic)
+
+std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 
 //Luminosità integrata [pb^{-1}]
 
@@ -161,6 +166,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 }
 
 std::vector<TH1D> Unfolded(const char* fname,
+              int n_iter,
               const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
               const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root"){
 
@@ -219,7 +225,7 @@ std::vector<TH1D> Unfolded(const char* fname,
             continue;
         }
 
-        RooUnfoldBayes unfold(&T[i], h, 4);
+        RooUnfoldBayes unfold(&T[i], h, n_iter);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
@@ -228,9 +234,10 @@ std::vector<TH1D> Unfolded(const char* fname,
             continue;
         }
 
+        /*
         TH1D* hCorr = (TH1D*)hUnfold->Clone("hCorr");
 
-        for (int n = 0; n < n_b; n++){
+        for (int n = 1; n < n_b; n++){
 
             double v1 = hUnfold->GetBinContent(n);
 
@@ -241,6 +248,9 @@ std::vector<TH1D> Unfolded(const char* fname,
         }
 
         h_u[i] = *hCorr;
+        */
+
+        h_u[i] = *hUnfold;
 
         hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
 
@@ -251,19 +261,18 @@ std::vector<TH1D> Unfolded(const char* fname,
 }
 
 void Comp(const char* fname, 
+          int n_iter,
           const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root"){
 
     //Results not-unfolded and unfolded
 
     std::vector<TH1D> h_nu = CrossSection(fname); 
 
-    std::vector<TH1D> h_u = Unfolded(fname);
+    std::vector<TH1D> h_u = Unfolded(fname, n_iter);
 
     //Outfile
 
     TFile* output = new TFile(outname, "RECREATE");
-
-    //Plotting 
 
     if (h_nu.size() == h_u.size()){
 
@@ -271,23 +280,37 @@ void Comp(const char* fname,
 
             TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
 
+            //Creating legend
+            TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+
             h_nu[i].SetLineColor(kBlue);
             h_nu[i].SetMarkerColor(kBlue);
             h_nu[i].SetMarkerStyle(20);
+            h_nu[i].SetStats(0); 
+
+            h_nu[i].GetYaxis()->SetRangeUser(range[i].first, range[i].second);
+
+
+            legend->AddEntry(&h_nu[i],"Not unfolded", "lep");
 
             h_nu[i].Draw("E");
 
             h_u[i].SetLineColor(kRed);
             h_u[i].SetMarkerColor(kRed);
             h_u[i].SetMarkerStyle(20);
+            h_u[i].SetStats(0);
+
+            legend->AddEntry(&h_u[i], "Unfolded", "lep");
 
             h_u[i].Draw("E SAME");
+
+            legend->Draw();
 
             c->Update();
 
             c->Write();
 
-            std::cout << h_nu[i].Integral() << " , " << h_u[i].Integral() << std::endl;
+            //std::cout << h_nu[i].Integral() << " , " << h_u[i].Integral() << std::endl;
 
         }
 
