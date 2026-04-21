@@ -7,6 +7,8 @@ By selecting muon pairs with the cuts described in the article we find the reson
 - transverse momentum : $P_{t}$
 -  rapidity : $y$
 - optimized angle : $\phi_{\eta} tan\left(\frac{\pi - \Delta \phi}{2}\right)sin\left(\theta_{\eta}\right)$
-- 
-With $cos\left(\theta_{\eta}\right) = tanh\left(\frac{\Delta \eta}{2}\right)$
+
+With $cos\left(\theta_{\eta}\right) = tanh\left(\frac{\Delta \eta}{2}\right)$.
+
+The differential cross section is obtain by scaling the histograms with the integrated luminosity. To reduce inefficiencies due to reconstruction algorithm we performed an unfolding procedure, estimating the response matrix with data generated from a Montecarlo and using the RooUnfold toolbox.
 
