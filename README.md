@@ -6,5 +6,6 @@ By selecting muon pairs with the cuts described in the article we find the reson
 
 - transverse momentum : $P_{t}$
 -  rapidity : $y$
-- optimized angle : $\phi_{\eta} tan\left(\frac{\pi - \Delta \phi}{2}\right)sin(\theta_{\eta}); cos(\theta_{\eta}) = tanh(\frac{\Delta \eta}{2})$
+- optimized angle : $\phi_{\eta} tan\left(\frac{\pi - \Delta \phi}{2}\right)sin\left(\theta_{\eta}\right)$
+With $cos(\left\theta_{\eta}\right) = tanh(\left\frac{\Delta \eta}{2}\right)$
 
