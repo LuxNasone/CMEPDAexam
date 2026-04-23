@@ -45,12 +45,32 @@ std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 
 double L = 35900;
 
-//Macro to reconstruct Z^0 peak and cross section and obtain histograms of pt, eta and phi;
+/**
+*@brief A raw measurement of distribution for variables used to express differential cross-section (Z trasnverse momentum, rapidity and optimized angle), 
+*        without any unfolding procedures appplied.
+* This function reads input data from a ROOT file, processes the events, and produces
+* three histograms (TH1D) that can be used for further analysis (e.g. unfolding).
+*@param fname : file path, required to be a .root file;
+*@param outname : name for the output file, required to be a .root file. 
+*                  Default : "Repo/outFiles/NotUnfolded.root";
+*@param MT :  bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
+*              Default : true;
+*@param  mute : bool that if true disables some secondary comments. 
+*                Default : false.
+*@return a vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
+*         In order : 
+*         [0] : Z tranverse momentum
+*         [1] : Optimzed angle = tan(($\pi$ - $\Delta_{\phi}$)/2)/cosh($\Delta_{\eta}$/2)
+*         [2] : Z rapidity
+*         Advised to visualize with a TBrowser.
+*@note Requires ROOT framework and RooUnfold.
+*@warning Input file must contain expected tree structure.
+*/
 
 std::vector<TH1D> CrossSection(const char* fname,
                                 std::string outname = "Repo/outFiles/NotUnfolded.root", 
                                 bool MT = true,
-                                bool kw = true){
+                                bool mute = false){
 
     //Necessary imports for 4-vectors and other utilities, compile macro with + at the end;
 
@@ -61,11 +81,19 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     //Chrono counter;
 
+    if (mute) {std::cout << "Starting to measure time :" << std::endl;}
+
     auto start = std::chrono::high_resolution_clock::now();
 
     //Activating parallel execution by multithreading, if MT is true;
 
-    if (MT){ROOT::EnableImplicitMT();}
+    if (MT){
+
+        ROOT::EnableImplicitMT();
+
+        if (mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
+
+    }
 
     //Initializing DataFrame, fname must be to a .root file;
 
@@ -114,7 +142,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     std::vector<TH1D> h_v(3);
 
-    for (int i = 0; i < 3; i++){
+    for (size_t i = 0; i < h_v.size(); i++){
 
         auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
 
@@ -124,27 +152,23 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     }
 
-    //Saving on file, optional if kw is True
+    //Saving on file
 
-    if(kw){
+    TFile output(outname.c_str(), "RECREATE");
 
-        TFile output(outname.c_str(), "RECREATE");
+    //Histogram for Invariant Mass;
 
-        //Histogram for Invariant Mass;
-
-        auto h_m = new_df.Histo1D({"M_inv", "Z0_mass", n_b, 70, 110}, "mass");
+    auto h_m = new_df.Histo1D({"M_inv", "Z0_mass", n_b, 70, 110}, "mass");
         
-        h_m->Write("InvMass");
+    h_m->Write("InvMass");
 
-        //Writing for other histograms
+    //Writing for other histograms
 
-        for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i].c_str()));}
+    for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i].c_str()));}
 
-        //Closing output file
+    //Closing output file
 
-        output.Close();
-
-    }
+    output.Close();
 
     //Ending Chrono counter e elapsed time;
 
@@ -153,7 +177,9 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     //Elapsed time printing
 
-    std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
+    if (mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
+
+    if (mute) {std::cout << "CrossSection terminato" << std::endl;}
 
     //Deactivating batch mode
 
@@ -165,6 +191,18 @@ std::vector<TH1D> CrossSection(const char* fname,
 
 }
 
+/** 
+*@brief Block that applies unfolding on three histograms, with response matrix estimated by Response.cpp (see documentation for more details).
+*       Unfolding is applied with RooUnfoldBayes, in the RooUnfold package.
+*@param fname : data file path, required to be a .root file;
+*@param n_iter : int, number of iteration for unfolding;
+*@param rpath : response matrix file path, required to be a .root file;
+*@param outname : name for the output file, required to be a .root file. 
+*@return A vector of three unfolded histograms, containing same variables analyzed in CrossSection (see documentation for morre details).
+*@note Requires ROOT framework and RooUnfold.
+*@warning Input file must contain expected tree structure.
+*/
+
 std::vector<TH1D> Unfolded(const char* fname,
               int n_iter,
               const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
@@ -173,6 +211,12 @@ std::vector<TH1D> Unfolded(const char* fname,
     //Matrices file
 
     TFile* Rfile = TFile::Open(rpath);
+
+    if (Rfile->IsZombie()){
+
+        std::cout << "File not opened" << std::endl; 
+
+    }
 
     //Response matrix vector
 
@@ -191,8 +235,10 @@ std::vector<TH1D> Unfolded(const char* fname,
         TH1D* h_eff = (TH1D*) Rfile->Get(Form("Efficiency for %s", vars[i].c_str()));
 
         if (!M) {
+
             std::cerr << "Errore: Response_" << vars[i] << " non trovato!" << std::endl;
             continue;
+
         }
 
         T[i] = *M;
@@ -206,7 +252,9 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     //Executing CrossSection
 
-    std::vector<TH1D> h_v = CrossSection(fname, "Repo/outFiles/NotUnfolded.root", true, false);
+    std::vector<TH1D> h_v = CrossSection(fname, "Repo/outFiles/NotUnfolded.root", true, true);
+
+    std::cout << "This run will be saved on file : " << outname << std::endl;
 
     TFile* output = new TFile(outname, "RECREATE");
 
@@ -216,7 +264,9 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     for (size_t i = 0; i < h_v.size(); i++){
 
-        if (h_v.size() != vars.size()) {std::cerr << "Mismatch size: vars=" << vars.size() << " h_v=" << h_v.size() << std::endl;}
+        if (h_v.size() != vars.size()) {
+            std::cerr << "Mismatch size: vars =" << vars.size() << " h_v =" << h_v.size() << std::endl;
+        }
 
         TH1D* h = (TH1D*)h_v[i].Clone();
 
@@ -256,9 +306,25 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     }
 
+    output->Close();
+
+    std::cout << "Saved correctly" << std::endl;
+
     return h_u;
 
+    std::cout << "Unfolding terminato" << std::endl;
+
 }
+
+/**
+*@brief Block that makes comparison between the not unfolded and unfolded distributions listed above.
+*@param fname : data file path, required to be a .root file;
+*@param n_iter : number of iteration for unfolding;
+*@param outname : name for the output file, required to be a .root file. 
+*@return nothing, is void type. The graphs can be visualized on a TBrowser
+*@note Requires ROOT framework and RooUnfold.
+*@warning Input file must contain expected tree structure.
+ */
 
 void Comp(const char* fname, 
           int n_iter,
@@ -272,6 +338,8 @@ void Comp(const char* fname,
 
     //Outfile
 
+    if (mute) {std::cout << "This run will be saved on file : " << outname << std::endl;}
+
     TFile* output = new TFile(outname, "RECREATE");
 
     if (h_nu.size() == h_u.size()){
@@ -280,7 +348,6 @@ void Comp(const char* fname,
 
             TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
 
-            //Creating legend
             TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
 
             h_nu[i].SetLineColor(kBlue);
@@ -317,5 +384,7 @@ void Comp(const char* fname,
     }
 
     output->Close();
+
+    if (mute){std::cout << "Saved correctly" << std::endl;}
 
 }

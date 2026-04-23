@@ -38,7 +38,24 @@ std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
-void Response(const char* fname, std::string outname = "Repo/outFiles/Response.root", bool MT = true){
+/**
+*@brief Macro to estimate the response matrix, by matching the generated event with reconstructed events and using RooUnfoldResponse
+*@param fname : data file path, required to be a .root file;
+*@param outname : name for the output file, required to be a .root file.
+*                 Default : "Repo/outFiles/Response.root";
+*@param MT : bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
+*            Default : true;
+*@param mute : bool that if true disables some secondary comments. 
+*              Default : false.
+*@return nothing, is void type. The graphs can be visualized on a TBrowser
+*@note Requires ROOT framework and RooUnfold.
+*@warning Input file must contain expected tree structure.
+*/
+
+void Response(const char* fname, 
+              std::string outname = "Repo/outFiles/Response.root", 
+              bool MT = true, 
+              bool mute = false){
 
     //Necessary for 4 vectors and other utilities, compile with + at the end
 
@@ -54,11 +71,20 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
 
     //Chrono counter;
 
+    if (mute) {std::cout << "Starting to measure time :" << std::endl;}
+
+
     auto start = std::chrono::high_resolution_clock::now();
 
     //Optional: activate multithreading
 
-    if (MT){ROOT::EnableImplicitMT();}
+    if (MT){
+
+        ROOT::EnableImplicitMT();
+
+        if (mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
+    
+    }
 
     //Initializing DataFrame, fname must be to a .root file;
 
@@ -66,7 +92,7 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
 
     //Response matrix for transverse momentum, opt. angle and rapidity
 
-    std::vector<RooUnfoldResponse> T(3);
+    std::vector<RooUnfoldResponse> T(bounds.size());
 
     for (size_t i = 0; i < T.size(); i++){T[i] = RooUnfoldResponse(n_b, bounds[i].first, bounds[i].second, n_b, bounds[i].first, bounds[i].second);}
 
@@ -95,6 +121,12 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
                     .Define("reco_phi_eta", phi_eta_calculator, {"recoMuon"});
 
     for (size_t i = 1; i < vars.size(); i++){
+
+        if (vars.size() != (T.size() + 1)){
+
+            std::cout << "Mismatch : T is long " << T.size() << " while vars " << vars.size() << std::endl;
+
+        }
 
         new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco) {
 
@@ -135,12 +167,18 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
 
         h_eff->Write(Form("Efficiency for %s", vars[i].c_str()));
 
-
     }
 
     //Validation for response matrix
 
     for (size_t i = 1; i < vars.size(); i++){
+
+        if (vars.size() != (bounds.size() + 1)){
+
+            std::cout << "Mismatch : bounds is long " << bounds.size() << " while vars " << vars.size() << std::endl;
+
+        }
+
 
         TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
 
@@ -181,7 +219,9 @@ void Response(const char* fname, std::string outname = "Repo/outFiles/Response.r
 
     //Elapsed time printing
 
-    std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;
+    if (mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
+
+    if (mute) {std::cout << "Response terminato" << std::endl;}
 
     //Deactivating batch mode
 
