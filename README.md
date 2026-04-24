@@ -1,11 +1,20 @@
 # CMEPDAexam
-Repository on the project I made for the exam of Computing Methods for Experimental Physics and Data Analysis.
+Repository on the project made for the exam of Computing Methods for Experimental Physics and Data Analysis.
 
 The task is to reproduce the measurement of the differential production cross section for $Z^{0}$ in p-p collision at 13 TeV made by CMS with open data. 
 
-For the article I refer to: https://cms-results.web.cern.ch/cms-results/public-results/publications/SMP-17-010/index.html.
+For the article we refer to: https://cms-results.web.cern.ch/cms-results/public-results/publications/SMP-17-010/index.html.
 
-By selecting muon pairs with the cuts described in the article we find the resonance of the $Z^{0}$. A we then calculate distributions for the following quantities:
+We select muon pairs applying the cuts described in the article:
+
+- n = 2
+- $p_{t_{i}}$ > 25 GeV $i = 1, 2$
+- $|\eta_{i}|$ < 2.4 $i = 1, 2$
+- $\Delta R_{i}$ < 0.15 $i = 1, 2$
+- $q_{1} + q_{2}$ = 0
+  
+
+After finding the resonance of the $Z^{0}$ and selecting events with $|m_{inv} - m_{Z^{0}}|$ <  15, we calculate distributions for the following quantities:
 
 - transverse momentum : $P_{t}$
 -  rapidity : $y$
