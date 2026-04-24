@@ -7,20 +7,24 @@ For the article we refer to: https://cms-results.web.cern.ch/cms-results/public-
 
 We select muon pairs applying the cuts described in the article:
 
-- n = 2
-- $p_{t_{i}}$ > 25 GeV $i = 1, 2$
-- $|\eta_{i}|$ < 2.4 $i = 1, 2$
-- $\Delta R_{i}$ < 0.15 $i = 1, 2$
-- $q_{1} + q_{2}$ = 0
-  
+- n = 2;
+- $p_{t_{i}}$ > 25 GeV $i = 1, 2$;
+- $|\eta_{i}|$ < 2.4 $i = 1, 2$;
+- $\Delta R_{i}$ < 0.15 $i = 1, 2$;
+- $q_{1} + q_{2}$ = 0;
 
 After finding the resonance of the $Z^{0}$ and selecting events with $|m_{inv} - m_{Z^{0}}|$ <  15, we calculate distributions for the following quantities:
 
-- transverse momentum : $P_{t}$
--  rapidity : $y$
-- optimized angle : $\phi_{\eta} tan\left(\frac{\pi - \Delta \phi}{2}\right)sin\left(\theta_{\eta}\right)$
+- transverse momentum : $P_{t}$;
+-  rapidity : $y$;
+- optimized angle : $\phi_{\eta} tan\left(\frac{\pi - \Delta \phi}{2}\right)sin\left(\theta_{\eta}\right)$;
 
 With $cos\left(\theta_{\eta}\right) = tanh\left(\frac{\Delta \eta}{2}\right)$.
 
 The differential cross section is obtain by scaling the histograms with the integrated luminosity. To reduce inefficiencies due to reconstruction algorithm we performed an unfolding procedure, estimating the response matrix with data generated from a Montecarlo and using the RooUnfold toolbox.
+The generated events are determined to be $Z^{0}$ decays in two muons by:
 
+- Selecting $\pm$ 13 PDG ID to select muon pairs;
+- Finds index for mother particle and controls if it is 23 ($Z^{0}$ PDG ID);
+
+Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. 
