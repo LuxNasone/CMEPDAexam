@@ -46,8 +46,8 @@ std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 double L = 35900;
 
 /**
-*@brief A raw measurement of distribution for variables used to express differential cross-section (Z trasnverse momentum, rapidity and optimized angle), 
-*        without any unfolding procedures appplied.
+*@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
+*        without any unfolding procedures applied. 
 * This function reads input data from a ROOT file, processes the events, and produces
 * three histograms (TH1D) that can be used for further analysis (e.g. unfolding).
 *@param fname : file path, required to be a .root file;
@@ -63,8 +63,8 @@ double L = 35900;
 *         [1] : Optimzed angle = tan(($\pi$ - $\Delta_{\phi}$)/2)/cosh($\Delta_{\eta}$/2)
 *         [2] : Z rapidity
 *         Advised to visualize with a TBrowser.
-*@note Requires ROOT framework and RooUnfold.
-*@warning Input file must contain expected tree structure.
+*@note Requires ROOT framework.
+*@warning Input file must have expected structure, like NanoAD CMS OpenData.
 */
 
 std::vector<TH1D> CrossSection(const char* fname,
@@ -191,17 +191,26 @@ std::vector<TH1D> CrossSection(const char* fname,
 
 }
 
-/** 
-*@brief Block that applies unfolding on three histograms, with response matrix estimated by Response.cpp (see documentation for more details).
-*       Unfolding is applied with RooUnfoldBayes, in the RooUnfold package.
-*@param fname : data file path, required to be a .root file;
-*@param n_iter : int, number of iteration for unfolding;
-*@param rpath : response matrix file path, required to be a .root file;
-*@param outname : name for the output file, required to be a .root file. 
-*@return A vector of three unfolded histograms, containing same variables analyzed in CrossSection (see documentation for morre details).
-*@note Requires ROOT framework and RooUnfold.
-*@warning Input file must contain expected tree structure.
-*/
+/**
+ * @brief Applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms
+ *        using a precomputed response matrix.
+ *
+ * @param fname Path to the input ROOT file containing reconstructed histograms.
+ *              The file must contain the expected TTree/histogram structure (see CrossSection).
+ * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
+ *               Typical values range from 2 to 10; higher values may introduce fluctuations.
+ * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp).
+ *              The matrix must be compatible in binning and observable definition.
+ * @param outname Name of the output ROOT file where unfolded histograms will be stored.
+ *
+ * @return std::vector<TH1D*> Vector containing the three unfolded histograms, in the following order:
+ *         [0] variable X, [1] variable Y, [2] variable Z (see CrossSection for definitions).
+ *         The caller is responsible for memory management.
+ *
+ * @note Requires ROOT framework and RooUnfold package.
+ *
+ * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ */
 
 std::vector<TH1D> Unfolded(const char* fname,
               int n_iter,
@@ -317,13 +326,21 @@ std::vector<TH1D> Unfolded(const char* fname,
 }
 
 /**
-*@brief Block that makes comparison between the not unfolded and unfolded distributions listed above.
-*@param fname : data file path, required to be a .root file;
-*@param n_iter : number of iteration for unfolding;
-*@param outname : name for the output file, required to be a .root file. 
-*@return nothing, is void type. The graphs can be visualized on a TBrowser
-*@note Requires ROOT framework and RooUnfold.
-*@warning Input file must contain expected tree structure.
+ * @brief Compares reconstructed (not unfolded) and unfolded distributions
+ *        by overlaying the corresponding histograms.
+ *
+ * @param fname Path to the input ROOT file containing both reconstructed
+ *              and unfolded histograms.
+ * @param n_iter Number of iterations used in the unfolding procedure.
+ *               Used for labeling and consistency checks.
+ * @param outname Name of the output ROOT file where comparison plots are saved.
+ *
+ * @return void. The function produces comparison plots (TCanvas objects)
+ *         stored in the output file and accessible via TBrowser.
+ *
+ * @note Requires ROOT framework and RooUnfold package.
+ *
+ * @warning Input file must have expected structure, like NanoAD CMS OpenData.
  */
 
 void Comp(const char* fname, 

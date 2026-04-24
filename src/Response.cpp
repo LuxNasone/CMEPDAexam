@@ -39,18 +39,28 @@ std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
 /**
-*@brief Macro to estimate the response matrix, by matching the generated event with reconstructed events and using RooUnfoldResponse
-*@param fname : data file path, required to be a .root file;
-*@param outname : name for the output file, required to be a .root file.
-*                 Default : "Repo/outFiles/Response.root";
-*@param MT : bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
-*            Default : true;
-*@param mute : bool that if true disables some secondary comments. 
-*              Default : false.
-*@return nothing, is void type. The graphs can be visualized on a TBrowser
-*@note Requires ROOT framework and RooUnfold.
-*@warning Input file must contain expected tree structure.
-*/
+ * @brief Estimates response matrices by matching generated and reconstructed events.
+ *
+ *        The function builds three RooUnfoldResponse objects (one per observable)
+ *        and stores them in an output ROOT file.
+ *
+ * @param fname Path to the input ROOT file containing generated and reconstructed data.
+ *              The file must follow the expected tree structure.
+ * @param outname Path to the output ROOT file where the response matrices are saved.
+ *                Default: "Repo/outFiles/Response.root".
+ * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
+ *           This improves performance but does not affect results.
+ *           Default: true.
+ * @param mute If true, suppresses non-essential log messages printed to stdout.
+ *             Default: false.
+ *
+ * @return void. The function writes RooUnfoldResponse objects and related histograms
+ *         to the output ROOT file, accessible via TBrowser.
+ *
+ * @note Requires ROOT framework and RooUnfold package.
+ *
+ * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ */
 
 void Response(const char* fname, 
               std::string outname = "Repo/outFiles/Response.root", 
