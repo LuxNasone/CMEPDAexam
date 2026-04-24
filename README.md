@@ -7,7 +7,7 @@ For the article I refer to: https://cms-results.web.cern.ch/cms-results/public-r
 
 We select muon pairs applying the cuts described in the article:
 
-- n >= 2
+- n = 2
 - $p_{t_{i}}$ > 25 GeV $i = 1, 2$
 - $|\eta_{i}|$ < 2.4 $i = 1, 2$
 - $\Delta R_{i}$ < 0.3 $i = 1, 2$
