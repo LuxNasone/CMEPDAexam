@@ -14,7 +14,7 @@ We select muon pairs applying the cuts described in the article:
 - $q_{1} + q_{2}$ = 0
   
 
-After finding the resonance of the $Z^{0}$, we calculate distributions for the following quantities:
+After finding the resonance of the $Z^{0}$ and selecting events with $|m_{inv} - m_{Z^{0}}|$ <  15, we calculate distributions for the following quantities:
 
 - transverse momentum : $P_{t}$
 -  rapidity : $y$
