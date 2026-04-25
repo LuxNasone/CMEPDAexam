@@ -30,32 +30,39 @@
 * @ {
 */
 
-/** @brief Number of bins, used both for histograms and response matrix */
+/// @ingroup GlobalVariables
+/// @brief Number of bins, used both for histograms and response matrix */
 
 int n_b = 100;
 
-/** @brief variable names, used in loops over RDataFrame columns */
+/// @ingroup GlobalVariables
+/// @brief variable names, used in loops over RDataFrame columns */
 
 std::vector<std::string> vars = {"pt", "phi_eta", "y"};
 
-/** @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method */
+/// @ingroup GlobalVariables
+/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method */
 
 std::vector<std::string> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
 
-/** @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method*/
+/// @ingroup GlobalVariables
+/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method*/
 
 
 std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[fb/GeV]", "d#sigma / d#phi^{*}_{#eta} [fb]", "d#sigma / dy^{Z} [fb]"};
 
-/** @brief bounds for variables, both for graphs but also for ranges in response matrix estimation */
+/// @ingroup GlobalVariables
+/// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation */
 
 std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
-/** @brief bounds for y axis, purely aesthetic */
+/// @ingroup GlobalVariables
+/// @brief bounds for y axis, purely aesthetic */
 
 std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 
-/** @brief integrated luminosity for data used, expressed in [fb^{-1}]*/
+/// @ingroup GlobalVariables
+/// @brief integrated luminosity for data used, expressed in [fb^{-1}]*/
 
 double L = 35.9;
 
