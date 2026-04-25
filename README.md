@@ -13,6 +13,10 @@ We select muon pairs applying the cuts described in the article:
 - $\Delta R_{i}$ < 0.15 $i = 1, 2$;
 - $q_{1} + q_{2}$ = 0;
 
+We find the usual Breight-Wigner peak around expected $Z^{0}$ mass :  
+
+![PtU vs PtNU](output/MassMEAS.png)
+
 After finding the resonance of the $Z^{0}$ and selecting events with $|m_{inv} - m_{Z^{0}}|$ <  15, we calculate distributions for the following quantities:
 
 - transverse momentum : $P_{t}$;
