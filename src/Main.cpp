@@ -5,6 +5,7 @@
 #include <cmath>
 #include <numbers>
 #include <chrono>
+#include <map>
 
 //ROOT include
 
@@ -47,7 +48,7 @@ std::vector<std::string> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"
 /// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method*/
 
 
-std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[fb/GeV]", "d#sigma / d#phi^{*}_{#eta} [fb]", "d#sigma / dy^{Z} [fb]"};
+std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
 
 /// @ingroup GlobalVariables
 /// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation */
@@ -57,20 +58,19 @@ std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 /// @ingroup GlobalVariables
 /// @brief bounds for y axis, purely aesthetic */
 
-std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
+std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
 
 /// @ingroup GlobalVariables
 /// @brief integrated luminosity for data used, expressed in [fb^{-1}]*/
 
-double L = 35.9;
-
+double L = 8740.119304;
 
 /**
 *@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
 *        without any unfolding procedures applied. 
 * This function reads input data from a ROOT file, processes the events, and produces
 * three histograms (TH1D) that can be used for further analysis (e.g. unfolding).
-*@param fname : file path, required to be a .root file;
+*@param folder_name : folder path, required to contain at least a proper .root file;
 *@param outname : name for the output file, required to be a .root file. 
 *                  Default : "Repo/outFiles/NotUnfolded.root";
 *@param MT :  bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
@@ -87,7 +87,7 @@ double L = 35.9;
 *@warning Input file must have expected structure, like NanoAD CMS OpenData.
 */
 
-std::vector<TH1D> CrossSection(const char* fname,
+std::vector<TH1D> CrossSection(const char* folder_name,
                                 std::string outname = "Repo/outFiles/NotUnfolded.root", 
                                 bool MT = true,
                                 bool mute = false){
@@ -117,7 +117,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     //Initializing DataFrame, fname must be to a .root file;
 
-    ROOT::RDataFrame df("Events", fname);
+    ROOT::RDataFrame df("Events", Form("%s/*",folder_name));
 
     /* 
 
@@ -239,7 +239,7 @@ std::vector<TH1D> CrossSection(const char* fname,
 
 
 void Response(const char* fname, 
-              std::string outname = "Repo/outFiles/Response.root", 
+              std::string outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
               bool MT = true, 
               bool mute = false){
 
@@ -351,6 +351,10 @@ void Response(const char* fname,
 
         h_eff->Divide(h_matched, h_true, 1.0, 1.0, "B");
 
+        h_eff->SetLineColor(kBlue);
+        h_eff->SetMarkerColor(kBlue);
+        h_eff->SetMarkerStyle(20);
+
         h_eff->Write(Form("Efficiency for %s", vars[i].c_str()));
 
     }
@@ -390,7 +394,10 @@ void Response(const char* fname,
 
         c->Write(Form("%s_unfolded", vars[i].c_str()));
 
+        hUnfold->Scale(1.0 / hUnfold->Integral());
 
+        hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
+        
     }
 
     //Closing output file
@@ -416,9 +423,7 @@ void Response(const char* fname,
 /**
  * @brief Applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms
  *        using a precomputed response matrix.
- *
- * @param fname Path to the input ROOT file containing reconstructed histograms.
- *              The file must contain the expected TTree/histogram structure (see CrossSection).
+ * @param folder_name : folder path, required to contain at least a proper .root file;
  * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
  *               Typical values range from 2 to 10; higher values may introduce fluctuations.
  * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp).
@@ -434,7 +439,7 @@ void Response(const char* fname,
  * @warning Input file must have expected structure, like NanoAD CMS OpenData.
  */
 
-std::vector<TH1D> Unfolded(const char* fname,
+void Unfolded(const char* folder_name,
               int n_iter,
               const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
               const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root"){
@@ -483,7 +488,7 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     //Executing CrossSection
 
-    std::vector<TH1D> h_v = CrossSection(fname, "Repo/outFiles/NotUnfolded.root", true, true);
+    std::vector<TH1D> h_v = CrossSection(folder_name, "Repo/outFiles/NotUnfolded.root", true, true);
 
     std::cout << "This run will be saved on file : " << outname << std::endl;
 
@@ -541,8 +546,6 @@ std::vector<TH1D> Unfolded(const char* fname,
 
     std::cout << "Saved correctly" << std::endl;
 
-    return h_u;
-
     std::cout << "Unfolding terminato" << std::endl;
 
 }
@@ -551,10 +554,9 @@ std::vector<TH1D> Unfolded(const char* fname,
  * @brief Compares reconstructed (not unfolded) and unfolded distributions
  *        by overlaying the corresponding histograms.
  *
- * @param fname Path to the input ROOT file containing both reconstructed
- *              and unfolded histograms.
- * @param n_iter Number of iterations used in the unfolding procedure.
- *               Used for labeling and consistency checks.
+ * @param f1 : path to not unfolded histograms, assumed to be output of CrossSection;
+ * @param f2 : path to unfolded histograms, assumed to be output of Unfolded;
+ * @param f3 : path to MC histograms, assumed to be output of Response
  * @param outname Name of the output ROOT file where comparison plots are saved.
  *
  * @return void. The function produces comparison plots (TCanvas objects)
@@ -565,16 +567,41 @@ std::vector<TH1D> Unfolded(const char* fname,
  * @warning Input file must have expected structure, like NanoAD CMS OpenData.
  */
 
-void Comp(const char* fname, 
-          int n_iter,
+void Comp(const char* f1,
+          const char* f2, 
+          const char* f3, 
           const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root",
           bool mute = false){
 
-    //Results not-unfolded and unfolded
+    //Results not-unfolded and unfolded, and MC
 
-    std::vector<TH1D> h_nu = CrossSection(fname); 
+    TFile* NU = TFile::Open(f1);
 
-    std::vector<TH1D> h_u = Unfolded(fname, n_iter);
+    std::vector<TH1D> h_nu(vars.size());
+
+    TFile* U = TFile::Open(f2);
+
+    std::vector<TH1D> h_u(vars.size());
+
+    TFile* MC = TFile::Open(f3);
+
+    std::vector<TH1D> h_mc(vars.size());
+
+    for (size_t i = 0; i < vars.size(); i++){
+
+        TH1D* h = (TH1D*) NU->Get(vars[i].c_str()); 
+
+        h_nu[i] = *h;
+
+        TH1D* hu = (TH1D*) U->Get(Form("%s_unfolded", vars[i].c_str()));
+
+        h_u[i] = *hu;
+
+        TH1D* hMC = (TH1D*) MC->Get(Form("%s_MC", vars[i].c_str()));
+
+        h_mc[i] = *hMC;
+
+    }
 
     //Outfile
 
@@ -615,7 +642,9 @@ void Comp(const char* fname,
 
             c->Write();
 
-            //std::cout << h_nu[i].Integral() << " , " << h_u[i].Integral() << std::endl;
+            h_u[i].Scale(1./L);
+
+            h_u[i].Write(Form("CrossSection_%s", vars[i].c_str()));
 
         }
 
@@ -624,3 +653,4 @@ void Comp(const char* fname,
     output->Close();
 
 }
+

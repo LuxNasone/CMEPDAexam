@@ -1,0 +1,58 @@
+Start testing: Apr 25 11:37 CEST
+----------------------------------------------------------
+1/1 Testing: VarsTests
+1/1 Test: VarsTests
+Command: "/home/lux_n/CMEPDA/Exam/Repo/build/test_vars"
+Directory: /home/lux_n/CMEPDA/Exam/Repo/build
+"VarsTests" start time: Apr 25 11:37 CEST
+Output:
+----------------------------------------------------------
+Running main() from /home/lux_n/CMEPDA/Exam/Repo/external/googletest/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 6 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MinvTest
+[ RUN      ] MinvTest.TwoMuons
+[       OK ] MinvTest.TwoMuons (0 ms)
+[----------] 1 test from MinvTest (0 ms total)
+
+[----------] 1 test from PtTest
+[ RUN      ] PtTest.SumPt
+[       OK ] PtTest.SumPt (0 ms)
+[----------] 1 test from PtTest (0 ms total)
+
+[----------] 1 test from RapidityTest
+[ RUN      ] RapidityTest.Basic
+[       OK ] RapidityTest.Basic (0 ms)
+[----------] 1 test from RapidityTest (0 ms total)
+
+[----------] 2 tests from PhiEtaTest
+[ RUN      ] PhiEtaTest.Basic
+[       OK ] PhiEtaTest.Basic (0 ms)
+[ RUN      ] PhiEtaTest.LessThanTwo
+[       OK ] PhiEtaTest.LessThanTwo (0 ms)
+[----------] 2 tests from PhiEtaTest (0 ms total)
+
+[----------] 2 tests from RecoTest
+[ RUN      ] RecoTest.ValidEvent
+[       OK ] RecoTest.ValidEvent (0 ms)
+[ RUN      ] RecoTest.IsolationFail
+[       OK ] RecoTest.IsolationFail (0 ms)
+[----------] 2 tests from RecoTest (0 ms total)
+
+[----------] 1 test from MassWindow
+[ RUN      ] MassWindow.Inside
+[       OK ] MassWindow.Inside (0 ms)
+[----------] 1 test from MassWindow (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 6 test suites ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"VarsTests" end time: Apr 25 11:37 CEST
+"VarsTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 25 11:37 CEST
