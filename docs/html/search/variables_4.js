@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['vars_0',['vars',['../Main_8cpp.html#a25201aa20d86919395de7150295fa6bd',1,'vars:&#160;Main.cpp'],['../Response_8cpp.html#a25201aa20d86919395de7150295fa6bd',1,'vars:&#160;Response.cpp']]]
-];
