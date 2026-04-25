@@ -180,7 +180,7 @@ bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<flo
  * @return Vector of four-momenta of particles that pass the selection criteria.
  */
 
-ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid, const ROOT::RVecF &pt, const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
+ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid, const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> &phi, const ROOT::RVec<float> &mass){
 
     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
     std::vector<int> flag;
@@ -234,7 +234,7 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec
  * @return Vector of four-momenta of reconstructed particles passing the selection criteria.
  */
 
-ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> phi,const ROOT::RVec<float> &mass){
+ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> &phi,const ROOT::RVec<float> &mass){
 
     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
 
@@ -262,7 +262,7 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<i
  * @note The mass window is defined internally in the function, is |m - 91.1817| < 15.
  */
 
-bool Minv_Range(Double_t &m) {
+bool Minv_Range(Double_t m) {
     if (std::abs(m - 91.1817) < 15) {return true;}
     return false;
 }

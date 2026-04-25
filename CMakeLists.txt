@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.10)
-project(Cross Section for Z production in p-p collision)
+project(ZAnalysis)
 
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(ROOT REQUIRED)
 
-# GoogleTest
-add_subdirectory(googletest)
+add_subdirectory(external/googletest)
 
 include_directories(
     ${ROOT_INCLUDE_DIRS}
+    external/googletest/googletest/include
     src
 )
 
@@ -17,6 +17,7 @@ enable_testing()
 
 add_executable(test_vars
     tests/test_vars.cpp
+    src/Vars.cpp
 )
 
 target_link_libraries(test_vars
