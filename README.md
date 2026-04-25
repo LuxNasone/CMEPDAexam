@@ -25,7 +25,7 @@ After finding the resonance of the $Z^{0}$ and selecting events with $|m_{inv} -
 
 With $cos\left(\theta_{\eta}\right) = tanh\left(\frac{\Delta \eta}{2}\right)$.
 
-The differential cross section is obtain by scaling the histograms with the integrated luminosity. To reduce inefficiencies due to reconstruction algorithm we performed an unfolding procedure, estimating the response matrix with data generated from a Montecarlo and using the RooUnfold toolbox.
+In order to to take into account inefficiencies we performed an unfolding procedure, estimating the response matrix with data generated from a Montecarlo and using the RooUnfold toolbox.
 The generated events are determined to be $Z^{0}$ decays in two muons by:
 
 - Selecting $\pm$ 13 PDG ID to select muon pairs;
@@ -34,3 +34,6 @@ The generated events are determined to be $Z^{0}$ decays in two muons by:
 Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. We then use a RooUnfoldBayesian oon measured distribution. For example, here is a comparison between unfolded and not unfolded distribution for transverse momentum:
 
 ![PtU vs PtNU](output/PtCOMP.png)
+
+The differential cross section is obtain by scaling the histograms with the integrated luminosity. The dataset used has an integrated luminosity $L = 36 fb^{-1}$. 
+Here is the result:
