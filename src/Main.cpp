@@ -16,34 +16,50 @@
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
+
+//Unfolding toolbox
+
 #include "RooUnfoldResponse.h"
 #include "RooUnfoldBayes.h"
 
-//Global variables
+//Useful functions
 
-//Number of bins
+#include "Vars.h"
+
+/** @defgroup GlobalVariable
+* @ {
+*/
+
+/** @brief Number of bins, used both for histograms and response matrix */
 
 int n_b = 100;
 
-//Variable names and axis labels
+/** @brief variable names, used in loops over RDataFrame columns */
 
 std::vector<std::string> vars = {"pt", "phi_eta", "y"};
 
+/** @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method */
+
 std::vector<std::string> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
 
-std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
+/** @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method*/
 
-//Bounds for drawing histograms;
+
+std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[fb/GeV]", "d#sigma / d#phi^{*}_{#eta} [fb]", "d#sigma / dy^{Z} [fb]"};
+
+/** @brief bounds for variables, both for graphs but also for ranges in response matrix estimation */
 
 std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
-//Range for y axis (purely aesthetic)
+/** @brief bounds for y axis, purely aesthetic */
 
 std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 
-//Luminosità integrata [pb^{-1}]
+/** @brief integrated luminosity for data used, expressed in [fb^{-1}]*/
 
-double L = 35900;
+double L = 35.9;
+
+/** @} */
 
 /**
 *@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
@@ -189,6 +205,208 @@ std::vector<TH1D> CrossSection(const char* fname,
 
     return h_v;
 
+}
+
+//Macro to extract dimuon at generator level, and obtain reco efficiency
+
+/**
+ * @brief Estimates response matrices by matching generated and reconstructed events.
+ *
+ *        The function builds three RooUnfoldResponse objects (one per observable)
+ *        and stores them in an output ROOT file.
+ *
+ * @param fname Path to the input ROOT file containing generated and reconstructed data.
+ *              The file must follow the expected tree structure.
+ * @param outname Path to the output ROOT file where the response matrices are saved.
+ *                Default: "Repo/outFiles/Response.root".
+ * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
+ *           This improves performance but does not affect results.
+ *           Default: true.
+ * @param mute If true, suppresses non-essential log messages printed to stdout.
+ *             Default: false.
+ *
+ * @return void. The function writes RooUnfoldResponse objects and related histograms
+ *         to the output ROOT file, accessible via TBrowser.
+ *
+ * @note Requires ROOT framework and RooUnfold package.
+ *
+ * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ */
+
+
+void Response(const char* fname, 
+              std::string outname = "Repo/outFiles/Response.root", 
+              bool MT = true, 
+              bool mute = false){
+
+    //Necessary for 4 vectors and other utilities, compile with + at the end
+
+    gSystem->Load("libPhysics");
+    gSystem->Load("libMathCore");
+    gSystem->Load("libMatrix");
+    gSystem->Load("libHist");
+    gSystem->Load("libMinuit");
+    gSystem->Load("libMathCore");
+    gSystem->AddIncludePath("-I/home/lux_n/CMEPDA/Exam/RooUnfold/src");
+    gSystem->Load("/home/lux_n/CMEPDA/Exam/RooUnfold/build/libRooUnfold.so");
+    gROOT->SetBatch(kTRUE);
+
+    //Chrono counter;
+
+    if (mute) {std::cout << "Starting to measure time :" << std::endl;}
+
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    //Optional: activate multithreading
+
+    if (MT){
+
+        ROOT::EnableImplicitMT();
+
+        if (mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
+    
+    }
+
+    //Initializing DataFrame, fname must be to a .root file;
+
+    ROOT::RDataFrame df("Events", fname);
+
+    //Response matrix for transverse momentum, opt. angle and rapidity
+
+    std::vector<RooUnfoldResponse> T(bounds.size());
+
+    for (size_t i = 0; i < T.size(); i++){T[i] = RooUnfoldResponse(n_b, bounds[i].first, bounds[i].second, n_b, bounds[i].first, bounds[i].second);}
+
+    /*
+
+    Reconstructing Z^0 peak by MC tagging at generator level:
+
+    Loop on GenPart_pdgId, need at least a +13 and -13 con GenPart_pdgId(GenPart_genPartIdxMother) == 23 
+
+    We then compute invariant mass for the pair
+
+    */
+
+    auto new_df = df.Define("genMuon", GenSel, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
+                    .Define("IsGen", IsTrue, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother"})
+                    .Define("recoMuon", Reco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
+                    .Define("IsReco", IsReco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta"})
+                    .Define("reco_mass", Minv_calculator, {"recoMuon"})
+                    .Define("gen_mass", Minv_calculator, {"genMuon"})
+                    .Filter(Minv_Range, {"gen_mass"})
+                    .Define("gen_pt", Pt_calculator, {"genMuon"})
+                    .Define("gen_y", y_calculator, {"genMuon"})
+                    .Define("gen_phi_eta", phi_eta_calculator, {"genMuon"})
+                    .Define("reco_pt", Pt_calculator, {"recoMuon"})
+                    .Define("reco_y", y_calculator, {"recoMuon"})
+                    .Define("reco_phi_eta", phi_eta_calculator, {"recoMuon"});
+
+    for (size_t i = 0; i < vars.size(); i++){
+
+        if (vars.size() != (T.size())){
+
+            std::cout << "Mismatch : T is long " << T.size() << " while vars " << vars.size() << std::endl;
+
+        }
+
+        new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco) {
+
+                            if(Gen && Reco){T[i].Fill((double)reco, (double)gen);}
+
+                            else if (Gen && !Reco){T[i].Miss((double)gen);}
+
+                            else if (!Gen && Reco){T[i].Fake((double)reco);}
+
+                        },{Form("gen_%s", vars[i].c_str()), Form("reco_%s", vars[i].c_str()), "IsGen", "IsReco"});
+    }
+    
+    //Output file
+
+    TFile output(outname.c_str(), "RECREATE");
+
+    //Final histogram
+    auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "gen_mass");
+    h_mc->Write("InvMass_MC");
+    auto h_reco = new_df.Histo1D({"M_inv_reco", "DiMuon Mass reco", 100, 70, 110}, "reco_mass");
+    h_reco->Write("InvMass_reco");
+
+    //Visualization of response matrix and reconstruction efficiency
+
+    for (size_t i = 0; i < vars.size(); i++){
+
+        T[i].Write(Form("Response_%s", vars[i].c_str()));
+
+        TH2D* M = (TH2D*) T[i].Hresponse();
+
+        TH1D* h_true = (TH1D*) T[i].Htruth();
+
+        TH1D* h_matched = M->ProjectionY();
+
+        TH1D* h_eff = (TH1D*) h_matched->Clone();
+
+        h_eff->Divide(h_matched, h_true, 1.0, 1.0, "B");
+
+        h_eff->Write(Form("Efficiency for %s", vars[i].c_str()));
+
+    }
+
+    //Validation for response matrix
+
+    for (size_t i = 0; i < vars.size(); i++){
+
+        if (vars.size() != (bounds.size())){
+
+            std::cout << "Mismatch : bounds is long " << bounds.size() << " while vars " << vars.size() << std::endl;
+
+        }
+
+        TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
+
+        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i].c_str()), Form("%s_MC", vars[i].c_str()), 100, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i].c_str()));
+
+        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i].c_str()), Form("%s_Reco", vars[i].c_str()), 100, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i].c_str()));
+
+        TH1D h_true = *h_true_ptr;
+        TH1D h_obt = *h_obt_ptr;
+
+        RooUnfoldBayes unfold(&T[i], &h_obt, 10);
+
+        TH1D* hUnfold = (TH1D*) unfold.Hunfold();
+
+        hUnfold->SetLineColor(kBlue);
+        hUnfold->SetMarkerColor(kBlue);
+        hUnfold->SetMarkerStyle(20);
+
+        hUnfold->Draw("P E");
+
+        h_true.Draw("SAME");
+
+        c->Update();
+
+        c->Write(Form("%s_unfolded", vars[i].c_str()));
+
+
+    }
+
+    //Closing output file
+
+    output.Close();
+
+    //Ending Chrono counter e elapsed time;
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
+    //Elapsed time printing
+
+    if (mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
+
+    if (mute) {std::cout << "Response terminato" << std::endl;}
+
+    //Deactivating batch mode
+
+    gROOT->SetBatch(kFALSE);
 }
 
 /**
@@ -345,7 +563,8 @@ std::vector<TH1D> Unfolded(const char* fname,
 
 void Comp(const char* fname, 
           int n_iter,
-          const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root"){
+          const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root",
+          bool mute = false){
 
     //Results not-unfolded and unfolded
 
@@ -354,8 +573,6 @@ void Comp(const char* fname,
     std::vector<TH1D> h_u = Unfolded(fname, n_iter);
 
     //Outfile
-
-    if (mute) {std::cout << "This run will be saved on file : " << outname << std::endl;}
 
     TFile* output = new TFile(outname, "RECREATE");
 
@@ -401,7 +618,5 @@ void Comp(const char* fname,
     }
 
     output->Close();
-
-    if (mute){std::cout << "Saved correctly" << std::endl;}
 
 }
