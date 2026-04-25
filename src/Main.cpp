@@ -26,9 +26,7 @@
 
 #include "Vars.h"
 
-/** @defgroup GlobalVariable
-* @ {
-*/
+/** @defgroup GlobalVariables Global Variables */
 
 /// @ingroup GlobalVariables
 /// @brief Number of bins, used both for histograms and response matrix */
@@ -66,7 +64,6 @@ std::vector<std::pair<Float_t, Float_t>> range = {{0, 4e4}, {0, 4e4}, {0, 6e3}};
 
 double L = 35.9;
 
-/** @} */
 
 /**
 *@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
