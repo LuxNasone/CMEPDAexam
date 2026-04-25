@@ -27,4 +27,6 @@ The generated events are determined to be $Z^{0}$ decays in two muons by:
 - Selecting $\pm$ 13 PDG ID to select muon pairs;
 - Finds index for mother particle and controls if it is 23 ($Z^{0}$ PDG ID);
 
-Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. 
+Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. We then use a RooUnfoldBayesian oon measured distribution. For example, here is a comparison between unfolded and not unfolded distribution for transverse momentum:
+
+![PtU vs PtNU](output/PtCOMP.png)
