@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: src/Response.cpp File Reference</title>
+<title>Cross Section for Z production in p-p collision: src/Response.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">Cross Section for Z production in p-p collision
    </div>
   </td>
  </tr>
@@ -138,7 +138,7 @@ Include dependency graph for Response.cpp:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae9788b02bc4dd3d91499484093269944" id="r_ae9788b02bc4dd3d91499484093269944"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Response_8cpp.html#ae9788b02bc4dd3d91499484093269944">Response</a> (const char *fname, std::string outname=&quot;Repo/outFiles/Response.root&quot;, bool MT=true, bool mute=false)</td></tr>
-<tr class="memdesc:ae9788b02bc4dd3d91499484093269944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to estimate the response matrix, by matching the generated event with reconstructed events and using RooUnfoldResponse.  <br /></td></tr>
+<tr class="memdesc:ae9788b02bc4dd3d91499484093269944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates response matrices by matching generated and reconstructed events.  <br /></td></tr>
 <tr class="separator:ae9788b02bc4dd3d91499484093269944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -189,205 +189,207 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Macro to estimate the response matrix, by matching the generated event with reconstructed events and using RooUnfoldResponse. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Estimates response matrices by matching generated and reconstructed events. </p>
+<pre class="fragment">   The function builds three RooUnfoldResponse objects (one per observable)
+   and stores them in an output ROOT file.
+</pre> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fname</td><td>: data file path, required to be a .root file; </td></tr>
-    <tr><td class="paramname">outname</td><td>: name for the output file, required to be a .root file. Default : "Repo/outFiles/Response.root"; </td></tr>
-    <tr><td class="paramname">MT</td><td>: bool that if true enables multithreading with the option ROOTEnableImplicitMT(). Default : true; </td></tr>
-    <tr><td class="paramname">mute</td><td>: bool that if true disables some secondary comments. Default : false. </td></tr>
+    <tr><td class="paramname">fname</td><td>Path to the input ROOT file containing generated and reconstructed data. The file must follow the expected tree structure. </td></tr>
+    <tr><td class="paramname">outname</td><td>Path to the output ROOT file where the response matrices are saved. Default: "Repo/outFiles/Response.root". </td></tr>
+    <tr><td class="paramname">MT</td><td>If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT(). This improves performance but does not affect results. Default: true. </td></tr>
+    <tr><td class="paramname">mute</td><td>If true, suppresses non-essential log messages printed to stdout. Default: false.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>nothing, is void type. The graphs can be visualized on a TBrowser </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Requires ROOT framework and RooUnfold. </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Input file must contain expected tree structure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void. The function writes RooUnfoldResponse objects and related histograms to the output ROOT file, accessible via TBrowser.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Requires ROOT framework and RooUnfold package.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Input file must have expected structure, like NanoAD CMS OpenData. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Response_8cpp_source.html#l00055">55</a> of file <a class="el" href="Response_8cpp_source.html">Response.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>                                {</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <span class="comment">//Necessary for 4 vectors and other utilities, compile with + at the end</span></div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libPhysics&quot;</span>);</div>
-<div class="line"><span class="lineno">   63</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMathCore&quot;</span>);</div>
-<div class="line"><span class="lineno">   64</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMatrix&quot;</span>);</div>
-<div class="line"><span class="lineno">   65</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libHist&quot;</span>);</div>
-<div class="line"><span class="lineno">   66</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMinuit&quot;</span>);</div>
-<div class="line"><span class="lineno">   67</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMathCore&quot;</span>);</div>
-<div class="line"><span class="lineno">   68</span>    gSystem-&gt;AddIncludePath(<span class="stringliteral">&quot;-I/home/lux_n/CMEPDA/Exam/RooUnfold/src&quot;</span>);</div>
-<div class="line"><span class="lineno">   69</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;/home/lux_n/CMEPDA/Exam/RooUnfold/build/libRooUnfold.so&quot;</span>);</div>
-<div class="line"><span class="lineno">   70</span>    gROOT-&gt;SetBatch(kTRUE);</div>
+<p class="definition">Definition at line <a class="el" href="Response_8cpp_source.html#l00065">65</a> of file <a class="el" href="Response_8cpp_source.html">Response.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>                                {</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    <span class="comment">//Necessary for 4 vectors and other utilities, compile with + at the end</span></div>
 <div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>    <span class="comment">//Chrono counter;</span></div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Starting to measure time :&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>    <span class="keyword">auto</span> start = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment">//Optional: activate multithreading</span></div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (MT){</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>        ROOT::EnableImplicitMT();</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Activating explicit multithreading, &quot;</span> &lt;&lt; <span class="stringliteral">&quot;pool size = &quot;</span> &lt;&lt; ROOT::GetThreadPoolSize() &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">   86</span>    </div>
-<div class="line"><span class="lineno">   87</span>    }</div>
+<div class="line"><span class="lineno">   72</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libPhysics&quot;</span>);</div>
+<div class="line"><span class="lineno">   73</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMathCore&quot;</span>);</div>
+<div class="line"><span class="lineno">   74</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMatrix&quot;</span>);</div>
+<div class="line"><span class="lineno">   75</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libHist&quot;</span>);</div>
+<div class="line"><span class="lineno">   76</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMinuit&quot;</span>);</div>
+<div class="line"><span class="lineno">   77</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;libMathCore&quot;</span>);</div>
+<div class="line"><span class="lineno">   78</span>    gSystem-&gt;AddIncludePath(<span class="stringliteral">&quot;-I/home/lux_n/CMEPDA/Exam/RooUnfold/src&quot;</span>);</div>
+<div class="line"><span class="lineno">   79</span>    gSystem-&gt;Load(<span class="stringliteral">&quot;/home/lux_n/CMEPDA/Exam/RooUnfold/build/libRooUnfold.so&quot;</span>);</div>
+<div class="line"><span class="lineno">   80</span>    gROOT-&gt;SetBatch(kTRUE);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="comment">//Chrono counter;</span></div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Starting to measure time :&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="keyword">auto</span> start = std::chrono::high_resolution_clock::now();</div>
 <div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <span class="comment">//Initializing DataFrame, fname must be to a .root file;</span></div>
+<div class="line"><span class="lineno">   89</span>    <span class="comment">//Optional: activate multithreading</span></div>
 <div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>    ROOT::RDataFrame df(<span class="stringliteral">&quot;Events&quot;</span>, fname);</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> (MT){</div>
 <div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>    <span class="comment">//Response matrix for transverse momentum, opt. angle and rapidity</span></div>
+<div class="line"><span class="lineno">   93</span>        ROOT::EnableImplicitMT();</div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    std::vector&lt;RooUnfoldResponse&gt; T(<a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size());</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; T.size(); i++){T[i] = RooUnfoldResponse(<a class="code hl_variable" href="Response_8cpp.html#a46541f0a3bc9b989255b0a0ad389b41f">n_b</a>, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].second, <a class="code hl_variable" href="Response_8cpp.html#a46541f0a3bc9b989255b0a0ad389b41f">n_b</a>, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].second);}</div>
+<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Activating explicit multithreading, &quot;</span> &lt;&lt; <span class="stringliteral">&quot;pool size = &quot;</span> &lt;&lt; ROOT::GetThreadPoolSize() &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">   96</span>    </div>
+<div class="line"><span class="lineno">   97</span>    }</div>
 <div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  100</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">  101</span><span class="comment">    Reconstructing Z^0 peak by MC tagging at generator level:</span></div>
-<div class="line"><span class="lineno">  102</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">  103</span><span class="comment">    Loop on GenPart_pdgId, need at least a +13 and -13 con GenPart_pdgId(GenPart_genPartIdxMother) == 23 </span></div>
-<div class="line"><span class="lineno">  104</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">  105</span><span class="comment">    We then compute invariant mass for the pair</span></div>
-<div class="line"><span class="lineno">  106</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">  107</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">   99</span>    <span class="comment">//Initializing DataFrame, fname must be to a .root file;</span></div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>    ROOT::RDataFrame df(<span class="stringliteral">&quot;Events&quot;</span>, fname);</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment">//Response matrix for transverse momentum, opt. angle and rapidity</span></div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    std::vector&lt;RooUnfoldResponse&gt; T(<a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size());</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; T.size(); i++){T[i] = RooUnfoldResponse(<a class="code hl_variable" href="Response_8cpp.html#a46541f0a3bc9b989255b0a0ad389b41f">n_b</a>, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].second, <a class="code hl_variable" href="Response_8cpp.html#a46541f0a3bc9b989255b0a0ad389b41f">n_b</a>, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i].second);}</div>
 <div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">auto</span> new_df = df.Define(<span class="stringliteral">&quot;genMuon&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ac4659b26f74b6c59312994a4efe33f5a">GenSel</a>, {<span class="stringliteral">&quot;nGenPart&quot;</span>, <span class="stringliteral">&quot;GenPart_pdgId&quot;</span>, <span class="stringliteral">&quot;GenPart_genPartIdxMother&quot;</span>, <span class="stringliteral">&quot;GenPart_pt&quot;</span>, <span class="stringliteral">&quot;GenPart_eta&quot;</span>, <span class="stringliteral">&quot;GenPart_phi&quot;</span>, <span class="stringliteral">&quot;GenPart_mass&quot;</span>})</div>
-<div class="line"><span class="lineno">  110</span>                    .Define(<span class="stringliteral">&quot;IsGen&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a639a62e72259e20b29657344f6e89677">IsTrue</a>, {<span class="stringliteral">&quot;nGenPart&quot;</span>, <span class="stringliteral">&quot;GenPart_pdgId&quot;</span>, <span class="stringliteral">&quot;GenPart_genPartIdxMother&quot;</span>})</div>
-<div class="line"><span class="lineno">  111</span>                    .Define(<span class="stringliteral">&quot;recoMuon&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>, {<span class="stringliteral">&quot;nMuon&quot;</span>, <span class="stringliteral">&quot;Muon_charge&quot;</span>, <span class="stringliteral">&quot;Muon_pfRelIso03_all&quot;</span>,<span class="stringliteral">&quot;Muon_pt&quot;</span>, <span class="stringliteral">&quot;Muon_eta&quot;</span>, <span class="stringliteral">&quot;Muon_phi&quot;</span>, <span class="stringliteral">&quot;Muon_mass&quot;</span>})</div>
-<div class="line"><span class="lineno">  112</span>                    .Define(<span class="stringliteral">&quot;IsReco&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a>, {<span class="stringliteral">&quot;nMuon&quot;</span>, <span class="stringliteral">&quot;Muon_charge&quot;</span>, <span class="stringliteral">&quot;Muon_pfRelIso03_all&quot;</span>,<span class="stringliteral">&quot;Muon_pt&quot;</span>, <span class="stringliteral">&quot;Muon_eta&quot;</span>})</div>
-<div class="line"><span class="lineno">  113</span>                    .Define(<span class="stringliteral">&quot;reco_mass&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  114</span>                    .Define(<span class="stringliteral">&quot;gen_mass&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  115</span>                    .Filter(<a class="code hl_function" href="Vars_8cpp.html#a4e321e1fb81d94a269d4e55c9a732a55">Minv_Range</a>, {<span class="stringliteral">&quot;gen_mass&quot;</span>})</div>
-<div class="line"><span class="lineno">  116</span>                    .Define(<span class="stringliteral">&quot;gen_pt&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  117</span>                    .Define(<span class="stringliteral">&quot;gen_y&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  118</span>                    .Define(<span class="stringliteral">&quot;gen_phi_eta&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  119</span>                    .Define(<span class="stringliteral">&quot;reco_pt&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  120</span>                    .Define(<span class="stringliteral">&quot;reco_y&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
-<div class="line"><span class="lineno">  121</span>                    .Define(<span class="stringliteral">&quot;reco_phi_eta&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>});</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() != (T.size() + 1)){</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Mismatch : T is long &quot;</span> &lt;&lt; T.size() &lt;&lt; <span class="stringliteral">&quot; while vars &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>        }</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>        new_df.Foreach([&amp;](Double_t gen, Double_t reco, <span class="keywordtype">bool</span> Gen, <span class="keywordtype">bool</span> <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>) {</div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  110</span><span class="comment"></span> </div>
+<div class="line"><span class="lineno">  111</span><span class="comment">    Reconstructing Z^0 peak by MC tagging at generator level:</span></div>
+<div class="line"><span class="lineno">  112</span><span class="comment"></span> </div>
+<div class="line"><span class="lineno">  113</span><span class="comment">    Loop on GenPart_pdgId, need at least a +13 and -13 con GenPart_pdgId(GenPart_genPartIdxMother) == 23 </span></div>
+<div class="line"><span class="lineno">  114</span><span class="comment"></span> </div>
+<div class="line"><span class="lineno">  115</span><span class="comment">    We then compute invariant mass for the pair</span></div>
+<div class="line"><span class="lineno">  116</span><span class="comment"></span> </div>
+<div class="line"><span class="lineno">  117</span><span class="comment">    */</span></div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> new_df = df.Define(<span class="stringliteral">&quot;genMuon&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ac4659b26f74b6c59312994a4efe33f5a">GenSel</a>, {<span class="stringliteral">&quot;nGenPart&quot;</span>, <span class="stringliteral">&quot;GenPart_pdgId&quot;</span>, <span class="stringliteral">&quot;GenPart_genPartIdxMother&quot;</span>, <span class="stringliteral">&quot;GenPart_pt&quot;</span>, <span class="stringliteral">&quot;GenPart_eta&quot;</span>, <span class="stringliteral">&quot;GenPart_phi&quot;</span>, <span class="stringliteral">&quot;GenPart_mass&quot;</span>})</div>
+<div class="line"><span class="lineno">  120</span>                    .Define(<span class="stringliteral">&quot;IsGen&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a639a62e72259e20b29657344f6e89677">IsTrue</a>, {<span class="stringliteral">&quot;nGenPart&quot;</span>, <span class="stringliteral">&quot;GenPart_pdgId&quot;</span>, <span class="stringliteral">&quot;GenPart_genPartIdxMother&quot;</span>})</div>
+<div class="line"><span class="lineno">  121</span>                    .Define(<span class="stringliteral">&quot;recoMuon&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>, {<span class="stringliteral">&quot;nMuon&quot;</span>, <span class="stringliteral">&quot;Muon_charge&quot;</span>, <span class="stringliteral">&quot;Muon_pfRelIso03_all&quot;</span>,<span class="stringliteral">&quot;Muon_pt&quot;</span>, <span class="stringliteral">&quot;Muon_eta&quot;</span>, <span class="stringliteral">&quot;Muon_phi&quot;</span>, <span class="stringliteral">&quot;Muon_mass&quot;</span>})</div>
+<div class="line"><span class="lineno">  122</span>                    .Define(<span class="stringliteral">&quot;IsReco&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a>, {<span class="stringliteral">&quot;nMuon&quot;</span>, <span class="stringliteral">&quot;Muon_charge&quot;</span>, <span class="stringliteral">&quot;Muon_pfRelIso03_all&quot;</span>,<span class="stringliteral">&quot;Muon_pt&quot;</span>, <span class="stringliteral">&quot;Muon_eta&quot;</span>})</div>
+<div class="line"><span class="lineno">  123</span>                    .Define(<span class="stringliteral">&quot;reco_mass&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  124</span>                    .Define(<span class="stringliteral">&quot;gen_mass&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  125</span>                    .Filter(<a class="code hl_function" href="Vars_8cpp.html#a4e321e1fb81d94a269d4e55c9a732a55">Minv_Range</a>, {<span class="stringliteral">&quot;gen_mass&quot;</span>})</div>
+<div class="line"><span class="lineno">  126</span>                    .Define(<span class="stringliteral">&quot;gen_pt&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  127</span>                    .Define(<span class="stringliteral">&quot;gen_y&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  128</span>                    .Define(<span class="stringliteral">&quot;gen_phi_eta&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a>, {<span class="stringliteral">&quot;genMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  129</span>                    .Define(<span class="stringliteral">&quot;reco_pt&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  130</span>                    .Define(<span class="stringliteral">&quot;reco_y&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>})</div>
+<div class="line"><span class="lineno">  131</span>                    .Define(<span class="stringliteral">&quot;reco_phi_eta&quot;</span>, <a class="code hl_function" href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a>, {<span class="stringliteral">&quot;recoMuon&quot;</span>});</div>
 <div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>                            <span class="keywordflow">if</span>(Gen &amp;&amp; <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Fill((<span class="keywordtype">double</span>)reco, (<span class="keywordtype">double</span>)gen);}</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
 <div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (Gen &amp;&amp; !<a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Miss((<span class="keywordtype">double</span>)gen);}</div>
+<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() != (T.size() + 1)){</div>
 <div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!Gen &amp;&amp; <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Fake((<span class="keywordtype">double</span>)reco);}</div>
+<div class="line"><span class="lineno">  137</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Mismatch : T is long &quot;</span> &lt;&lt; T.size() &lt;&lt; <span class="stringliteral">&quot; while vars &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>                        },{Form(<span class="stringliteral">&quot;gen_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;reco_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), <span class="stringliteral">&quot;IsGen&quot;</span>, <span class="stringliteral">&quot;IsReco&quot;</span>});</div>
-<div class="line"><span class="lineno">  140</span>    }</div>
-<div class="line"><span class="lineno">  141</span>    </div>
-<div class="line"><span class="lineno">  142</span>    <span class="comment">//Output file</span></div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>    TFile output(outname.c_str(), <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>    <span class="comment">//Final histogram</span></div>
-<div class="line"><span class="lineno">  147</span>    <span class="keyword">auto</span> h_mc = new_df.Histo1D({<span class="stringliteral">&quot;M_invMC&quot;</span>, <span class="stringliteral">&quot;DiMuon Mass MC&quot;</span>, 100, 70, 110}, <span class="stringliteral">&quot;gen_mass&quot;</span>);</div>
-<div class="line"><span class="lineno">  148</span>    h_mc-&gt;Write(<span class="stringliteral">&quot;InvMass_MC&quot;</span>);</div>
-<div class="line"><span class="lineno">  149</span>    <span class="keyword">auto</span> h_reco = new_df.Histo1D({<span class="stringliteral">&quot;M_inv_reco&quot;</span>, <span class="stringliteral">&quot;DiMuon Mass reco&quot;</span>, 100, 70, 110}, <span class="stringliteral">&quot;reco_mass&quot;</span>);</div>
-<div class="line"><span class="lineno">  150</span>    h_reco-&gt;Write(<span class="stringliteral">&quot;InvMass_reco&quot;</span>);</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    <span class="comment">//Visualization of response matrix and reconstruction efficiency</span></div>
+<div class="line"><span class="lineno">  139</span>        }</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>        new_df.Foreach([&amp;](Double_t gen, Double_t reco, <span class="keywordtype">bool</span> Gen, <span class="keywordtype">bool</span> <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>) {</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>                            <span class="keywordflow">if</span>(Gen &amp;&amp; <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Fill((<span class="keywordtype">double</span>)reco, (<span class="keywordtype">double</span>)gen);}</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (Gen &amp;&amp; !<a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Miss((<span class="keywordtype">double</span>)gen);}</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>                            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!Gen &amp;&amp; <a class="code hl_function" href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a>){T[i - 1].Fake((<span class="keywordtype">double</span>)reco);}</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>                        },{Form(<span class="stringliteral">&quot;gen_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;reco_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), <span class="stringliteral">&quot;IsGen&quot;</span>, <span class="stringliteral">&quot;IsReco&quot;</span>});</div>
+<div class="line"><span class="lineno">  150</span>    }</div>
+<div class="line"><span class="lineno">  151</span>    </div>
+<div class="line"><span class="lineno">  152</span>    <span class="comment">//Output file</span></div>
 <div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
+<div class="line"><span class="lineno">  154</span>    TFile output(outname.c_str(), <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
 <div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>        T[i - 1].Write(Form(<span class="stringliteral">&quot;Response_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>        TH2D* M = (TH2D*) T[i - 1].Hresponse();</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>        TH1D* h_true = (TH1D*) T[i - 1].Htruth();</div>
+<div class="line"><span class="lineno">  156</span>    <span class="comment">//Final histogram</span></div>
+<div class="line"><span class="lineno">  157</span>    <span class="keyword">auto</span> h_mc = new_df.Histo1D({<span class="stringliteral">&quot;M_invMC&quot;</span>, <span class="stringliteral">&quot;DiMuon Mass MC&quot;</span>, 100, 70, 110}, <span class="stringliteral">&quot;gen_mass&quot;</span>);</div>
+<div class="line"><span class="lineno">  158</span>    h_mc-&gt;Write(<span class="stringliteral">&quot;InvMass_MC&quot;</span>);</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keyword">auto</span> h_reco = new_df.Histo1D({<span class="stringliteral">&quot;M_inv_reco&quot;</span>, <span class="stringliteral">&quot;DiMuon Mass reco&quot;</span>, 100, 70, 110}, <span class="stringliteral">&quot;reco_mass&quot;</span>);</div>
+<div class="line"><span class="lineno">  160</span>    h_reco-&gt;Write(<span class="stringliteral">&quot;InvMass_reco&quot;</span>);</div>
 <div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>        TH1D* h_matched = M-&gt;ProjectionY();</div>
+<div class="line"><span class="lineno">  162</span>    <span class="comment">//Visualization of response matrix and reconstruction efficiency</span></div>
 <div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>        TH1D* h_eff = (TH1D*) h_matched-&gt;Clone();</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
 <div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>        h_eff-&gt;Divide(h_matched, h_true, 1.0, 1.0, <span class="stringliteral">&quot;B&quot;</span>);</div>
+<div class="line"><span class="lineno">  166</span>        T[i - 1].Write(Form(<span class="stringliteral">&quot;Response_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
 <div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>        h_eff-&gt;Write(Form(<span class="stringliteral">&quot;Efficiency for %s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
+<div class="line"><span class="lineno">  168</span>        TH2D* M = (TH2D*) T[i - 1].Hresponse();</div>
 <div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>    }</div>
+<div class="line"><span class="lineno">  170</span>        TH1D* h_true = (TH1D*) T[i - 1].Htruth();</div>
 <div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>    <span class="comment">//Validation for response matrix</span></div>
+<div class="line"><span class="lineno">  172</span>        TH1D* h_matched = M-&gt;ProjectionY();</div>
 <div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
+<div class="line"><span class="lineno">  174</span>        TH1D* h_eff = (TH1D*) h_matched-&gt;Clone();</div>
 <div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() != (<a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size() + 1)){</div>
+<div class="line"><span class="lineno">  176</span>        h_eff-&gt;Divide(h_matched, h_true, 1.0, 1.0, <span class="stringliteral">&quot;B&quot;</span>);</div>
 <div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Mismatch : bounds is long &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size() &lt;&lt; <span class="stringliteral">&quot; while vars &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  178</span>        h_eff-&gt;Write(Form(<span class="stringliteral">&quot;Efficiency for %s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
 <div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span>        }</div>
+<div class="line"><span class="lineno">  180</span>    }</div>
 <div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>        TCanvas* c = <span class="keyword">new</span> TCanvas(<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str(), <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str(), 800, 600);</div>
-<div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span>        <span class="keyword">auto</span> h_true_ptr = new_df.Histo1D({Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), 100, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].second}, Form(<span class="stringliteral">&quot;gen_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>        <span class="keyword">auto</span> h_obt_ptr = new_df.Histo1D({Form(<span class="stringliteral">&quot;%s_Reco&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;%s_Reco&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), 100, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].second}, Form(<span class="stringliteral">&quot;reco_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>        TH1D h_true = *h_true_ptr;</div>
-<div class="line"><span class="lineno">  190</span>        TH1D h_obt = *h_obt_ptr;</div>
+<div class="line"><span class="lineno">  182</span>    <span class="comment">//Validation for response matrix</span></div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size(); i++){</div>
+<div class="line"><span class="lineno">  185</span> </div>
+<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() != (<a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size() + 1)){</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Mismatch : bounds is long &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>.size() &lt;&lt; <span class="stringliteral">&quot; while vars &quot;</span> &lt;&lt; <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>.size() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span>        }</div>
 <div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>        RooUnfoldBayes unfold(&amp;T[i-1], &amp;h_obt, 20);</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>        TH1D* hUnfold = (TH1D*) unfold.Hunfold();</div>
-<div class="line"><span class="lineno">  195</span> </div>
-<div class="line"><span class="lineno">  196</span>        hUnfold-&gt;SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  197</span>        hUnfold-&gt;SetMarkerColor(kBlue);</div>
-<div class="line"><span class="lineno">  198</span>        hUnfold-&gt;SetMarkerStyle(20);</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>        hUnfold-&gt;Draw(<span class="stringliteral">&quot;P E&quot;</span>);</div>
+<div class="line"><span class="lineno">  192</span> </div>
+<div class="line"><span class="lineno">  193</span>        TCanvas* c = <span class="keyword">new</span> TCanvas(<a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str(), <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str(), 800, 600);</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>        <span class="keyword">auto</span> h_true_ptr = new_df.Histo1D({Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), 100, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].second}, Form(<span class="stringliteral">&quot;gen_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>        <span class="keyword">auto</span> h_obt_ptr = new_df.Histo1D({Form(<span class="stringliteral">&quot;%s_Reco&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), Form(<span class="stringliteral">&quot;%s_Reco&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()), 100, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].first, <a class="code hl_variable" href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a>[i - 1].second}, Form(<span class="stringliteral">&quot;reco_%s&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>        TH1D h_true = *h_true_ptr;</div>
+<div class="line"><span class="lineno">  200</span>        TH1D h_obt = *h_obt_ptr;</div>
 <div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>        h_true.Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><span class="lineno">  202</span>        RooUnfoldBayes unfold(&amp;T[i-1], &amp;h_obt, 20);</div>
 <div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>        c-&gt;Update();</div>
+<div class="line"><span class="lineno">  204</span>        TH1D* hUnfold = (TH1D*) unfold.Hunfold();</div>
 <div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>        c-&gt;Write(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>    }</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>    <span class="comment">//Closing output file</span></div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>    output.Close();</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>    <span class="comment">//Ending Chrono counter e elapsed time;</span></div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    <span class="keyword">auto</span> end = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><span class="lineno">  218</span>    std::chrono::duration&lt;double&gt; elapsed = end - start;</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>    <span class="comment">//Elapsed time printing</span></div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Tempo di esecuzione: &quot;</span> &lt;&lt; elapsed.count() &lt;&lt; <span class="stringliteral">&quot; secondi.&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Response terminato&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>    <span class="comment">//Deactivating batch mode</span></div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    gROOT-&gt;SetBatch(kFALSE);</div>
-<div class="line"><span class="lineno">  229</span>}</div>
+<div class="line"><span class="lineno">  206</span>        hUnfold-&gt;SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  207</span>        hUnfold-&gt;SetMarkerColor(kBlue);</div>
+<div class="line"><span class="lineno">  208</span>        hUnfold-&gt;SetMarkerStyle(20);</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>        hUnfold-&gt;Draw(<span class="stringliteral">&quot;P E&quot;</span>);</div>
+<div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span>        h_true.Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>        c-&gt;Update();</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>        c-&gt;Write(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a>[i].c_str()));</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>    }</div>
+<div class="line"><span class="lineno">  220</span> </div>
+<div class="line"><span class="lineno">  221</span>    <span class="comment">//Closing output file</span></div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>    output.Close();</div>
+<div class="line"><span class="lineno">  224</span> </div>
+<div class="line"><span class="lineno">  225</span>    <span class="comment">//Ending Chrono counter e elapsed time;</span></div>
+<div class="line"><span class="lineno">  226</span> </div>
+<div class="line"><span class="lineno">  227</span>    <span class="keyword">auto</span> end = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><span class="lineno">  228</span>    std::chrono::duration&lt;double&gt; elapsed = end - start;</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>    <span class="comment">//Elapsed time printing</span></div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Tempo di esecuzione: &quot;</span> &lt;&lt; elapsed.count() &lt;&lt; <span class="stringliteral">&quot; secondi.&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">if</span> (mute) {std::cout &lt;&lt; <span class="stringliteral">&quot;Response terminato&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>    <span class="comment">//Deactivating batch mode</span></div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>    gROOT-&gt;SetBatch(kFALSE);</div>
+<div class="line"><span class="lineno">  239</span>}</div>
 <div class="ttc" id="aResponse_8cpp_html_a25201aa20d86919395de7150295fa6bd"><div class="ttname"><a href="Response_8cpp.html#a25201aa20d86919395de7150295fa6bd">vars</a></div><div class="ttdeci">std::vector&lt; std::string &gt; vars</div><div class="ttdef"><b>Definition</b> <a href="Response_8cpp_source.html#l00029">Response.cpp:29</a></div></div>
 <div class="ttc" id="aResponse_8cpp_html_a464efdeea836ad4458a8c20521077743"><div class="ttname"><a href="Response_8cpp.html#a464efdeea836ad4458a8c20521077743">bounds</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; Float_t, Float_t &gt; &gt; bounds</div><div class="ttdef"><b>Definition</b> <a href="Response_8cpp_source.html#l00037">Response.cpp:37</a></div></div>
 <div class="ttc" id="aResponse_8cpp_html_a46541f0a3bc9b989255b0a0ad389b41f"><div class="ttname"><a href="Response_8cpp.html#a46541f0a3bc9b989255b0a0ad389b41f">n_b</a></div><div class="ttdeci">int n_b</div><div class="ttdef"><b>Definition</b> <a href="Response_8cpp_source.html#l00033">Response.cpp:33</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_a48fcdba400d59692eee5018ee286044a"><div class="ttname"><a href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a></div><div class="ttdeci">Double_t y_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Function that controls the size of a vector of 4-vectors and, if is greater than 2,...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00041">Vars.cpp:41</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_a4e321e1fb81d94a269d4e55c9a732a55"><div class="ttname"><a href="Vars_8cpp.html#a4e321e1fb81d94a269d4e55c9a732a55">Minv_Range</a></div><div class="ttdeci">bool Minv_Range(Double_t &amp;m)</div><div class="ttdoc">just a simple function to apply a range of invariant masses;</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00232">Vars.cpp:232</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_a5c999833267c93b99a5ed5453cd31c5f"><div class="ttname"><a href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a></div><div class="ttdeci">Double_t Pt_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Function that controls the size of a vector of 4-vectors and, if is greater than 2,...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00027">Vars.cpp:27</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_a639a62e72259e20b29657344f6e89677"><div class="ttname"><a href="Vars_8cpp.html#a639a62e72259e20b29657344f6e89677">IsTrue</a></div><div class="ttdeci">bool IsTrue(const UInt_t &amp;n_g, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid)</div><div class="ttdoc">Function to determine if an event corresponds to a generated decay of a Z^{0} produced in the collisi...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00085">Vars.cpp:85</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_ab95e3964151d46a18ec54ce5725b9026"><div class="ttname"><a href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a></div><div class="ttdeci">ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; Reco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; phi, const ROOT::RVec&lt; float &gt; &amp;mass)</div><div class="ttdoc">function that calculates four impulses for an event that is generated;</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00208">Vars.cpp:208</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_ab9ed405d2455e0f94d2b7f5fac8e7bb2"><div class="ttname"><a href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a></div><div class="ttdeci">bool IsReco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta)</div><div class="ttdoc">Function to determine if an event corresponds to a reconstructed decay of a Z^{0} produced in the col...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00125">Vars.cpp:125</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_ac4659b26f74b6c59312994a4efe33f5a"><div class="ttname"><a href="Vars_8cpp.html#ac4659b26f74b6c59312994a4efe33f5a">GenSel</a></div><div class="ttdeci">ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; GenSel(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid, const ROOT::RVecF &amp;pt, const ROOT::RVecF &amp;eta, const ROOT::RVecF &amp;phi, const ROOT::RVecF &amp;mass)</div><div class="ttdoc">function that calculates four impulses for an event that is generated;</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00153">Vars.cpp:153</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_acc083c756600e41e2dc8351c03bbdefb"><div class="ttname"><a href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a></div><div class="ttdeci">Double_t phi_eta_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Function that controls the size of a vector of 4-vectors and, if is greater than 2,...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00056">Vars.cpp:56</a></div></div>
-<div class="ttc" id="aVars_8cpp_html_af1d7d83b4942bf235ff801b3618141a5"><div class="ttname"><a href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a></div><div class="ttdeci">Double_t Minv_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Function that controls the size of a vector of 4-vectors and, if is greater than 2,...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00013">Vars.cpp:13</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_a48fcdba400d59692eee5018ee286044a"><div class="ttname"><a href="Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a></div><div class="ttdeci">Double_t y_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Computes the rapidity of the sum of the first two four-momenta in the input vector.</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00052">Vars.cpp:52</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_a4e321e1fb81d94a269d4e55c9a732a55"><div class="ttname"><a href="Vars_8cpp.html#a4e321e1fb81d94a269d4e55c9a732a55">Minv_Range</a></div><div class="ttdeci">bool Minv_Range(Double_t &amp;m)</div><div class="ttdoc">Checks whether an invariant mass value falls within a predefined range.</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00265">Vars.cpp:265</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_a5c999833267c93b99a5ed5453cd31c5f"><div class="ttname"><a href="Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a></div><div class="ttdeci">Double_t Pt_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Computes the transverse mmomentum of the sum of the first two four-momenta in the input vector.</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00035">Vars.cpp:35</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_a639a62e72259e20b29657344f6e89677"><div class="ttname"><a href="Vars_8cpp.html#a639a62e72259e20b29657344f6e89677">IsTrue</a></div><div class="ttdeci">bool IsTrue(const UInt_t &amp;n_g, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid)</div><div class="ttdoc">Determines whether an event contains a generated Z⁰ decay into two muons, based on particle PDG IDs a...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00105">Vars.cpp:105</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_ab95e3964151d46a18ec54ce5725b9026"><div class="ttname"><a href="Vars_8cpp.html#ab95e3964151d46a18ec54ce5725b9026">Reco</a></div><div class="ttdeci">ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; Reco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; phi, const ROOT::RVec&lt; float &gt; &amp;mass)</div><div class="ttdoc">Builds four-momenta for selected reconstructed particles in events compatible with a generated Z⁰ dec...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00237">Vars.cpp:237</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_ab9ed405d2455e0f94d2b7f5fac8e7bb2"><div class="ttname"><a href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a></div><div class="ttdeci">bool IsReco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta)</div><div class="ttdoc">Determines whether an event is compatible with a reconstructed Z⁰ decay into a muon pair based on kin...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00153">Vars.cpp:153</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_ac4659b26f74b6c59312994a4efe33f5a"><div class="ttname"><a href="Vars_8cpp.html#ac4659b26f74b6c59312994a4efe33f5a">GenSel</a></div><div class="ttdeci">ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; GenSel(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid, const ROOT::RVecF &amp;pt, const ROOT::RVecF &amp;eta, const ROOT::RVecF &amp;phi, const ROOT::RVecF &amp;mass)</div><div class="ttdoc">Computes four-momenta for selected particles in a generated event, combining generator-level informat...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00183">Vars.cpp:183</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_acc083c756600e41e2dc8351c03bbdefb"><div class="ttname"><a href="Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a></div><div class="ttdeci">Double_t phi_eta_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Computes the optimized angle of the sum of the first two four-momenta in the input vector.</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00071">Vars.cpp:71</a></div></div>
+<div class="ttc" id="aVars_8cpp_html_af1d7d83b4942bf235ff801b3618141a5"><div class="ttname"><a href="Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a></div><div class="ttdeci">Double_t Minv_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</div><div class="ttdoc">Computes the invariant mass of the sum of the first two four-momenta in the input vector.</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00017">Vars.cpp:17</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
