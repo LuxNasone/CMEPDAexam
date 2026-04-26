@@ -27,3 +27,16 @@ target_link_libraries(test_vars
 )
 
 add_test(NAME VarsTests COMMAND test_vars)
+
+add_executable(test_analysis
+    tests/test_analysis.cpp
+    src/Analysis.cpp
+)
+
+target_link_libraries(test_main
+    gtest
+    gtest_main
+    ${ROOT_LIBRARIES}
+)
+
+add_test(NAME AnalysisTests COMMAND test_analysis)

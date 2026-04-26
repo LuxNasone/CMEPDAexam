@@ -185,6 +185,19 @@ test_vars/fast:
 .PHONY : test_vars/fast
 
 #=============================================================================
+# Target rules for targets named test_main
+
+# Build rule for target.
+test_main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_main
+.PHONY : test_main
+
+# fast build rule for target.
+test_main/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/build
+.PHONY : test_main/fast
+
+#=============================================================================
 # Target rules for targets named gmock
 
 # Build rule for target.
@@ -236,6 +249,30 @@ gtest_main/fast:
 	$(MAKE) $(MAKESILENT) -f external/googletest/googletest/CMakeFiles/gtest_main.dir/build.make external/googletest/googletest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
+src/Main.o: src/Main.cpp.o
+.PHONY : src/Main.o
+
+# target to build an object file
+src/Main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/src/Main.cpp.o
+.PHONY : src/Main.cpp.o
+
+src/Main.i: src/Main.cpp.i
+.PHONY : src/Main.i
+
+# target to preprocess a source file
+src/Main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/src/Main.cpp.i
+.PHONY : src/Main.cpp.i
+
+src/Main.s: src/Main.cpp.s
+.PHONY : src/Main.s
+
+# target to generate assembly for a file
+src/Main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/src/Main.cpp.s
+.PHONY : src/Main.cpp.s
+
 src/Vars.o: src/Vars.cpp.o
 .PHONY : src/Vars.o
 
@@ -259,6 +296,30 @@ src/Vars.s: src/Vars.cpp.s
 src/Vars.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/src/Vars.cpp.s
 .PHONY : src/Vars.cpp.s
+
+tests/test_main.o: tests/test_main.cpp.o
+.PHONY : tests/test_main.o
+
+# target to build an object file
+tests/test_main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/tests/test_main.cpp.o
+.PHONY : tests/test_main.cpp.o
+
+tests/test_main.i: tests/test_main.cpp.i
+.PHONY : tests/test_main.i
+
+# target to preprocess a source file
+tests/test_main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/tests/test_main.cpp.i
+.PHONY : tests/test_main.cpp.i
+
+tests/test_main.s: tests/test_main.cpp.s
+.PHONY : tests/test_main.s
+
+# target to generate assembly for a file
+tests/test_main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_main.dir/build.make CMakeFiles/test_main.dir/tests/test_main.cpp.s
+.PHONY : tests/test_main.cpp.s
 
 tests/test_vars.o: tests/test_vars.cpp.o
 .PHONY : tests/test_vars.o
@@ -301,10 +362,17 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
+	@echo "... test_main"
 	@echo "... test_vars"
+	@echo "... src/Main.o"
+	@echo "... src/Main.i"
+	@echo "... src/Main.s"
 	@echo "... src/Vars.o"
 	@echo "... src/Vars.i"
 	@echo "... src/Vars.s"
+	@echo "... tests/test_main.o"
+	@echo "... tests/test_main.i"
+	@echo "... tests/test_main.s"
 	@echo "... tests/test_vars.o"
 	@echo "... tests/test_vars.i"
 	@echo "... tests/test_vars.s"
