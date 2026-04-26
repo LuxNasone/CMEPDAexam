@@ -183,41 +183,24 @@ bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<flo
 ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid, const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> &phi, const ROOT::RVec<float> &mass){
 
     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
-    std::vector<int> flag;
-    vecs.reserve(n);
 
     for (UInt_t i = 0; i < n; i++){
-                                                        
-        if ((id[i] == 13 || id[i] == -13) && mid[i] >= 0 && id[mid[i]] == 23){
+        if (!(id[i] == 13 || id[i] == -13)) continue;
+        if (mid[i] < 0 || id[mid[i]] != 23) continue;
 
-            ROOT::Math::PtEtaPhiMVector p(pt[i],eta[i],phi[i], mass[i]);
+        for (UInt_t j = i+1; j < n; j++){
+            if (!(id[j] == 13 || id[j] == -13)) continue;
+            if (mid[j] < 0 || id[mid[j]] != 23) continue;
 
-            vecs.push_back(p);
-
-            flag.push_back(id[i]);
-
+            if (id[i] == -id[j]) {
+                vecs.emplace_back(pt[i], eta[i], phi[i], mass[i]);
+                vecs.emplace_back(pt[j], eta[j], phi[j], mass[j]);
+                return vecs; 
             }
         }
+    }
 
-        bool pair = false;
-
-        if (flag.size() >= 2){
-
-            for (size_t i = 0; i < flag.size(); i++){
-
-                for (size_t j = i+1; j < flag.size(); j++){
-
-                    if (flag[i] == -flag[j]){pair = true;} 
-
-                }
-                
-                if (pair){break;}
-
-            }
-
-        }
-
-        return vecs;
+    return vecs;
 }
 
 /**

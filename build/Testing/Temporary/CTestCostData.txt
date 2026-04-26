@@ -1,2 +1,2 @@
-VarsTests 1 0.0405448
+VarsTests 2 0.0166102
 ---

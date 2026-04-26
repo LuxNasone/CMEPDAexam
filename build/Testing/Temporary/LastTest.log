@@ -1,29 +1,35 @@
-Start testing: Apr 25 11:37 CEST
+Start testing: Apr 26 10:15 CEST
 ----------------------------------------------------------
 1/1 Testing: VarsTests
 1/1 Test: VarsTests
 Command: "/home/lux_n/CMEPDA/Exam/Repo/build/test_vars"
 Directory: /home/lux_n/CMEPDA/Exam/Repo/build
-"VarsTests" start time: Apr 25 11:37 CEST
+"VarsTests" start time: Apr 26 10:15 CEST
 Output:
 ----------------------------------------------------------
 Running main() from /home/lux_n/CMEPDA/Exam/Repo/external/googletest/googletest/src/gtest_main.cc
-[==========] Running 8 tests from 6 test suites.
+[==========] Running 20 tests from 9 test suites.
 [----------] Global test environment set-up.
-[----------] 1 test from MinvTest
+[----------] 2 tests from MinvTest
 [ RUN      ] MinvTest.TwoMuons
 [       OK ] MinvTest.TwoMuons (0 ms)
-[----------] 1 test from MinvTest (0 ms total)
+[ RUN      ] MinvTest.LessThanTwo
+[       OK ] MinvTest.LessThanTwo (0 ms)
+[----------] 2 tests from MinvTest (0 ms total)
 
-[----------] 1 test from PtTest
+[----------] 2 tests from PtTest
 [ RUN      ] PtTest.SumPt
 [       OK ] PtTest.SumPt (0 ms)
-[----------] 1 test from PtTest (0 ms total)
+[ RUN      ] PtTest.LessThanTwo
+[       OK ] PtTest.LessThanTwo (0 ms)
+[----------] 2 tests from PtTest (0 ms total)
 
-[----------] 1 test from RapidityTest
+[----------] 2 tests from RapidityTest
 [ RUN      ] RapidityTest.Basic
 [       OK ] RapidityTest.Basic (0 ms)
-[----------] 1 test from RapidityTest (0 ms total)
+[ RUN      ] RapidityTest.LessThanTwo
+[       OK ] RapidityTest.LessThanTwo (0 ms)
+[----------] 2 tests from RapidityTest (0 ms total)
 
 [----------] 2 tests from PhiEtaTest
 [ RUN      ] PhiEtaTest.Basic
@@ -32,6 +38,26 @@ Running main() from /home/lux_n/CMEPDA/Exam/Repo/external/googletest/googletest/
 [       OK ] PhiEtaTest.LessThanTwo (0 ms)
 [----------] 2 tests from PhiEtaTest (0 ms total)
 
+[----------] 4 tests from IsTrueTest
+[ RUN      ] IsTrueTest.ValidZToMuMu
+[       OK ] IsTrueTest.ValidZToMuMu (0 ms)
+[ RUN      ] IsTrueTest.SameChargeFail
+[       OK ] IsTrueTest.SameChargeFail (0 ms)
+[ RUN      ] IsTrueTest.WrongMotherFail
+[       OK ] IsTrueTest.WrongMotherFail (0 ms)
+[ RUN      ] IsTrueTest.LessThanTwoMuons
+[       OK ] IsTrueTest.LessThanTwoMuons (0 ms)
+[----------] 4 tests from IsTrueTest (0 ms total)
+
+[----------] 3 tests from GenSelTest
+[ RUN      ] GenSelTest.ValidZToMuMu
+[       OK ] GenSelTest.ValidZToMuMu (0 ms)
+[ RUN      ] GenSelTest.NoZMotherRejected
+[       OK ] GenSelTest.NoZMotherRejected (0 ms)
+[ RUN      ] GenSelTest.LessThanTwoMuons
+[       OK ] GenSelTest.LessThanTwoMuons (0 ms)
+[----------] 3 tests from GenSelTest (0 ms total)
+
 [----------] 2 tests from RecoTest
 [ RUN      ] RecoTest.ValidEvent
 [       OK ] RecoTest.ValidEvent (0 ms)
@@ -39,20 +65,27 @@ Running main() from /home/lux_n/CMEPDA/Exam/Repo/external/googletest/googletest/
 [       OK ] RecoTest.IsolationFail (0 ms)
 [----------] 2 tests from RecoTest (0 ms total)
 
+[----------] 2 tests from RecoVecTest
+[ RUN      ] RecoVecTest.ValidRecoBuildsVectors
+[       OK ] RecoVecTest.ValidRecoBuildsVectors (0 ms)
+[ RUN      ] RecoVecTest.FailsSelectionReturnsEmpty
+[       OK ] RecoVecTest.FailsSelectionReturnsEmpty (0 ms)
+[----------] 2 tests from RecoVecTest (0 ms total)
+
 [----------] 1 test from MassWindow
 [ RUN      ] MassWindow.Inside
 [       OK ] MassWindow.Inside (0 ms)
 [----------] 1 test from MassWindow (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 8 tests from 6 test suites ran. (0 ms total)
-[  PASSED  ] 8 tests.
+[==========] 20 tests from 9 test suites ran. (0 ms total)
+[  PASSED  ] 20 tests.
 <end of output>
-Test time =   0.04 sec
+Test time =   0.03 sec
 ----------------------------------------------------------
 Test Passed.
-"VarsTests" end time: Apr 25 11:37 CEST
+"VarsTests" end time: Apr 26 10:15 CEST
 "VarsTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Apr 25 11:37 CEST
+End testing: Apr 26 10:15 CEST

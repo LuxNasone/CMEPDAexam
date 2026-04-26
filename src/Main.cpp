@@ -30,40 +30,45 @@
 /** @defgroup GlobalVariables Global Variables */
 
 /// @ingroup GlobalVariables
-/// @brief Number of bins, used both for histograms and response matrix */
+/// @brief Number of bins, used both for histograms and response matrix 
 
 int n_b = 100;
 
 /// @ingroup GlobalVariables
-/// @brief variable names, used in loops over RDataFrame columns */
+/// @brief variable names, used in loops over RDataFrame columns 
 
 std::vector<std::string> vars = {"pt", "phi_eta", "y"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method */
+/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method 
 
 std::vector<std::string> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method*/
+/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method
 
 
 std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
 
 /// @ingroup GlobalVariables
-/// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation */
+/// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation 
 
 std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
 /// @ingroup GlobalVariables
-/// @brief bounds for y axis, purely aesthetic */
+/// @brief bounds for y axis, purely aesthetic 
 
 std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
 
 /// @ingroup GlobalVariables
-/// @brief integrated luminosity for data used, expressed in [fb^{-1}]*/
+/// @brief integrated luminosity for data used, expressed in [pb^{-1}]
 
 double L = 8740.119304;
+
+/// @ingroup GlobalVariables
+/// @brief sigma for Z production in two muons [pb]
+
+double s = 180;
 
 /**
 *@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
@@ -458,17 +463,11 @@ void Unfolded(const char* folder_name,
 
     std::vector<RooUnfoldResponse> T(vars.size());
 
-    //Efficiency histogram vector
-
-    std::vector<TH1D> Eff(vars.size());
-
     //Filling matrices
 
     for(size_t i = 0; i < vars.size(); i++){
 
         RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile->Get(Form("Response_%s", vars[i].c_str()));
-
-        TH1D* h_eff = (TH1D*) Rfile->Get(Form("Efficiency for %s", vars[i].c_str()));
 
         if (!M) {
 
@@ -479,7 +478,6 @@ void Unfolded(const char* folder_name,
 
         T[i] = *M;
 
-        Eff[i] = *h_eff;
     }
 
     //Closing file
@@ -520,22 +518,6 @@ void Unfolded(const char* folder_name,
             continue;
         }
 
-        /*
-        TH1D* hCorr = (TH1D*)hUnfold->Clone("hCorr");
-
-        for (int n = 1; n < n_b; n++){
-
-            double v1 = hUnfold->GetBinContent(n);
-
-            double v2 = Eff[i].GetBinContent(n);
-
-            hCorr->SetBinContent(n, v1 * v2);
-
-        }
-
-        h_u[i] = *hCorr;
-        */
-
         h_u[i] = *hUnfold;
 
         hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
@@ -568,8 +550,8 @@ void Unfolded(const char* folder_name,
  */
 
 void Comp(const char* f1,
-          const char* f2, 
-          const char* f3, 
+          const char* f2,
+          const char* f3,  
           const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root",
           bool mute = false){
 
@@ -597,7 +579,7 @@ void Comp(const char* f1,
 
         h_u[i] = *hu;
 
-        TH1D* hMC = (TH1D*) MC->Get(Form("%s_MC", vars[i].c_str()));
+        TH1D* hMC = (TH1D*) MC->Get(Form("%s_unfolded", vars[i].c_str()));
 
         h_mc[i] = *hMC;
 
@@ -622,7 +604,6 @@ void Comp(const char* f1,
 
             h_nu[i].GetYaxis()->SetRangeUser(range[i].first, range[i].second);
 
-
             legend->AddEntry(&h_nu[i],"Not unfolded", "lep");
 
             h_nu[i].Draw("E");
@@ -642,10 +623,33 @@ void Comp(const char* f1,
 
             c->Write();
 
-            h_u[i].Scale(1./L);
+            TH1D h_D = h_u[i]; 
+
+            h_u[i].Scale(1./(L * h_u[i].GetXaxis()->GetBinWidth(1)));
 
             h_u[i].Write(Form("CrossSection_%s", vars[i].c_str()));
 
+            TCanvas* c_MC = new TCanvas(Form("%s_MC", vars[i].c_str()), Form("%s_MC", vars[i].c_str()), 800, 600);
+
+            TLegend* legend_MC = new TLegend(0.7, 0.7, 0.9, 0.9);
+
+            h_mc[i].SetStats(0);
+
+            h_mc[i].Draw();
+
+            legend_MC->AddEntry(&h_mc[i], "Montecarlo", "lep");
+
+            h_D.Scale(1./h_D.Integral());
+
+            legend_MC->AddEntry(&h_D, "Data", "lep");
+
+            h_D.Draw("SAME");
+
+            legend_MC->Draw("SAME");
+
+            c_MC->Update();
+
+            c_MC->Write();
         }
 
     }
