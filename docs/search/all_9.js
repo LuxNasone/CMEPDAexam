@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['unfolded_0',['Unfolded',['../Main_8cpp.html#a5ba1b120d806eb14db797b2562a85951',1,'Main.cpp']]]
+  ['range_0',['range',['../group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760',1,'Analysis.cpp']]],
+  ['reco_1',['reco',['../Vars_8cpp.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Reco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; &amp;phi, const ROOT::RVec&lt; float &gt; &amp;mass):&#160;Vars.cpp'],['../Vars_8h.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Reco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; &amp;phi, const ROOT::RVec&lt; float &gt; &amp;mass):&#160;Vars.cpp']]],
+  ['response_2',['response',['../Analysis_8cpp.html#adf1bfb1e73f04b4874bc296dcb10a11a',1,'Response(const char *folder_name, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, bool MT=true, bool mute=false):&#160;Analysis.cpp'],['../Analysis_8h.html#a65df88350a747b7317c7ea59643c9727',1,'Response(const char *fname, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, bool MT=true, bool mute=false):&#160;Analysis.cpp']]]
 ];

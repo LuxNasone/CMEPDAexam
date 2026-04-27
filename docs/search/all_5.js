@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['main_2ecpp_0',['Main.cpp',['../Main_8cpp.html',1,'']]],
-  ['main_5fcpp_2ed_1',['Main_cpp.d',['../Main__cpp_8d.html',1,'']]],
-  ['minv_5fcalculator_2',['minv_calculator',['../Vars_8cpp.html#af1d7d83b4942bf235ff801b3618141a5',1,'Minv_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p):&#160;Vars.cpp'],['../Vars_8h.html#af1d7d83b4942bf235ff801b3618141a5',1,'Minv_calculator(const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p):&#160;Vars.cpp']]],
-  ['minv_5frange_3',['minv_range',['../Vars_8cpp.html#a4e321e1fb81d94a269d4e55c9a732a55',1,'Minv_Range(Double_t &amp;m):&#160;Vars.cpp'],['../Vars_8h.html#a4e321e1fb81d94a269d4e55c9a732a55',1,'Minv_Range(Double_t &amp;m):&#160;Vars.cpp']]]
+  ['l_0',['L',['../group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09',1,'Analysis.cpp']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vars_0',['vars',['../group__GlobalVariables.html#ga25201aa20d86919395de7150295fa6bd',1,'Main.cpp']]]
+  ['s_0',['s',['../group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92',1,'Analysis.cpp']]]
 ];
