@@ -5,7 +5,6 @@
 #include <cmath>
 #include <numbers>
 #include <chrono>
-#include <map>
 
 //ROOT include
 
@@ -37,18 +36,18 @@ int n_b = 100;
 /// @ingroup GlobalVariables
 /// @brief variable names, used in loops over RDataFrame columns 
 
-std::vector<std::string> vars = {"pt", "phi_eta", "y"};
+std::vector<const char*> vars = {"pt", "phi_eta", "y"};
 
 /// @ingroup GlobalVariables
 /// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method 
 
-std::vector<std::string> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
+std::vector<const char*> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
 
 /// @ingroup GlobalVariables
 /// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method
 
 
-std::vector<std::string> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
+std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
 
 /// @ingroup GlobalVariables
 /// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation 
@@ -71,12 +70,12 @@ double L = 8740.119304;
 double s = 180;
 
 /**
-*@brief A measurement of distribution for variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
-*        without any unfolding procedures applied. 
-* This function reads input data from a ROOT file, processes the events, and produces
+*@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
+*        without any unfolding procedures applied.  
+* This function reads input data from a ROOT file in NANOAD format, processes the events, and produces
 * three histograms (TH1D) that can be used for further analysis (e.g. unfolding).
 *@param folder_name : folder path, required to contain at least a proper .root file;
-*@param outname : name for the output file, required to be a .root file. 
+*@param outname : name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
 *                  Default : "Repo/outFiles/NotUnfolded.root";
 *@param MT :  bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
 *              Default : true;
@@ -88,12 +87,12 @@ double s = 180;
 *         [1] : Optimzed angle = tan(($\pi$ - $\Delta_{\phi}$)/2)/cosh($\Delta_{\eta}$/2)
 *         [2] : Z rapidity
 *         Advised to visualize with a TBrowser.
-*@note Requires ROOT framework.
+*@note Requires ROOT framework. 
 *@warning Input file must have expected structure, like NanoAD CMS OpenData.
 */
 
 std::vector<TH1D> CrossSection(const char* folder_name,
-                                std::string outname = "Repo/outFiles/NotUnfolded.root", 
+                                const char* outname = "Repo/outFiles/NotUnfolded.root", 
                                 bool MT = true,
                                 bool mute = false){
 
@@ -106,7 +105,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Chrono counter;
 
-    if (mute) {std::cout << "Starting to measure time :" << std::endl;}
+    if (!mute) {std::cout << "Starting to measure time :" << std::endl;}
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -116,11 +115,11 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
         ROOT::EnableImplicitMT();
 
-        if (mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
+        if (!mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
 
     }
 
-    //Initializing DataFrame, fname must be to a .root file;
+    //Initializing DataFrame, folder_name must contain a .root file;
 
     ROOT::RDataFrame df("Events", Form("%s/*",folder_name));
 
@@ -169,7 +168,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     for (size_t i = 0; i < h_v.size(); i++){
 
-        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i].c_str(), vars[i].c_str(), n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i].c_str()));
+        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i], vars[i], n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i]));
 
         TH1D h = h_tmp.GetValue(); 
 
@@ -179,7 +178,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Saving on file
 
-    TFile output(outname.c_str(), "RECREATE");
+    TFile output(outname, "RECREATE");
 
     //Histogram for Invariant Mass;
 
@@ -189,7 +188,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Writing for other histograms
 
-    for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i].c_str()));}
+    for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i]));}
 
     //Closing output file
 
@@ -202,9 +201,9 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Elapsed time printing
 
-    if (mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
+    if (!mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
 
-    if (mute) {std::cout << "CrossSection terminato" << std::endl;}
+    if (!mute) {std::cout << "CrossSection terminato" << std::endl;}
 
     //Deactivating batch mode
 
@@ -219,13 +218,13 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
 /**
- * @brief Estimates response matrices by matching generated and reconstructed events.
+ * @brief Calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
  *
  *        The function builds three RooUnfoldResponse objects (one per observable)
  *        and stores them in an output ROOT file.
  *
- * @param fname Path to the input ROOT file containing generated and reconstructed data.
- *              The file must follow the expected tree structure.
+ * @param folder_name Path to the input folder cointaining ROOT file with generated and reconstructed data.
+ *              The file must follow the expected tree structure of the NANOAD format.
  * @param outname Path to the output ROOT file where the response matrices are saved.
  *                Default: "Repo/outFiles/Response.root".
  * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
@@ -243,8 +242,8 @@ std::vector<TH1D> CrossSection(const char* folder_name,
  */
 
 
-void Response(const char* fname, 
-              std::string outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
+void Response(const char* folder_name, 
+              const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
               bool MT = true, 
               bool mute = false){
 
@@ -262,7 +261,7 @@ void Response(const char* fname,
 
     //Chrono counter;
 
-    if (mute) {std::cout << "Starting to measure time :" << std::endl;}
+    if (!mute) {std::cout << "Starting to measure time :" << std::endl;}
 
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -273,13 +272,13 @@ void Response(const char* fname,
 
         ROOT::EnableImplicitMT();
 
-        if (mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
+        if (!mute) {std::cout << "Activating explicit multithreading, " << "pool size = " << ROOT::GetThreadPoolSize() << std::endl;}
     
     }
 
-    //Initializing DataFrame, fname must be to a .root file;
+    //Initializing DataFrame, folder must contain a .root file;
 
-    ROOT::RDataFrame df("Events", fname);
+    ROOT::RDataFrame df("Events", Form("%s",folder_name));
 
     //Response matrix for transverse momentum, opt. angle and rapidity
 
@@ -315,24 +314,24 @@ void Response(const char* fname,
 
         if (vars.size() != (T.size())){
 
-            std::cout << "Mismatch : T is long " << T.size() << " while vars " << vars.size() << std::endl;
+            std::cerr << "Mismatch : T is long " << T.size() << " while vars " << vars.size() << std::endl;
 
         }
 
-        new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco) {
+        new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco, Float_t w_1, Float_t w_2) {
 
-                            if(Gen && Reco){T[i].Fill((double)reco, (double)gen);}
+                            if(Gen && Reco){T[i].Fill((double)reco, (double)gen, w_1 * w_2);}
 
                             else if (Gen && !Reco){T[i].Miss((double)gen);}
 
                             else if (!Gen && Reco){T[i].Fake((double)reco);}
 
-                        },{Form("gen_%s", vars[i].c_str()), Form("reco_%s", vars[i].c_str()), "IsGen", "IsReco"});
+                        },{Form("gen_%s", vars[i]), Form("reco_%s", vars[i]), "IsGen", "IsReco", "genWeight", "L1PreFiringWeight_Nom"});
     }
     
     //Output file
 
-    TFile output(outname.c_str(), "RECREATE");
+    TFile output(outname, "RECREATE");
 
     //Final histogram
     auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "gen_mass");
@@ -344,7 +343,7 @@ void Response(const char* fname,
 
     for (size_t i = 0; i < vars.size(); i++){
 
-        T[i].Write(Form("Response_%s", vars[i].c_str()));
+        T[i].Write(Form("Response_%s", vars[i]));
 
         TH2D* M = (TH2D*) T[i].Hresponse();
 
@@ -360,7 +359,7 @@ void Response(const char* fname,
         h_eff->SetMarkerColor(kBlue);
         h_eff->SetMarkerStyle(20);
 
-        h_eff->Write(Form("Efficiency for %s", vars[i].c_str()));
+        h_eff->Write(Form("Efficiency for %s", vars[i]));
 
     }
 
@@ -370,20 +369,22 @@ void Response(const char* fname,
 
         if (vars.size() != (bounds.size())){
 
-            std::cout << "Mismatch : bounds is long " << bounds.size() << " while vars " << vars.size() << std::endl;
+            std::cerr << "Mismatch : bounds is long " << bounds.size() << " while vars " << vars.size() << std::endl;
 
         }
 
-        TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
+        TCanvas* c = new TCanvas(vars[i], vars[i], 800, 600);
 
-        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i].c_str()), Form("%s_MC", vars[i].c_str()), 100, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i].c_str()));
+        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), 100, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i]));
 
-        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i].c_str()), Form("%s_Reco", vars[i].c_str()), 100, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i].c_str()));
+        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i]), Form("%s_Reco", vars[i]), 100, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
 
         TH1D h_true = *h_true_ptr;
         TH1D h_obt = *h_obt_ptr;
 
-        RooUnfoldBayes unfold(&T[i], &h_obt, 10);
+        T[i].UseOverflow();
+
+        RooUnfoldBayes unfold(&T[i], &h_obt, 20);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
@@ -397,11 +398,11 @@ void Response(const char* fname,
 
         c->Update();
 
-        c->Write(Form("%s_unfolded", vars[i].c_str()));
+        c->Write(Form("%s_unfolded", vars[i]));
 
         hUnfold->Scale(1.0 / hUnfold->Integral());
 
-        hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
+        hUnfold->Write(Form("%s_unfolded", vars[i]));
         
     }
 
@@ -416,9 +417,9 @@ void Response(const char* fname,
 
     //Elapsed time printing
 
-    if (mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
+    if (!mute) {std::cout << "Tempo di esecuzione: " << elapsed.count() << " secondi." << std::endl;}
 
-    if (mute) {std::cout << "Response terminato" << std::endl;}
+    if (!mute) {std::cout << "Response terminato" << std::endl;}
 
     //Deactivating batch mode
 
@@ -426,7 +427,7 @@ void Response(const char* fname,
 }
 
 /**
- * @brief Applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms
+ * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms
  *        using a precomputed response matrix.
  * @param folder_name : folder path, required to contain at least a proper .root file;
  * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
@@ -436,8 +437,7 @@ void Response(const char* fname,
  * @param outname Name of the output ROOT file where unfolded histograms will be stored.
  *
  * @return std::vector<TH1D*> Vector containing the three unfolded histograms, in the following order:
- *         [0] variable X, [1] variable Y, [2] variable Z (see CrossSection for definitions).
- *         The caller is responsible for memory management.
+ *         [0] variable Pt, [1] variable Phi_eta, [2] variable y (see CrossSection for definitions).
  *
  * @note Requires ROOT framework and RooUnfold package.
  *
@@ -455,7 +455,7 @@ void Unfolded(const char* folder_name,
 
     if (Rfile->IsZombie()){
 
-        std::cout << "File not opened" << std::endl; 
+        std::cerr << "Response file not opened" << std::endl; 
 
     }
 
@@ -467,7 +467,7 @@ void Unfolded(const char* folder_name,
 
     for(size_t i = 0; i < vars.size(); i++){
 
-        RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile->Get(Form("Response_%s", vars[i].c_str()));
+        RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile->Get(Form("Response_%s", vars[i]));
 
         if (!M) {
 
@@ -509,6 +509,8 @@ void Unfolded(const char* folder_name,
             continue;
         }
 
+        T[i].UseOverflow();
+
         RooUnfoldBayes unfold(&T[i], h, n_iter);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
@@ -520,7 +522,7 @@ void Unfolded(const char* folder_name,
 
         h_u[i] = *hUnfold;
 
-        hUnfold->Write(Form("%s_unfolded", vars[i].c_str()));
+        hUnfold->Write(Form("%s_unfolded", vars[i]));
 
     }
 
@@ -559,27 +561,33 @@ void Comp(const char* f1,
 
     TFile* NU = TFile::Open(f1);
 
+    if (NU->IsZombie()) {std::cerr << "NotUnfolded not opened" << std::endl;}
+
     std::vector<TH1D> h_nu(vars.size());
 
     TFile* U = TFile::Open(f2);
+
+    if (U->IsZombie()) {std::cerr << "Unfolded not opened" << std::endl;}
 
     std::vector<TH1D> h_u(vars.size());
 
     TFile* MC = TFile::Open(f3);
 
+    if (MC->IsZombie()) {std::cerr << "Montecarlo not opened" << std::endl;}
+
     std::vector<TH1D> h_mc(vars.size());
 
     for (size_t i = 0; i < vars.size(); i++){
 
-        TH1D* h = (TH1D*) NU->Get(vars[i].c_str()); 
+        TH1D* h = (TH1D*) NU->Get(vars[i]); 
 
         h_nu[i] = *h;
 
-        TH1D* hu = (TH1D*) U->Get(Form("%s_unfolded", vars[i].c_str()));
+        TH1D* hu = (TH1D*) U->Get(Form("%s_unfolded", vars[i]));
 
         h_u[i] = *hu;
 
-        TH1D* hMC = (TH1D*) MC->Get(Form("%s_unfolded", vars[i].c_str()));
+        TH1D* hMC = (TH1D*) MC->Get(Form("%s_unfolded", vars[i]));
 
         h_mc[i] = *hMC;
 
@@ -593,7 +601,7 @@ void Comp(const char* f1,
 
         for (size_t i = 0; i < h_u.size(); i++){
 
-            TCanvas* c = new TCanvas(vars[i].c_str(), vars[i].c_str(), 800, 600);
+            TCanvas* c = new TCanvas(vars[i], vars[i], 800, 600);
 
             TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
 
@@ -627,9 +635,9 @@ void Comp(const char* f1,
 
             h_u[i].Scale(1./(L * h_u[i].GetXaxis()->GetBinWidth(1)));
 
-            h_u[i].Write(Form("CrossSection_%s", vars[i].c_str()));
+            h_u[i].Write(Form("CrossSection_%s", vars[i]));
 
-            TCanvas* c_MC = new TCanvas(Form("%s_MC", vars[i].c_str()), Form("%s_MC", vars[i].c_str()), 800, 600);
+            TCanvas* c_MC = new TCanvas(Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), 800, 600);
 
             TLegend* legend_MC = new TLegend(0.7, 0.7, 0.9, 0.9);
 

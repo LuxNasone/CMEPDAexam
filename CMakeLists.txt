@@ -10,6 +10,7 @@ add_subdirectory(external/googletest)
 include_directories(
     ${ROOT_INCLUDE_DIRS}
     external/googletest/googletest/include
+    /home/lux_n/CMEPDA/Exam/RooUnfold/build
     src
 )
 
@@ -31,12 +32,14 @@ add_test(NAME VarsTests COMMAND test_vars)
 add_executable(test_analysis
     tests/test_analysis.cpp
     src/Analysis.cpp
+    src/
 )
 
-target_link_libraries(test_main
+target_link_libraries(test_analysis
     gtest
     gtest_main
     ${ROOT_LIBRARIES}
+    /home/lux_n/CMEPDA/Exam/RooUnfold/build/libRooUnfold.so
 )
 
 add_test(NAME AnalysisTests COMMAND test_analysis)

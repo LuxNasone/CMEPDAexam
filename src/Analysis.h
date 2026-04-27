@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 
-std::vector<TH1D> CrossSection(const char* folder_name, std::string outname = "Repo/outFiles/NotUnfolded.root", bool MT = true, bool mute = false);
+std::vector<TH1D> CrossSection(const char* folder_name, const char* outname = "Repo/outFiles/NotUnfolded.root", bool MT = true, bool mute = false);
 
-void Response(const char* fname, std::string outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", bool MT = true, bool mute = false);
+void Response(const char* fname, const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", bool MT = true, bool mute = false);
 
 void Unfolded(const char* folder_name, int n_iter, const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root");
 

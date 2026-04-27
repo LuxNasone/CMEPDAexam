@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <Main.h>
+#include <Analysis.h>
+#include <Vars.h>
 #include <ROOT/RVec.hxx>
 #include <RtypesCore.h>  
 #include <Math/Vector4D.h>
@@ -12,10 +13,10 @@
 //Global variables testing
 
 extern int n_b;
-extern std::vector<std::string> vars;
+extern std::vector<const char*> vars;
 extern std::vector<std::pair<Float_t, Float_t>> bounds;
-extern std::vector<std::string> xlabels;
-extern std::vector<std::string> ylabels;
+extern std::vector<const char*> xlabels;
+extern std::vector<const char*> ylabels;
 
 //Mismatch test
 
