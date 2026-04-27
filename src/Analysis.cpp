@@ -24,7 +24,7 @@
 
 //Useful functions
 
-#include "Vars.h"
+#include "../include/Vars.h"
 
 /** @defgroup GlobalVariables Global Variables */
 
@@ -380,6 +380,11 @@ void Response(const char* folder_name,
         auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i]), Form("%s_Reco", vars[i]), 100, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
 
         TH1D h_true = *h_true_ptr;
+
+        h_true.SetLineColor(kBlue);
+        h_true.SetMarkerColor(kBlue);
+        h_true.SetMarkerStyle(20);
+        
         TH1D h_obt = *h_obt_ptr;
 
         T[i].UseOverflow();
