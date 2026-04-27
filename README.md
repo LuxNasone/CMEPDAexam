@@ -35,5 +35,5 @@ Then on the same dataset we apply the cut of the article to have a generated-rec
 
 ![PtU vs PtNU](output/PtCOMP.png)
 
-The differential cross section is obtain by scaling the histograms with the integrated luminosity. The dataset used has an integrated luminosity $L = 36 fb^{-1}$. 
+The differential cross section is obtain by scaling the histograms with the integrated luminosity. The dataset used has an integrated luminosity $L = 8740 pb^{-1}$. 
 Here is the result:
