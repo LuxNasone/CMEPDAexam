@@ -67,7 +67,7 @@ double L = 8740.119304;
 /// @ingroup GlobalVariables
 /// @brief sigma for Z production in two muons [pb]
 
-double s = 180;
+double s = 204;
 
 /**
 *@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
@@ -400,9 +400,9 @@ void Response(const char* folder_name,
 
         c->Write(Form("%s_unfolded", vars[i]));
 
-        hUnfold->Scale(1.0 / hUnfold->Integral());
+        h_true.Scale(1.0 / h_true.Integral());
 
-        hUnfold->Write(Form("%s_unfolded", vars[i]));
+        h_true.Write(Form("%s_true", vars[i]));
         
     }
 
@@ -535,8 +535,9 @@ void Unfolded(const char* folder_name,
 }
 
 /**
- * @brief Compares reconstructed (not unfolded) and unfolded distributions
- *        by overlaying the corresponding histograms.
+ * @brief Compares reconstructed (not unfolded) and unfolded distributions by overlaying the corresponding histograms. 
+ *        Also makes a graphs of normalized measured and simulated distributions.
+ *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
  *
  * @param f1 : path to not unfolded histograms, assumed to be output of CrossSection;
  * @param f2 : path to unfolded histograms, assumed to be output of Unfolded;
@@ -587,7 +588,7 @@ void Comp(const char* f1,
 
         h_u[i] = *hu;
 
-        TH1D* hMC = (TH1D*) MC->Get(Form("%s_unfolded", vars[i]));
+        TH1D* hMC = (TH1D*) MC->Get(Form("%s_true", vars[i]));
 
         h_mc[i] = *hMC;
 
@@ -647,7 +648,7 @@ void Comp(const char* f1,
 
             legend_MC->AddEntry(&h_mc[i], "Montecarlo", "lep");
 
-            h_D.Scale(1./h_D.Integral());
+            h_D.Scale(1./(s*L));
 
             legend_MC->AddEntry(&h_D, "Data", "lep");
 
