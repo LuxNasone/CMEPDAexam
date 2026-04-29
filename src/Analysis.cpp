@@ -52,6 +52,7 @@ std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 /// @brief Title for graphs, used in loops for plots, only meant for aesthetic usage.
 
 std::vector<const char*> titles = {"Transverse momentum", "Optimized angle", "Rapidity abs."};
+
 /// @ingroup GlobalVariables
 /// @brief Bounds for variables, both for graphs and ranges in response matrices. 
 
@@ -241,8 +242,6 @@ std::vector<TH1D> CrossSection(const char* folder_name,
     return h_v;
 
 }
-
-//Macro to extract dimuon at generator level, and obtain reco efficiency
 
 /**
  * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).

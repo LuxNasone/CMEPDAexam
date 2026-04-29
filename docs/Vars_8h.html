@@ -5,13 +5,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cross Section for Z production in p-p collision: src/Vars.h File Reference</title>
+<title>Cross Section for Z production in p-p collision: include/Vars.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -69,12 +76,13 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Vars.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -84,9 +92,9 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Vars.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="Vars_8h__incl.png" border="0" usemap="#asrc_2Vars_8h" alt=""/></div>
-<map name="asrc_2Vars_8h" id="asrc_2Vars_8h">
-<area shape="rect" title=" " alt="" coords="127,5,213,31"/>
+<div class="center"><img src="Vars_8h__incl.png" border="0" usemap="#ainclude_2Vars_8h" alt=""/></div>
+<map name="ainclude_2Vars_8h" id="ainclude_2Vars_8h">
+<area shape="rect" title=" " alt="" coords="113,5,227,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,84,104"/>
 <area shape="poly" title=" " alt="" coords="151,33,78,74,76,69,149,28"/>
 <area shape="rect" title=" " alt="" coords="109,79,231,104"/>
@@ -95,32 +103,22 @@ Include dependency graph for Vars.h:</div>
 <area shape="poly" title=" " alt="" coords="195,28,285,70,282,75,193,33"/>
 </map>
 </div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="Vars_8h__dep__incl.png" border="0" usemap="#asrc_2Vars_8hdep" alt=""/></div>
-<map name="asrc_2Vars_8hdep" id="asrc_2Vars_8hdep">
-<area shape="rect" title=" " alt="" coords="26,5,111,31"/>
-<area shape="rect" href="Analysis_8cpp.html" title=" " alt="" coords="5,79,132,104"/>
-<area shape="poly" title=" " alt="" coords="71,44,71,79,66,79,66,44"/>
-</map>
-</div>
 </div>
 <p><a href="Vars_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af1d7d83b4942bf235ff801b3618141a5" id="r_af1d7d83b4942bf235ff801b3618141a5"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#af1d7d83b4942bf235ff801b3618141a5">Minv_calculator</a> (const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</td></tr>
-<tr class="memdesc:af1d7d83b4942bf235ff801b3618141a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the invariant mass of the sum of the first two four-momenta in the input vector.  <br /></td></tr>
+<tr class="memdesc:af1d7d83b4942bf235ff801b3618141a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the invariant mass of the sum of the first two four-momentain the input vector.  <br /></td></tr>
 <tr class="separator:af1d7d83b4942bf235ff801b3618141a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c999833267c93b99a5ed5453cd31c5f" id="r_a5c999833267c93b99a5ed5453cd31c5f"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#a5c999833267c93b99a5ed5453cd31c5f">Pt_calculator</a> (const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</td></tr>
 <tr class="memdesc:a5c999833267c93b99a5ed5453cd31c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the transverse mmomentum of the sum of the first two four-momenta in the input vector.  <br /></td></tr>
 <tr class="separator:a5c999833267c93b99a5ed5453cd31c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48fcdba400d59692eee5018ee286044a" id="r_a48fcdba400d59692eee5018ee286044a"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#a48fcdba400d59692eee5018ee286044a">y_calculator</a> (const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</td></tr>
-<tr class="memdesc:a48fcdba400d59692eee5018ee286044a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the rapidity of the sum of the first two four-momenta in the input vector.  <br /></td></tr>
+<tr class="memdesc:a48fcdba400d59692eee5018ee286044a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the rapidity absolute value of the sum of the first two four-momenta in the input vector.  <br /></td></tr>
 <tr class="separator:a48fcdba400d59692eee5018ee286044a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc083c756600e41e2dc8351c03bbdefb" id="r_acc083c756600e41e2dc8351c03bbdefb"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#acc083c756600e41e2dc8351c03bbdefb">phi_eta_calculator</a> (const ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt; &amp;p)</td></tr>
-<tr class="memdesc:acc083c756600e41e2dc8351c03bbdefb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the optimized angle of the sum of the first two four-momenta in the input vector.  <br /></td></tr>
+<tr class="memdesc:acc083c756600e41e2dc8351c03bbdefb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the optimized angle of the two four-momenta in the input vector.  <br /></td></tr>
 <tr class="separator:acc083c756600e41e2dc8351c03bbdefb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1842161d285033580ad8fd269827889a" id="r_a1842161d285033580ad8fd269827889a"><td class="memItemLeft" align="right" valign="top">ROOT::RVec&lt; ROOT::Math::PtEtaPhiMVector &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#a1842161d285033580ad8fd269827889a">GenSel</a> (const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; &amp;phi, const ROOT::RVec&lt; float &gt; &amp;mass)</td></tr>
 <tr class="memdesc:a1842161d285033580ad8fd269827889a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes four-momenta for selected particles in a generated event, combining generator-level information with reconstructed kinematics.  <br /></td></tr>
@@ -132,11 +130,44 @@ Functions</h2></td></tr>
 <tr class="memdesc:a4d8069a88205e943e6e88190c328c31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether an invariant mass value falls within a predefined range.  <br /></td></tr>
 <tr class="separator:a4d8069a88205e943e6e88190c328c31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9ed405d2455e0f94d2b7f5fac8e7bb2" id="r_ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a> (const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta)</td></tr>
-<tr class="memdesc:ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event is compatible with a reconstructed Z⁰ decay into a muon pair based on kinematic and isolation criteria.  <br /></td></tr>
+<tr class="memdesc:ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event is compatible with a reconstructed Z decay into a muon pair based on kinematic and isolation criteria.  <br /></td></tr>
 <tr class="separator:ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a639a62e72259e20b29657344f6e89677" id="r_a639a62e72259e20b29657344f6e89677"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Vars_8h.html#a639a62e72259e20b29657344f6e89677">IsTrue</a> (const UInt_t &amp;n_g, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid)</td></tr>
-<tr class="memdesc:a639a62e72259e20b29657344f6e89677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event contains a generated Z⁰ decay into two muons, based on particle PDG IDs and mother–daughter relationships.  <br /></td></tr>
+<tr class="memdesc:a639a62e72259e20b29657344f6e89677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event contains a generated Z decay into two muons, based on particle PDG IDs and mother–daughter relationships.  <br /></td></tr>
 <tr class="separator:a639a62e72259e20b29657344f6e89677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga46541f0a3bc9b989255b0a0ad389b41f" id="r_ga46541f0a3bc9b989255b0a0ad389b41f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga46541f0a3bc9b989255b0a0ad389b41f">n_b</a></td></tr>
+<tr class="memdesc:ga46541f0a3bc9b989255b0a0ad389b41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bins, used for all histograms and the response matrices. <br  />
+  <br /></td></tr>
+<tr class="separator:ga46541f0a3bc9b989255b0a0ad389b41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c11b09048246dce2b0ae736799f2f74" id="r_ga3c11b09048246dce2b0ae736799f2f74"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a></td></tr>
+<tr class="memdesc:ga3c11b09048246dce2b0ae736799f2f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variable names, used in loops to define new RDataFrame columns <br  />
+  <br /></td></tr>
+<tr class="separator:ga3c11b09048246dce2b0ae736799f2f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cbf8d9449b7e294b5f8e248b01a99f4" id="r_ga9cbf8d9449b7e294b5f8e248b01a99f4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga9cbf8d9449b7e294b5f8e248b01a99f4">xlabels</a></td></tr>
+<tr class="memdesc:ga9cbf8d9449b7e294b5f8e248b01a99f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">X axis names, used in loops for plots, only meant for aesthetic usage.  <br /></td></tr>
+<tr class="separator:ga9cbf8d9449b7e294b5f8e248b01a99f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1814acbf9e91aec9850f969a99bc5c5a" id="r_ga1814acbf9e91aec9850f969a99bc5c5a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga1814acbf9e91aec9850f969a99bc5c5a">ylabels</a></td></tr>
+<tr class="memdesc:ga1814acbf9e91aec9850f969a99bc5c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y axis names, used in loops for plots, only meant for aesthetic usage in the final cross section plot.  <br /></td></tr>
+<tr class="separator:ga1814acbf9e91aec9850f969a99bc5c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8db75613740ffb8a04e07cea5fb4d397" id="r_ga8db75613740ffb8a04e07cea5fb4d397"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga8db75613740ffb8a04e07cea5fb4d397">titles</a></td></tr>
+<tr class="memdesc:ga8db75613740ffb8a04e07cea5fb4d397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Title for graphs, used in loops for plots, only meant for aesthetic usage.  <br /></td></tr>
+<tr class="separator:ga8db75613740ffb8a04e07cea5fb4d397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga464efdeea836ad4458a8c20521077743" id="r_ga464efdeea836ad4458a8c20521077743"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; Float_t, Float_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga464efdeea836ad4458a8c20521077743">bounds</a></td></tr>
+<tr class="memdesc:ga464efdeea836ad4458a8c20521077743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounds for variables, both for graphs and ranges in response matrices. <br  />
+  <br /></td></tr>
+<tr class="separator:ga464efdeea836ad4458a8c20521077743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8b5c35f3872ae1f0f57bff00260b760" id="r_gac8b5c35f3872ae1f0f57bff00260b760"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; Float_t, Float_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a></td></tr>
+<tr class="memdesc:gac8b5c35f3872ae1f0f57bff00260b760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounds for y axis, purely aesthetic in unfolded graphs.  <br /></td></tr>
+<tr class="separator:gac8b5c35f3872ae1f0f57bff00260b760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2442c8274ae11905a74c1bf95501af09" id="r_ga2442c8274ae11905a74c1bf95501af09"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a></td></tr>
+<tr class="memdesc:ga2442c8274ae11905a74c1bf95501af09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrated luminosity for used dataset (expressed in [1/pb]).  <br /></td></tr>
+<tr class="separator:ga2442c8274ae11905a74c1bf95501af09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad62e712560f6344b96d4c080a2ba9c92" id="r_gad62e712560f6344b96d4c080a2ba9c92"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92">s</a></td></tr>
+<tr class="memdesc:gad62e712560f6344b96d4c080a2ba9c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sigma for Z production in two muons used in Montecarlo simulation (expressed in [pb]).  <br /></td></tr>
+<tr class="separator:gad62e712560f6344b96d4c080a2ba9c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a1842161d285033580ad8fd269827889a" name="a1842161d285033580ad8fd269827889a"></a>
@@ -200,40 +231,16 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">n</td><td>Number of generated particles. </td></tr>
     <tr><td class="paramname">id</td><td>Vector of PDG IDs for generated particles. </td></tr>
-    <tr><td class="paramname">mid</td><td>Vector of indices of the mother particle (same indexing as <code>id</code>). </td></tr>
-    <tr><td class="paramname">pt</td><td>Vector of transverse momentum (pT) for reconstructed particles. </td></tr>
-    <tr><td class="paramname">eta</td><td>Vector of pseudorapidity (η). </td></tr>
-    <tr><td class="paramname">phi</td><td>Vector of azimuthal angle (φ). </td></tr>
+    <tr><td class="paramname">mid</td><td>Vector of indices of the mother particle for each generated particle. The index refers to the position in the id vector. </td></tr>
+    <tr><td class="paramname">pt</td><td>Vector of transverse momentums. </td></tr>
+    <tr><td class="paramname">eta</td><td>Vector of pseudorapidities. </td></tr>
+    <tr><td class="paramname">phi</td><td>Vector of azimuthal angles. </td></tr>
     <tr><td class="paramname">mass</td><td>Vector of particle masses.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of four-momenta of particles that pass the selection criteria. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00183">183</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>                                                                                                                                                                                                                            {</div>
-<div class="line"><span class="lineno">  184</span> </div>
-<div class="line"><span class="lineno">  185</span>    ROOT::RVec&lt;ROOT::Math::PtEtaPhiMVector&gt; vecs;</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">for</span> (UInt_t i = 0; i &lt; n; i++){</div>
-<div class="line"><span class="lineno">  188</span>        <span class="keywordflow">if</span> (!(<span class="keywordtype">id</span>[i] == 13 || <span class="keywordtype">id</span>[i] == -13)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (mid[i] &lt; 0 || <span class="keywordtype">id</span>[mid[i]] != 23) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>        <span class="keywordflow">for</span> (UInt_t j = i+1; j &lt; n; j++){</div>
-<div class="line"><span class="lineno">  192</span>            <span class="keywordflow">if</span> (!(<span class="keywordtype">id</span>[j] == 13 || <span class="keywordtype">id</span>[j] == -13)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  193</span>            <span class="keywordflow">if</span> (mid[j] &lt; 0 || <span class="keywordtype">id</span>[mid[j]] != 23) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>            <span class="keywordflow">if</span> (<span class="keywordtype">id</span>[i] == -<span class="keywordtype">id</span>[j]) {</div>
-<div class="line"><span class="lineno">  196</span>                vecs.emplace_back(pt[i], eta[i], phi[i], mass[i]);</div>
-<div class="line"><span class="lineno">  197</span>                vecs.emplace_back(pt[j], eta[j], phi[j], mass[j]);</div>
-<div class="line"><span class="lineno">  198</span>                <span class="keywordflow">return</span> vecs; </div>
-<div class="line"><span class="lineno">  199</span>            }</div>
-<div class="line"><span class="lineno">  200</span>        }</div>
-<div class="line"><span class="lineno">  201</span>    }</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">return</span> vecs;</div>
-<div class="line"><span class="lineno">  204</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="ab9ed405d2455e0f94d2b7f5fac8e7bb2" name="ab9ed405d2455e0f94d2b7f5fac8e7bb2"></a>
@@ -280,18 +287,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Determines whether an event is compatible with a reconstructed Z⁰ decay into a muon pair based on kinematic and isolation criteria. </p>
+<p>Determines whether an event is compatible with a reconstructed Z decay into a muon pair based on kinematic and isolation criteria. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Number of reconstructed particles. </td></tr>
     <tr><td class="paramname">charge</td><td>Vector of particle charges. </td></tr>
     <tr><td class="paramname">Iso</td><td>Vector of relative isolation values for each particle. </td></tr>
-    <tr><td class="paramname">pt</td><td>Vector of transverse momentum (pT). </td></tr>
-    <tr><td class="paramname">eta</td><td>Vector of pseudorapidity (η).</td></tr>
+    <tr><td class="paramname">pt</td><td>Vector of transverse momentums. </td></tr>
+    <tr><td class="paramname">eta</td><td>Vector of pseudorapidities.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the event contains at least two leptons forming a valid Z⁰ candidate, typically requiring:<ul>
+<dl class="section return"><dt>Returns</dt><dd>true if the event contains at least two leptons forming a valid Z candidate, requiring:<ul>
 <li>opposite charge pair,</li>
 <li>transverse momentum above 25 GeV,</li>
 <li>isolation below 0.15,</li>
@@ -299,23 +306,6 @@ Functions</h2></td></tr>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00153">153</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  153</span>                                                                                                                                           {</div>
-<div class="line"><span class="lineno">  154</span>    </div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a> = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  156</span> </div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">if</span> (n == 2){</div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">if</span> (charge[0] + charge[1] == 0 &amp;&amp; Iso[0] &lt; 0.15 &amp;&amp; Iso[1] &lt; 0.15 &amp;&amp; pt[0] &gt; 25 &amp;&amp; pt[1] &gt; 25 &amp;&amp; abs(eta[0]) &lt; 2.4 &amp;&amp; abs(eta[1]) &lt; 2.4){</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>            <a class="code hl_function" href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>        }</div>
-<div class="line"><span class="lineno">  163</span>    }</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a>;</div>
-<div class="line"><span class="lineno">  166</span>}</div>
-<div class="ttc" id="aVars_8cpp_html_ab9ed405d2455e0f94d2b7f5fac8e7bb2"><div class="ttname"><a href="Vars_8cpp.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a></div><div class="ttdeci">bool IsReco(const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta)</div><div class="ttdoc">Determines whether an event is compatible with a reconstructed Z⁰ decay into a muon pair based on kin...</div><div class="ttdef"><b>Definition</b> <a href="Vars_8cpp_source.html#l00153">Vars.cpp:153</a></div></div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="a639a62e72259e20b29657344f6e89677" name="a639a62e72259e20b29657344f6e89677"></a>
@@ -350,48 +340,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Determines whether an event contains a generated Z⁰ decay into two muons, based on particle PDG IDs and mother–daughter relationships. </p>
+<p>Determines whether an event contains a generated Z decay into two muons, based on particle PDG IDs and mother–daughter relationships. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n_g</td><td>Number of generated particles. </td></tr>
     <tr><td class="paramname">id</td><td>Vector of PDG IDs for generated particles. </td></tr>
-    <tr><td class="paramname">mid</td><td>Vector of indices of the mother particle for each generated particle. The index refers to the position in the <code>id</code> vector.</td></tr>
+    <tr><td class="paramname">mid</td><td>Vector of indices of the mother particle for each generated particle. The index refers to the position in the id vector.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the event contains a Z⁰ (PDG ID = 23) decaying into the target final state (e.g. muon pair), with consistent mother–daughter matching; false otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the event contains a Z (PDG ID = 23) decaying into the target final state (e.g. muon pair), with consistent mother–daughter matching; false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00105">105</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>                                                                                {</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordtype">bool</span> pair = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    std::vector&lt;int&gt; flag;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">for</span> (UInt_t i = 0; i &lt; n_g; i++){</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">if</span> ((<span class="keywordtype">id</span>[i] == 13 || <span class="keywordtype">id</span>[i] == -13) &amp;&amp; mid[i] &gt;= 0 &amp;&amp; <span class="keywordtype">id</span>[mid[i]] == 23){flag.push_back(<span class="keywordtype">id</span>[i]);}</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>    }</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">if</span> (flag.size() &gt;= 2){</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; flag.size(); i++){</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = i+1; j &lt; flag.size(); j++){</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>                <span class="keywordflow">if</span> (flag[i] == -flag[j]){pair = <span class="keyword">true</span>;} </div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>            }</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>        }</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>    }</div>
-<div class="line"><span class="lineno">  130</span>    </div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">return</span> pair;</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="af1d7d83b4942bf235ff801b3618141a5" name="af1d7d83b4942bf235ff801b3618141a5"></a>
@@ -410,23 +369,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Computes the invariant mass of the sum of the first two four-momenta in the input vector. </p>
+<p>Computes the invariant mass of the sum of the first two four-momentain the input vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>Vector of four-momenta (e.g. TLorentzVector) representing reconstructed or generated muons.</td></tr>
+    <tr><td class="paramname">p</td><td>Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Invariant mass of p[0] + p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00017">17</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>                                                                    {</div>
-<div class="line"><span class="lineno">   18</span> </div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">if</span> (p.size()&gt;= 2){<span class="keywordflow">return</span> (p[0] + p[1]).M();}</div>
-<div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   22</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="a4d8069a88205e943e6e88190c328c31d" name="a4d8069a88205e943e6e88190c328c31d"></a>
@@ -448,19 +399,13 @@ Functions</h2></td></tr>
 <p>Checks whether an invariant mass value falls within a predefined range. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>Invariant mass (typically in GeV).</td></tr>
+    <tr><td class="paramname">m</td><td>Invariant mass (expressed in GeV).</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if m is within the selected mass window, false otherwise.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The mass window is defined internally in the function, is |m - 91.1817| &lt; 15. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00248">248</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  248</span>                            {</div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">if</span> (std::abs(m - 91.1817) &lt; 15) {<span class="keywordflow">return</span> <span class="keyword">true</span>;}</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  251</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="acc083c756600e41e2dc8351c03bbdefb" name="acc083c756600e41e2dc8351c03bbdefb"></a>
@@ -479,37 +424,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Computes the optimized angle of the sum of the first two four-momenta in the input vector. </p>
+<p>Computes the optimized angle of the two four-momenta in the input vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>Vector of four-momenta (e.g. TLorentzVector) representing reconstructed or generated muons.</td></tr>
+    <tr><td class="paramname">p</td><td>Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Optimized angle of p[0] + p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Optimized angle of p[0] and p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00071">71</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>                                                                       {</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> (p.size()&gt;= 2){</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>            <span class="keywordtype">double</span> dphi = std::fabs(p[0].Phi() - p[1].Phi());</div>
-<div class="line"><span class="lineno">   76</span>            <span class="keywordflow">if</span> (dphi &gt; M_PI) dphi = 2.0 * M_PI - dphi;</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>            <span class="keywordtype">double</span> deta = p[0].Eta() - p[1].Eta();</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>            <span class="keywordtype">double</span> sinThetaStar = 1.0 / std::cosh(deta / 2.0);</div>
-<div class="line"><span class="lineno">   81</span>            <span class="keywordtype">double</span> tanTerm = std::tan((M_PI - dphi) / 2.0);</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>            Float_t phi_eta = tanTerm * sinThetaStar;</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>            <span class="keywordflow">return</span> phi_eta;</div>
-<div class="line"><span class="lineno">   86</span>    }</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="a5c999833267c93b99a5ed5453cd31c5f" name="a5c999833267c93b99a5ed5453cd31c5f"></a>
@@ -531,20 +454,12 @@ Functions</h2></td></tr>
 <p>Computes the transverse mmomentum of the sum of the first two four-momenta in the input vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>Vector of four-momenta (e.g. TLorentzVector) representing reconstructed or generated muons.</td></tr>
+    <tr><td class="paramname">p</td><td>Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Transverse momentum of p[0] + p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00035">35</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                                                                  {</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> (p.size()&gt;= 2){<span class="keywordflow">return</span> (p[0] + p[1]).Pt();}</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   40</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="a7de152e73e5c1dcf16038ce6200fe836" name="a7de152e73e5c1dcf16038ce6200fe836"></a>
@@ -609,34 +524,15 @@ Functions</h2></td></tr>
     <tr><td class="paramname">n_reco</td><td>Number of reconstructed particles. </td></tr>
     <tr><td class="paramname">charge</td><td>Vector of particle charges. </td></tr>
     <tr><td class="paramname">Iso</td><td>Vector of relative isolation values. </td></tr>
-    <tr><td class="paramname">pt</td><td>Vector of transverse momentum (pT). </td></tr>
-    <tr><td class="paramname">eta</td><td>Vector of pseudorapidity (η). </td></tr>
-    <tr><td class="paramname">phi</td><td>Vector of azimuthal angle (φ). </td></tr>
+    <tr><td class="paramname">pt</td><td>Vector of transverse momentums . </td></tr>
+    <tr><td class="paramname">eta</td><td>Vector of pseudorapidities. </td></tr>
+    <tr><td class="paramname">phi</td><td>Vector of azimuthal angles. </td></tr>
     <tr><td class="paramname">mass</td><td>Vector of particle masses.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of four-momenta of reconstructed particles passing the selection criteria. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00220">220</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span>                                                                                                                                                                                                                              {</div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>    ROOT::RVec&lt;ROOT::Math::PtEtaPhiMVector&gt; vecs;</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (n == 2){</div>
-<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">if</span> (charge[0] + charge[1] == 0 &amp;&amp; Iso[0] &lt; 0.15 &amp;&amp; Iso[1] &lt; 0.15 &amp;&amp; pt[0] &gt; 25 &amp;&amp; pt[1] &gt; 25 &amp;&amp; abs(eta[0]) &lt; 2.4 &amp;&amp; abs(eta[1]) &lt; 2.4){</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>            vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[0],eta[0],phi[0], mass[0]));</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>            vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[1],eta[1], phi[1], mass[1]));</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>        }</div>
-<div class="line"><span class="lineno">  232</span>    }</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">return</span> vecs;</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="a48fcdba400d59692eee5018ee286044a" name="a48fcdba400d59692eee5018ee286044a"></a>
@@ -655,24 +551,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Computes the rapidity of the sum of the first two four-momenta in the input vector. </p>
+<p>Computes the rapidity absolute value of the sum of the first two four-momenta in the input vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>Vector of four-momenta (e.g. TLorentzVector) representing reconstructed or generated muons.</td></tr>
+    <tr><td class="paramname">p</td><td>Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Rapidity of p[0] + p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Rapidity absolute value of p[0] + p[1]. Returns 0.0 if the vector size is less than 2. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vars_8cpp_source.html#l00052">52</a> of file <a class="el" href="Vars_8cpp_source.html">Vars.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>                                                                 {</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (p.size()&gt;= 2){<span class="keywordflow">return</span> abs((p[0] + p[1]).Rapidity());}</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['reco_0',['Reco',['../Vars_8cpp.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Vars.cpp']]],
-  ['response_1',['Response',['../Analysis_8cpp.html#adf1bfb1e73f04b4874bc296dcb10a11a',1,'Analysis.cpp']]]
+  ['reco_0',['Reco',['../Vars_8h.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Vars.h']]],
+  ['response_1',['Response',['../Analysis_8h.html#a65df88350a747b7317c7ea59643c9727',1,'Analysis.h']]]
 ];
