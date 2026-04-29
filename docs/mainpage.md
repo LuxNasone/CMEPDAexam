@@ -10,19 +10,19 @@ For the article we refer to: https://cms-results.web.cern.ch/cms-results/public-
 
 We select muon pairs applying the cuts described in the article:
 
-- n = 2;
-- pt_{i}> 25 GeV i=1,2;
-- |η_{i}| < 2.4 i=1,2;
-- ΔR_{i} < 0.15 i=1,2;
-- q_1 +q_2 = 0;
+- \f$ n = 2 \f$;
+- \f$ pt_{i}> 25 GeV i=1,2 \f$;
+- \f$ |\eta_{i}| < 2.4 i=1,2 \f$;
+- \f$ \Delta R_{i} < 0.15 i=1,2 \f$;
+- \f$ q_1 + q_2 = 0 \f$;
 
-Finding the usual Breight-Wigner peak around expected Z mass. After finding the resonance of the Z and selecting events with |m_{inv}−m{Z^{0}}|< 15 GeV, we calculate distributions for the following quantities:
+Finding the usual Breight-Wigner peak around expected Z mass. After finding the resonance of the Z and selecting events with \f$ |m_{inv}−m{Z^{0}}|< 15 GeV \f$, we calculate distributions for the following quantities:
 
-- Transverse momentum : P_{t};
-- Rapidity : y;
-- Optimized angle : ϕ_{η} = tan((π−Δϕ)/2)sin(θ_{η});
+- Transverse momentum : \f$ P_{t} \f$;
+- Rapidity absolute value : \f$ |y| \f$ ;
+- Optimized angle : \f$ \phi_{\eta} = tan((\pi − \Delta \phi)/2)sin(\theta_{\eta}) \f$;
 
-With cos(θ_{η})=tanh(Δη/2).
+With \f$ cos(\theta_{\eta}) = tanh(\Delta \eta /2) \f$.
 
 In order to to take into account inefficiencies we performed an unfolding procedure, estimating the response matrix with data generated from a Montecarlo and using the RooUnfold toolbox. The generated events are determined to be Z decays in two muons by:
 
@@ -30,8 +30,7 @@ In order to to take into account inefficiencies we performed an unfolding proced
 - Finds index for mother particle and controls if it is 23 (Z PDG ID);
 Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. We then use a RooUnfoldBayesian oon measured distribution.
 
-The differential cross section is obtain by scaling the histograms with the integrated luminosity and bin width. The dataset used has an integrated luminosity 
-L = 8740 pb^-1.
+The differential cross section is obtain by scaling the histograms with the integrated luminosity and bin width. The dataset used has an integrated luminosity L = 8740 \f$ pb^{-1} \f$.
 
 ## How to use
 

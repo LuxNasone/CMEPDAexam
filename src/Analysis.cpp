@@ -63,12 +63,12 @@ std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
 
 /// @ingroup GlobalVariables
-/// @brief Integrated luminosity for used dataset (expressed in [\f$pb^{-1}\f$]).
+/// @brief Integrated luminosity for used dataset (expressed in [1/pb]).
 
 double L = 8740.119304;
 
 /// @ingroup GlobalVariables
-/// @brief Sigma for Z production in two muons used in Montecarlo simulation (expressed [\f$pb\f$]).
+/// @brief Sigma for Z production in two muons used in Montecarlo simulation (expressed in [pb]).
 
 double s = 1952;
 
@@ -84,10 +84,9 @@ double s = 1952;
 *            Default : false.
 *@return Vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
 *        In order : 
-*         - [0] : Z tranverse momentum
-*         - [1] : Optimzed angle =
-*                 \f$ \tan((\pi - \Delta_{\phi})/2)/cosh(\Delta_{\eta}/2) \f$
-*         - [2] : Z rapidity
+*         - [0] : Z tranverse momentum;
+*         - [1] : Optimzed angle;
+*         - [2] : Z rapidity absolute value;
 *        File are saved and can be visualized with a TBrowser.
 *@note Requires ROOT framework. 
 *@warning Input file must have expected NanoAD format for CMS OpenData.
