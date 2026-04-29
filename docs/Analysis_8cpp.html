@@ -244,7 +244,7 @@ Variables</h2></td></tr>
     <tr><td class="paramname">f1</td><td>: path to file .root containing not unfolded histograms, assumed to be output of CrossSection; </td></tr>
     <tr><td class="paramname">f2</td><td>: path to file .root containing unfolded histograms, assumed to be output of Unfolded; </td></tr>
     <tr><td class="paramname">f3</td><td>: path to file .root contaning MC histograms, assumed to be output of Response; </td></tr>
-    <tr><td class="paramname">outname</td><td>Name of the output ROOT file where comparison plots are saved.</td></tr>
+    <tr><td class="paramname">outname</td><td>Name of the output ROOT file where comparison plots are saved. Default : "Comparison.root".</td></tr>
   </table>
   </dd>
 </dl>
@@ -252,117 +252,117 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Requires ROOT framework.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Input file must be output of respectively CrossSection, Response and Unfolded. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Analysis_8cpp_source.html#l00624">624</a> of file <a class="el" href="Analysis_8cpp_source.html">Analysis.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  628</span>                            {</div>
-<div class="line"><span class="lineno">  629</span> </div>
-<div class="line"><span class="lineno">  630</span>    <span class="comment">//Results not-unfolded and unfolded, and MC</span></div>
-<div class="line"><span class="lineno">  631</span> </div>
-<div class="line"><span class="lineno">  632</span>    TFile* NU = TFile::Open(f1);</div>
-<div class="line"><span class="lineno">  633</span> </div>
-<div class="line"><span class="lineno">  634</span>    <span class="keywordflow">if</span> (NU-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;NotUnfolded not opened&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">  635</span> </div>
-<div class="line"><span class="lineno">  636</span>    std::vector&lt;TH1D&gt; h_nu(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
-<div class="line"><span class="lineno">  637</span> </div>
-<div class="line"><span class="lineno">  638</span>    TFile* U = TFile::Open(f2);</div>
-<div class="line"><span class="lineno">  639</span> </div>
-<div class="line"><span class="lineno">  640</span>    <span class="keywordflow">if</span> (U-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;Unfolded not opened&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">  641</span> </div>
-<div class="line"><span class="lineno">  642</span>    std::vector&lt;TH1D&gt; h_u(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
-<div class="line"><span class="lineno">  643</span> </div>
-<div class="line"><span class="lineno">  644</span>    TFile* MC = TFile::Open(f3);</div>
-<div class="line"><span class="lineno">  645</span> </div>
-<div class="line"><span class="lineno">  646</span>    <span class="keywordflow">if</span> (MC-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;Montecarlo not opened&quot;</span> &lt;&lt; std::endl;}</div>
-<div class="line"><span class="lineno">  647</span> </div>
-<div class="line"><span class="lineno">  648</span>    std::vector&lt;TH1D&gt; h_mc(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
-<div class="line"><span class="lineno">  649</span> </div>
-<div class="line"><span class="lineno">  650</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size(); i++){</div>
-<div class="line"><span class="lineno">  651</span> </div>
-<div class="line"><span class="lineno">  652</span>        TH1D* h = (TH1D*) NU-&gt;Get(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]); </div>
-<div class="line"><span class="lineno">  653</span> </div>
-<div class="line"><span class="lineno">  654</span>        h_nu[i] = *h;</div>
-<div class="line"><span class="lineno">  655</span> </div>
-<div class="line"><span class="lineno">  656</span>        TH1D* hu = (TH1D*) U-&gt;Get(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
-<div class="line"><span class="lineno">  657</span> </div>
-<div class="line"><span class="lineno">  658</span>        h_u[i] = *hu;</div>
-<div class="line"><span class="lineno">  659</span> </div>
-<div class="line"><span class="lineno">  660</span>        TH1D* hMC = (TH1D*) MC-&gt;Get(Form(<span class="stringliteral">&quot;%s_true&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
-<div class="line"><span class="lineno">  661</span> </div>
-<div class="line"><span class="lineno">  662</span>        h_mc[i] = *hMC;</div>
-<div class="line"><span class="lineno">  663</span> </div>
-<div class="line"><span class="lineno">  664</span>    }</div>
-<div class="line"><span class="lineno">  665</span> </div>
-<div class="line"><span class="lineno">  666</span>    <span class="comment">//Outfile</span></div>
-<div class="line"><span class="lineno">  667</span> </div>
-<div class="line"><span class="lineno">  668</span>    TFile* output = <span class="keyword">new</span> TFile(outname, <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
-<div class="line"><span class="lineno">  669</span> </div>
-<div class="line"><span class="lineno">  670</span>    <span class="keywordflow">if</span> (h_nu.size() == h_u.size()){</div>
-<div class="line"><span class="lineno">  671</span> </div>
-<div class="line"><span class="lineno">  672</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; h_u.size(); i++){</div>
-<div class="line"><span class="lineno">  673</span> </div>
-<div class="line"><span class="lineno">  674</span>            TCanvas* c = <span class="keyword">new</span> TCanvas(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i], <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i], 800, 600);</div>
-<div class="line"><span class="lineno">  675</span> </div>
-<div class="line"><span class="lineno">  676</span>            TLegend* legend = <span class="keyword">new</span> TLegend(0.7, 0.7, 0.9, 0.9);</div>
-<div class="line"><span class="lineno">  677</span> </div>
-<div class="line"><span class="lineno">  678</span>            h_nu[i].SetLineColor(kBlue);</div>
-<div class="line"><span class="lineno">  679</span>            h_nu[i].SetMarkerColor(kBlue);</div>
-<div class="line"><span class="lineno">  680</span>            h_nu[i].SetMarkerStyle(20);</div>
-<div class="line"><span class="lineno">  681</span>            h_nu[i].SetStats(0); </div>
-<div class="line"><span class="lineno">  682</span> </div>
-<div class="line"><span class="lineno">  683</span>            h_nu[i].GetYaxis()-&gt;SetRangeUser(<a class="code hl_variable" href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a>[i].first, <a class="code hl_variable" href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a>[i].second);</div>
-<div class="line"><span class="lineno">  684</span> </div>
-<div class="line"><span class="lineno">  685</span>            legend-&gt;AddEntry(&amp;h_nu[i],<span class="stringliteral">&quot;Not unfolded&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
-<div class="line"><span class="lineno">  686</span> </div>
-<div class="line"><span class="lineno">  687</span>            h_nu[i].Draw(<span class="stringliteral">&quot;E&quot;</span>);</div>
-<div class="line"><span class="lineno">  688</span> </div>
-<div class="line"><span class="lineno">  689</span>            h_u[i].SetLineColor(kRed);</div>
-<div class="line"><span class="lineno">  690</span>            h_u[i].SetMarkerColor(kRed);</div>
-<div class="line"><span class="lineno">  691</span>            h_u[i].SetMarkerStyle(20);</div>
-<div class="line"><span class="lineno">  692</span>            h_u[i].SetStats(0);</div>
-<div class="line"><span class="lineno">  693</span> </div>
-<div class="line"><span class="lineno">  694</span>            legend-&gt;AddEntry(&amp;h_u[i], <span class="stringliteral">&quot;Unfolded&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
-<div class="line"><span class="lineno">  695</span> </div>
-<div class="line"><span class="lineno">  696</span>            h_u[i].Draw(<span class="stringliteral">&quot;E SAME&quot;</span>);</div>
-<div class="line"><span class="lineno">  697</span> </div>
-<div class="line"><span class="lineno">  698</span>            legend-&gt;Draw();</div>
-<div class="line"><span class="lineno">  699</span> </div>
-<div class="line"><span class="lineno">  700</span>            c-&gt;Update();</div>
-<div class="line"><span class="lineno">  701</span> </div>
-<div class="line"><span class="lineno">  702</span>            c-&gt;Write();</div>
-<div class="line"><span class="lineno">  703</span> </div>
-<div class="line"><span class="lineno">  704</span>            TH1D h_D = h_nu[i]; </div>
-<div class="line"><span class="lineno">  705</span> </div>
-<div class="line"><span class="lineno">  706</span>            h_u[i].Scale(1./(<a class="code hl_variable" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a> * h_u[i].GetXaxis()-&gt;GetBinWidth(1)));</div>
-<div class="line"><span class="lineno">  707</span> </div>
-<div class="line"><span class="lineno">  708</span>            h_u[i].Write(Form(<span class="stringliteral">&quot;CrossSection_%s&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
-<div class="line"><span class="lineno">  709</span> </div>
-<div class="line"><span class="lineno">  710</span>            TCanvas* c_MC = <span class="keyword">new</span> TCanvas(Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]), Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]), 800, 600);</div>
-<div class="line"><span class="lineno">  711</span> </div>
-<div class="line"><span class="lineno">  712</span>            TLegend* legend_MC = <span class="keyword">new</span> TLegend(0.7, 0.7, 0.9, 0.9);</div>
-<div class="line"><span class="lineno">  713</span> </div>
-<div class="line"><span class="lineno">  714</span>            h_mc[i].SetStats(0);</div>
-<div class="line"><span class="lineno">  715</span> </div>
-<div class="line"><span class="lineno">  716</span>            h_mc[i].Draw();</div>
-<div class="line"><span class="lineno">  717</span> </div>
-<div class="line"><span class="lineno">  718</span>            legend_MC-&gt;AddEntry(&amp;h_mc[i], <span class="stringliteral">&quot;Montecarlo&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
-<div class="line"><span class="lineno">  719</span> </div>
-<div class="line"><span class="lineno">  720</span>            h_D.Scale(1./(<a class="code hl_variable" href="group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92">s</a>*<a class="code hl_variable" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a>));</div>
-<div class="line"><span class="lineno">  721</span> </div>
-<div class="line"><span class="lineno">  722</span>            legend_MC-&gt;AddEntry(&amp;h_D, <span class="stringliteral">&quot;Data&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
-<div class="line"><span class="lineno">  723</span> </div>
-<div class="line"><span class="lineno">  724</span>            h_D.Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
-<div class="line"><span class="lineno">  725</span> </div>
-<div class="line"><span class="lineno">  726</span>            legend_MC-&gt;Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
-<div class="line"><span class="lineno">  727</span> </div>
-<div class="line"><span class="lineno">  728</span>            c_MC-&gt;Update();</div>
-<div class="line"><span class="lineno">  729</span> </div>
-<div class="line"><span class="lineno">  730</span>            c_MC-&gt;Write();</div>
-<div class="line"><span class="lineno">  731</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="Analysis_8cpp_source.html#l00627">627</a> of file <a class="el" href="Analysis_8cpp_source.html">Analysis.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  631</span>                            {</div>
+<div class="line"><span class="lineno">  632</span> </div>
+<div class="line"><span class="lineno">  633</span>    <span class="comment">//Results not-unfolded and unfolded, and MC</span></div>
+<div class="line"><span class="lineno">  634</span> </div>
+<div class="line"><span class="lineno">  635</span>    TFile* NU = TFile::Open(f1);</div>
+<div class="line"><span class="lineno">  636</span> </div>
+<div class="line"><span class="lineno">  637</span>    <span class="keywordflow">if</span> (NU-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;NotUnfolded not opened&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">  638</span> </div>
+<div class="line"><span class="lineno">  639</span>    std::vector&lt;TH1D&gt; h_nu(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
+<div class="line"><span class="lineno">  640</span> </div>
+<div class="line"><span class="lineno">  641</span>    TFile* U = TFile::Open(f2);</div>
+<div class="line"><span class="lineno">  642</span> </div>
+<div class="line"><span class="lineno">  643</span>    <span class="keywordflow">if</span> (U-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;Unfolded not opened&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">  644</span> </div>
+<div class="line"><span class="lineno">  645</span>    std::vector&lt;TH1D&gt; h_u(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
+<div class="line"><span class="lineno">  646</span> </div>
+<div class="line"><span class="lineno">  647</span>    TFile* MC = TFile::Open(f3);</div>
+<div class="line"><span class="lineno">  648</span> </div>
+<div class="line"><span class="lineno">  649</span>    <span class="keywordflow">if</span> (MC-&gt;IsZombie()) {std::cerr &lt;&lt; <span class="stringliteral">&quot;Montecarlo not opened&quot;</span> &lt;&lt; std::endl;}</div>
+<div class="line"><span class="lineno">  650</span> </div>
+<div class="line"><span class="lineno">  651</span>    std::vector&lt;TH1D&gt; h_mc(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
+<div class="line"><span class="lineno">  652</span> </div>
+<div class="line"><span class="lineno">  653</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size(); i++){</div>
+<div class="line"><span class="lineno">  654</span> </div>
+<div class="line"><span class="lineno">  655</span>        TH1D* h = (TH1D*) NU-&gt;Get(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]); </div>
+<div class="line"><span class="lineno">  656</span> </div>
+<div class="line"><span class="lineno">  657</span>        h_nu[i] = *h;</div>
+<div class="line"><span class="lineno">  658</span> </div>
+<div class="line"><span class="lineno">  659</span>        TH1D* hu = (TH1D*) U-&gt;Get(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
+<div class="line"><span class="lineno">  660</span> </div>
+<div class="line"><span class="lineno">  661</span>        h_u[i] = *hu;</div>
+<div class="line"><span class="lineno">  662</span> </div>
+<div class="line"><span class="lineno">  663</span>        TH1D* hMC = (TH1D*) MC-&gt;Get(Form(<span class="stringliteral">&quot;%s_true&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
+<div class="line"><span class="lineno">  664</span> </div>
+<div class="line"><span class="lineno">  665</span>        h_mc[i] = *hMC;</div>
+<div class="line"><span class="lineno">  666</span> </div>
+<div class="line"><span class="lineno">  667</span>    }</div>
+<div class="line"><span class="lineno">  668</span> </div>
+<div class="line"><span class="lineno">  669</span>    <span class="comment">//Outfile</span></div>
+<div class="line"><span class="lineno">  670</span> </div>
+<div class="line"><span class="lineno">  671</span>    TFile* output = <span class="keyword">new</span> TFile(outname, <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
+<div class="line"><span class="lineno">  672</span> </div>
+<div class="line"><span class="lineno">  673</span>    <span class="keywordflow">if</span> (h_nu.size() == h_u.size()){</div>
+<div class="line"><span class="lineno">  674</span> </div>
+<div class="line"><span class="lineno">  675</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; h_u.size(); i++){</div>
+<div class="line"><span class="lineno">  676</span> </div>
+<div class="line"><span class="lineno">  677</span>            TCanvas* c = <span class="keyword">new</span> TCanvas(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i], <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i], 800, 600);</div>
+<div class="line"><span class="lineno">  678</span> </div>
+<div class="line"><span class="lineno">  679</span>            TLegend* legend = <span class="keyword">new</span> TLegend(0.7, 0.7, 0.9, 0.9);</div>
+<div class="line"><span class="lineno">  680</span> </div>
+<div class="line"><span class="lineno">  681</span>            h_nu[i].SetLineColor(kBlue);</div>
+<div class="line"><span class="lineno">  682</span>            h_nu[i].SetMarkerColor(kBlue);</div>
+<div class="line"><span class="lineno">  683</span>            h_nu[i].SetMarkerStyle(20);</div>
+<div class="line"><span class="lineno">  684</span>            h_nu[i].SetStats(0); </div>
+<div class="line"><span class="lineno">  685</span> </div>
+<div class="line"><span class="lineno">  686</span>            h_nu[i].GetYaxis()-&gt;SetRangeUser(<a class="code hl_variable" href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a>[i].first, <a class="code hl_variable" href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a>[i].second);</div>
+<div class="line"><span class="lineno">  687</span> </div>
+<div class="line"><span class="lineno">  688</span>            legend-&gt;AddEntry(&amp;h_nu[i],<span class="stringliteral">&quot;Not unfolded&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
+<div class="line"><span class="lineno">  689</span> </div>
+<div class="line"><span class="lineno">  690</span>            h_nu[i].Draw(<span class="stringliteral">&quot;E&quot;</span>);</div>
+<div class="line"><span class="lineno">  691</span> </div>
+<div class="line"><span class="lineno">  692</span>            h_u[i].SetLineColor(kRed);</div>
+<div class="line"><span class="lineno">  693</span>            h_u[i].SetMarkerColor(kRed);</div>
+<div class="line"><span class="lineno">  694</span>            h_u[i].SetMarkerStyle(20);</div>
+<div class="line"><span class="lineno">  695</span>            h_u[i].SetStats(0);</div>
+<div class="line"><span class="lineno">  696</span> </div>
+<div class="line"><span class="lineno">  697</span>            legend-&gt;AddEntry(&amp;h_u[i], <span class="stringliteral">&quot;Unfolded&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
+<div class="line"><span class="lineno">  698</span> </div>
+<div class="line"><span class="lineno">  699</span>            h_u[i].Draw(<span class="stringliteral">&quot;E SAME&quot;</span>);</div>
+<div class="line"><span class="lineno">  700</span> </div>
+<div class="line"><span class="lineno">  701</span>            legend-&gt;Draw();</div>
+<div class="line"><span class="lineno">  702</span> </div>
+<div class="line"><span class="lineno">  703</span>            c-&gt;Update();</div>
+<div class="line"><span class="lineno">  704</span> </div>
+<div class="line"><span class="lineno">  705</span>            c-&gt;Write();</div>
+<div class="line"><span class="lineno">  706</span> </div>
+<div class="line"><span class="lineno">  707</span>            TH1D h_D = h_nu[i]; </div>
+<div class="line"><span class="lineno">  708</span> </div>
+<div class="line"><span class="lineno">  709</span>            h_u[i].Scale(1./(<a class="code hl_variable" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a> * h_u[i].GetXaxis()-&gt;GetBinWidth(1)));</div>
+<div class="line"><span class="lineno">  710</span> </div>
+<div class="line"><span class="lineno">  711</span>            h_u[i].Write(Form(<span class="stringliteral">&quot;CrossSection_%s&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
+<div class="line"><span class="lineno">  712</span> </div>
+<div class="line"><span class="lineno">  713</span>            TCanvas* c_MC = <span class="keyword">new</span> TCanvas(Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]), Form(<span class="stringliteral">&quot;%s_MC&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]), 800, 600);</div>
+<div class="line"><span class="lineno">  714</span> </div>
+<div class="line"><span class="lineno">  715</span>            TLegend* legend_MC = <span class="keyword">new</span> TLegend(0.7, 0.7, 0.9, 0.9);</div>
+<div class="line"><span class="lineno">  716</span> </div>
+<div class="line"><span class="lineno">  717</span>            h_mc[i].SetStats(0);</div>
+<div class="line"><span class="lineno">  718</span> </div>
+<div class="line"><span class="lineno">  719</span>            h_mc[i].Draw();</div>
+<div class="line"><span class="lineno">  720</span> </div>
+<div class="line"><span class="lineno">  721</span>            legend_MC-&gt;AddEntry(&amp;h_mc[i], <span class="stringliteral">&quot;Montecarlo&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
+<div class="line"><span class="lineno">  722</span> </div>
+<div class="line"><span class="lineno">  723</span>            h_D.Scale(1./(<a class="code hl_variable" href="group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92">s</a>*<a class="code hl_variable" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a>));</div>
+<div class="line"><span class="lineno">  724</span> </div>
+<div class="line"><span class="lineno">  725</span>            legend_MC-&gt;AddEntry(&amp;h_D, <span class="stringliteral">&quot;Data&quot;</span>, <span class="stringliteral">&quot;lep&quot;</span>);</div>
+<div class="line"><span class="lineno">  726</span> </div>
+<div class="line"><span class="lineno">  727</span>            h_D.Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><span class="lineno">  728</span> </div>
+<div class="line"><span class="lineno">  729</span>            legend_MC-&gt;Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><span class="lineno">  730</span> </div>
+<div class="line"><span class="lineno">  731</span>            c_MC-&gt;Update();</div>
 <div class="line"><span class="lineno">  732</span> </div>
-<div class="line"><span class="lineno">  733</span>    }</div>
-<div class="line"><span class="lineno">  734</span> </div>
-<div class="line"><span class="lineno">  735</span>    output-&gt;Close();</div>
-<div class="line"><span class="lineno">  736</span> </div>
-<div class="line"><span class="lineno">  737</span>}</div>
+<div class="line"><span class="lineno">  733</span>            c_MC-&gt;Write();</div>
+<div class="line"><span class="lineno">  734</span>        }</div>
+<div class="line"><span class="lineno">  735</span> </div>
+<div class="line"><span class="lineno">  736</span>    }</div>
+<div class="line"><span class="lineno">  737</span> </div>
+<div class="line"><span class="lineno">  738</span>    output-&gt;Close();</div>
+<div class="line"><span class="lineno">  739</span> </div>
+<div class="line"><span class="lineno">  740</span>}</div>
 <div class="ttc" id="agroup__GlobalVariables_html_ga2442c8274ae11905a74c1bf95501af09"><div class="ttname"><a href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a></div><div class="ttdeci">double L</div><div class="ttdoc">Integrated luminosity for used dataset (expressed in [1/pb]).</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00068">Analysis.cpp:68</a></div></div>
 <div class="ttc" id="agroup__GlobalVariables_html_ga3c11b09048246dce2b0ae736799f2f74"><div class="ttname"><a href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a></div><div class="ttdeci">std::vector&lt; const char * &gt; vars</div><div class="ttdoc">Variable names, used in loops to define new RDataFrame columns</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00039">Analysis.cpp:39</a></div></div>
 <div class="ttc" id="agroup__GlobalVariables_html_gac8b5c35f3872ae1f0f57bff00260b760"><div class="ttname"><a href="group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760">range</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; Float_t, Float_t &gt; &gt; range</div><div class="ttdoc">Bounds for y axis, purely aesthetic in unfolded graphs.</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00063">Analysis.cpp:63</a></div></div>
@@ -923,8 +923,8 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">folder_name</td><td>: Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format; </td></tr>
     <tr><td class="paramname">n_iter</td><td>Number of iterations for the Bayesian unfolding algorithm. </td></tr>
-    <tr><td class="paramname">rpath</td><td>Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition; </td></tr>
-    <tr><td class="paramname">outname</td><td>Name of the output ROOT file where unfolded histograms will be stored.</td></tr>
+    <tr><td class="paramname">rpath</td><td>Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition. Default : "Response.root" </td></tr>
+    <tr><td class="paramname">outname</td><td>Name of the output ROOT file where unfolded histograms will be stored. Default : "Unfolded.root"</td></tr>
   </table>
   </dd>
 </dl>
@@ -932,91 +932,91 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Requires ROOT framework and RooUnfold package.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Input file must have expected NanoAD format for CMS OpenData. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Analysis_8cpp_source.html#l00519">519</a> of file <a class="el" href="Analysis_8cpp_source.html">Analysis.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  522</span>                                                                                          {</div>
-<div class="line"><span class="lineno">  523</span> </div>
-<div class="line"><span class="lineno">  524</span>    <span class="comment">//Matrices file</span></div>
+<p class="definition">Definition at line <a class="el" href="Analysis_8cpp_source.html#l00521">521</a> of file <a class="el" href="Analysis_8cpp_source.html">Analysis.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  524</span>                                                                                          {</div>
 <div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>    TFile* Rfile = TFile::Open(rpath);</div>
+<div class="line"><span class="lineno">  526</span>    <span class="comment">//Matrices file</span></div>
 <div class="line"><span class="lineno">  527</span> </div>
-<div class="line"><span class="lineno">  528</span>    <span class="keywordflow">if</span> (Rfile-&gt;IsZombie()){</div>
+<div class="line"><span class="lineno">  528</span>    TFile* Rfile = TFile::Open(rpath);</div>
 <div class="line"><span class="lineno">  529</span> </div>
-<div class="line"><span class="lineno">  530</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Response file not opened&quot;</span> &lt;&lt; std::endl; </div>
+<div class="line"><span class="lineno">  530</span>    <span class="keywordflow">if</span> (Rfile-&gt;IsZombie()){</div>
 <div class="line"><span class="lineno">  531</span> </div>
-<div class="line"><span class="lineno">  532</span>    }</div>
+<div class="line"><span class="lineno">  532</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Response file not opened&quot;</span> &lt;&lt; std::endl; </div>
 <div class="line"><span class="lineno">  533</span> </div>
-<div class="line"><span class="lineno">  534</span>    <span class="comment">//Response matrix vector</span></div>
+<div class="line"><span class="lineno">  534</span>    }</div>
 <div class="line"><span class="lineno">  535</span> </div>
-<div class="line"><span class="lineno">  536</span>    std::vector&lt;RooUnfoldResponse&gt; T(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
+<div class="line"><span class="lineno">  536</span>    <span class="comment">//Response matrix vector</span></div>
 <div class="line"><span class="lineno">  537</span> </div>
-<div class="line"><span class="lineno">  538</span>    <span class="comment">//Filling matrices</span></div>
+<div class="line"><span class="lineno">  538</span>    std::vector&lt;RooUnfoldResponse&gt; T(<a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size());</div>
 <div class="line"><span class="lineno">  539</span> </div>
-<div class="line"><span class="lineno">  540</span>    <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size(); i++){</div>
+<div class="line"><span class="lineno">  540</span>    <span class="comment">//Filling matrices</span></div>
 <div class="line"><span class="lineno">  541</span> </div>
-<div class="line"><span class="lineno">  542</span>        RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile-&gt;Get(Form(<span class="stringliteral">&quot;Response_%s&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
+<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size(); i++){</div>
 <div class="line"><span class="lineno">  543</span> </div>
-<div class="line"><span class="lineno">  544</span>        <span class="keywordflow">if</span> (!M) {</div>
+<div class="line"><span class="lineno">  544</span>        RooUnfoldResponse* M = (RooUnfoldResponse*) Rfile-&gt;Get(Form(<span class="stringliteral">&quot;Response_%s&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
 <div class="line"><span class="lineno">  545</span> </div>
-<div class="line"><span class="lineno">  546</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Errore: Response_&quot;</span> &lt;&lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i] &lt;&lt; <span class="stringliteral">&quot; non trovato!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  547</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  548</span> </div>
-<div class="line"><span class="lineno">  549</span>        }</div>
+<div class="line"><span class="lineno">  546</span>        <span class="keywordflow">if</span> (!M) {</div>
+<div class="line"><span class="lineno">  547</span> </div>
+<div class="line"><span class="lineno">  548</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Errore: Response_&quot;</span> &lt;&lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i] &lt;&lt; <span class="stringliteral">&quot; non trovato!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  549</span>            <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  550</span> </div>
-<div class="line"><span class="lineno">  551</span>        T[i] = *M;</div>
+<div class="line"><span class="lineno">  551</span>        }</div>
 <div class="line"><span class="lineno">  552</span> </div>
-<div class="line"><span class="lineno">  553</span>    }</div>
+<div class="line"><span class="lineno">  553</span>        T[i] = *M;</div>
 <div class="line"><span class="lineno">  554</span> </div>
-<div class="line"><span class="lineno">  555</span>    <span class="comment">//Closing file</span></div>
+<div class="line"><span class="lineno">  555</span>    }</div>
 <div class="line"><span class="lineno">  556</span> </div>
-<div class="line"><span class="lineno">  557</span>    Rfile-&gt;Close();</div>
+<div class="line"><span class="lineno">  557</span>    <span class="comment">//Closing file</span></div>
 <div class="line"><span class="lineno">  558</span> </div>
-<div class="line"><span class="lineno">  559</span>    <span class="comment">//Executing CrossSection</span></div>
+<div class="line"><span class="lineno">  559</span>    Rfile-&gt;Close();</div>
 <div class="line"><span class="lineno">  560</span> </div>
-<div class="line"><span class="lineno">  561</span>    std::vector&lt;TH1D&gt; h_v = <a class="code hl_function" href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a>(folder_name, <span class="stringliteral">&quot;Repo/outFiles/NotUnfolded.root&quot;</span>, <span class="keyword">true</span>, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  561</span>    <span class="comment">//Executing CrossSection</span></div>
 <div class="line"><span class="lineno">  562</span> </div>
-<div class="line"><span class="lineno">  563</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;This run will be saved on file : &quot;</span> &lt;&lt; outname &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  563</span>    std::vector&lt;TH1D&gt; h_v = <a class="code hl_function" href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a>(folder_name, <span class="stringliteral">&quot;Repo/outFiles/NotUnfolded.root&quot;</span>, <span class="keyword">true</span>, <span class="keyword">true</span>);</div>
 <div class="line"><span class="lineno">  564</span> </div>
-<div class="line"><span class="lineno">  565</span>    TFile* output = <span class="keyword">new</span> TFile(outname, <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
+<div class="line"><span class="lineno">  565</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;This run will be saved on file : &quot;</span> &lt;&lt; outname &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  566</span> </div>
-<div class="line"><span class="lineno">  567</span>    std::vector&lt;TH1D&gt; h_u(h_v.size());</div>
+<div class="line"><span class="lineno">  567</span>    TFile* output = <span class="keyword">new</span> TFile(outname, <span class="stringliteral">&quot;RECREATE&quot;</span>);</div>
 <div class="line"><span class="lineno">  568</span> </div>
-<div class="line"><span class="lineno">  569</span>    <span class="comment">//Unfolding</span></div>
+<div class="line"><span class="lineno">  569</span>    std::vector&lt;TH1D&gt; h_u(h_v.size());</div>
 <div class="line"><span class="lineno">  570</span> </div>
-<div class="line"><span class="lineno">  571</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; h_v.size(); i++){</div>
+<div class="line"><span class="lineno">  571</span>    <span class="comment">//Unfolding</span></div>
 <div class="line"><span class="lineno">  572</span> </div>
-<div class="line"><span class="lineno">  573</span>        <span class="keywordflow">if</span> (h_v.size() != <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size()) {</div>
-<div class="line"><span class="lineno">  574</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Mismatch size: vars =&quot;</span> &lt;&lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size() &lt;&lt; <span class="stringliteral">&quot; h_v =&quot;</span> &lt;&lt; h_v.size() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  575</span>        }</div>
-<div class="line"><span class="lineno">  576</span> </div>
-<div class="line"><span class="lineno">  577</span>        TH1D* h = (TH1D*)h_v[i].Clone();</div>
+<div class="line"><span class="lineno">  573</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; h_v.size(); i++){</div>
+<div class="line"><span class="lineno">  574</span> </div>
+<div class="line"><span class="lineno">  575</span>        <span class="keywordflow">if</span> (h_v.size() != <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size()) {</div>
+<div class="line"><span class="lineno">  576</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Mismatch size: vars =&quot;</span> &lt;&lt; <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>.size() &lt;&lt; <span class="stringliteral">&quot; h_v =&quot;</span> &lt;&lt; h_v.size() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  577</span>        }</div>
 <div class="line"><span class="lineno">  578</span> </div>
-<div class="line"><span class="lineno">  579</span>        <span class="keywordflow">if</span> (!h) {</div>
-<div class="line"><span class="lineno">  580</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Istogramma nullo per i=&quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  581</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  582</span>        }</div>
-<div class="line"><span class="lineno">  583</span> </div>
-<div class="line"><span class="lineno">  584</span>        RooUnfoldBayes unfold(&amp;T[i], h, n_iter);</div>
+<div class="line"><span class="lineno">  579</span>        TH1D* h = (TH1D*)h_v[i].Clone();</div>
+<div class="line"><span class="lineno">  580</span> </div>
+<div class="line"><span class="lineno">  581</span>        <span class="keywordflow">if</span> (!h) {</div>
+<div class="line"><span class="lineno">  582</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Istogramma nullo per i=&quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  583</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  584</span>        }</div>
 <div class="line"><span class="lineno">  585</span> </div>
-<div class="line"><span class="lineno">  586</span>        TH1D* hUnfold = (TH1D*) unfold.Hunfold();</div>
+<div class="line"><span class="lineno">  586</span>        RooUnfoldBayes unfold(&amp;T[i], h, n_iter);</div>
 <div class="line"><span class="lineno">  587</span> </div>
-<div class="line"><span class="lineno">  588</span>        <span class="keywordflow">if</span> (!hUnfold) {</div>
-<div class="line"><span class="lineno">  589</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Unfold fallito per i=&quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  590</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  591</span>        }</div>
-<div class="line"><span class="lineno">  592</span> </div>
-<div class="line"><span class="lineno">  593</span>        h_u[i] = *hUnfold;</div>
+<div class="line"><span class="lineno">  588</span>        TH1D* hUnfold = (TH1D*) unfold.Hunfold();</div>
+<div class="line"><span class="lineno">  589</span> </div>
+<div class="line"><span class="lineno">  590</span>        <span class="keywordflow">if</span> (!hUnfold) {</div>
+<div class="line"><span class="lineno">  591</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Unfold fallito per i=&quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  592</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  593</span>        }</div>
 <div class="line"><span class="lineno">  594</span> </div>
-<div class="line"><span class="lineno">  595</span>        hUnfold-&gt;Write(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
+<div class="line"><span class="lineno">  595</span>        h_u[i] = *hUnfold;</div>
 <div class="line"><span class="lineno">  596</span> </div>
-<div class="line"><span class="lineno">  597</span>    }</div>
+<div class="line"><span class="lineno">  597</span>        hUnfold-&gt;Write(Form(<span class="stringliteral">&quot;%s_unfolded&quot;</span>, <a class="code hl_variable" href="group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74">vars</a>[i]));</div>
 <div class="line"><span class="lineno">  598</span> </div>
-<div class="line"><span class="lineno">  599</span>    output-&gt;Close();</div>
+<div class="line"><span class="lineno">  599</span>    }</div>
 <div class="line"><span class="lineno">  600</span> </div>
-<div class="line"><span class="lineno">  601</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Saved correctly&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  601</span>    output-&gt;Close();</div>
 <div class="line"><span class="lineno">  602</span> </div>
-<div class="line"><span class="lineno">  603</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Unfolding terminato&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  603</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Saved correctly&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  604</span> </div>
-<div class="line"><span class="lineno">  605</span>}</div>
+<div class="line"><span class="lineno">  605</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Unfolding terminato&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  606</span> </div>
+<div class="line"><span class="lineno">  607</span>}</div>
 <div class="ttc" id="aAnalysis_8cpp_html_a04ec7d939f8bfc49f10cdfb8646d57fe"><div class="ttname"><a href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a></div><div class="ttdeci">std::vector&lt; TH1D &gt; CrossSection(const char *folder_name, const char *outname=&quot;Repo/outFiles/NotUnfolded.root&quot;, bool MT=true, bool mute=false)</div><div class="ttdoc">Block that reconstructs the distributions of variables used to express the differential cross-section...</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00095">Analysis.cpp:95</a></div></div>
 </div><!-- fragment -->
 </div>

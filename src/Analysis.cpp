@@ -506,8 +506,10 @@ void Response(const char* folder_name,
  *
  * @param folder_name : Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format;
  * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
- * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition;
+ * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition.
+                Default : "Response.root"
  * @param outname Name of the output ROOT file where unfolded histograms will be stored.
+ *                Default : "Unfolded.root"
  *
  * @return Void. The function writes Unfolded histograms to the output ROOT file, accessible via TBrowser.
  *
@@ -613,6 +615,7 @@ void Unfolded(const char* folder_name,
  * @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded;
  * @param f3 : path to file .root contaning MC histograms, assumed to be output of Response;
  * @param outname Name of the output ROOT file where comparison plots are saved.
+ *                Default : "Comparison.root".
  *
  * @return Void. The function produces comparison plots (TCanvas objects) stored in the output file and accessible via TBrowser.
  *
