@@ -73,7 +73,7 @@ double L = 8740.119304;
 double s = 1952;
 
 /**
-*@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, 
+*@brief Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, 
 *       without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.
 *@param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
 *@param outname Name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
@@ -245,7 +245,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 //Macro to extract dimuon at generator level, and obtain reco efficiency
 
 /**
- * @brief Calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
+ * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
  *        The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.
  * @param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
  * @param outname Path to the output ROOT file where the response matrices are saved.
@@ -605,7 +605,7 @@ void Unfolded(const char* folder_name,
 }
 
 /**
- * @brief Compares not unfolded and unfolded distributions by overlaying the corresponding histograms. 
+ * @brief Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. 
  *        Also makes a graphs of normalized measured and simulated distributions.
  *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
  *

@@ -148,16 +148,16 @@ Include dependency graph for Analysis.cpp:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a04ec7d939f8bfc49f10cdfb8646d57fe" id="r_a04ec7d939f8bfc49f10cdfb8646d57fe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; TH1D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a> (const char *folder_name, const char *outname=&quot;Repo/outFiles/NotUnfolded.root&quot;, bool MT=true, bool mute=false)</td></tr>
-<tr class="memdesc:a04ec7d939f8bfc49f10cdfb8646d57fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.  <br /></td></tr>
+<tr class="memdesc:a04ec7d939f8bfc49f10cdfb8646d57fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.  <br /></td></tr>
 <tr class="separator:a04ec7d939f8bfc49f10cdfb8646d57fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf1bfb1e73f04b4874bc296dcb10a11a" id="r_adf1bfb1e73f04b4874bc296dcb10a11a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8cpp.html#adf1bfb1e73f04b4874bc296dcb10a11a">Response</a> (const char *folder_name, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, bool MT=true, bool mute=false)</td></tr>
-<tr class="memdesc:adf1bfb1e73f04b4874bc296dcb10a11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.  <br /></td></tr>
+<tr class="memdesc:adf1bfb1e73f04b4874bc296dcb10a11a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.  <br /></td></tr>
 <tr class="separator:adf1bfb1e73f04b4874bc296dcb10a11a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe42ac229234c943d837cdc913d00c0d" id="r_abe42ac229234c943d837cdc913d00c0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8cpp.html#abe42ac229234c943d837cdc913d00c0d">Unfolded</a> (const char *folder_name, int n_iter, const char *rpath=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root&quot;)</td></tr>
 <tr class="memdesc:abe42ac229234c943d837cdc913d00c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.  <br /></td></tr>
 <tr class="separator:abe42ac229234c943d837cdc913d00c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6f6a9da2a43aa6fc4b6311eb9c999de" id="r_ab6f6a9da2a43aa6fc4b6311eb9c999de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8cpp.html#ab6f6a9da2a43aa6fc4b6311eb9c999de">Comp</a> (const char *f1, const char *f2, const char *f3, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root&quot;, bool mute=false)</td></tr>
-<tr class="memdesc:ab6f6a9da2a43aa6fc4b6311eb9c999de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs.  <br /></td></tr>
+<tr class="memdesc:ab6f6a9da2a43aa6fc4b6311eb9c999de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs.  <br /></td></tr>
 <tr class="separator:ab6f6a9da2a43aa6fc4b6311eb9c999de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -238,7 +238,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs. </p>
+<p>Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">f1</td><td>: path to file .root containing not unfolded histograms, assumed to be output of CrossSection; </td></tr>
@@ -408,7 +408,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis. </p>
+<p>Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">folder_name</td><td>Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format. </td></tr>
@@ -619,7 +619,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis. </p>
+<p>Block that calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">folder_name</td><td>Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format. </td></tr>
@@ -1017,7 +1017,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  603</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Unfolding terminato&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  604</span> </div>
 <div class="line"><span class="lineno">  605</span>}</div>
-<div class="ttc" id="aAnalysis_8cpp_html_a04ec7d939f8bfc49f10cdfb8646d57fe"><div class="ttname"><a href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a></div><div class="ttdeci">std::vector&lt; TH1D &gt; CrossSection(const char *folder_name, const char *outname=&quot;Repo/outFiles/NotUnfolded.root&quot;, bool MT=true, bool mute=false)</div><div class="ttdoc">Macro to reconstruct the distributions of variables used to express the differential cross-section (Z...</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00095">Analysis.cpp:95</a></div></div>
+<div class="ttc" id="aAnalysis_8cpp_html_a04ec7d939f8bfc49f10cdfb8646d57fe"><div class="ttname"><a href="Analysis_8cpp.html#a04ec7d939f8bfc49f10cdfb8646d57fe">CrossSection</a></div><div class="ttdeci">std::vector&lt; TH1D &gt; CrossSection(const char *folder_name, const char *outname=&quot;Repo/outFiles/NotUnfolded.root&quot;, bool MT=true, bool mute=false)</div><div class="ttdoc">Block that reconstructs the distributions of variables used to express the differential cross-section...</div><div class="ttdef"><b>Definition</b> <a href="Analysis_8cpp_source.html#l00095">Analysis.cpp:95</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
