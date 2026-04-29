@@ -11,9 +11,9 @@ For the article we refer to: https://cms-results.web.cern.ch/cms-results/public-
 We select muon pairs applying the cuts described in the article:
 
 - \f$ n = 2 \f$;
-- \f$ pt_{i}> 25 GeV i=1,2 \f$;
-- \f$ |\eta_{i}| < 2.4 i=1,2 \f$;
-- \f$ \Delta R_{i} < 0.15 i=1,2 \f$;
+- \f$ pt_{i}> 25 GeV \f$; i=1,2 \f$;
+- \f$ |\eta_{i}| < 2.4 \f$;  i=1,2 \f$;
+- \f$ \Delta R_{i} < 0.15 \f$; i=1,2 \f$;
 - \f$ q_1 + q_2 = 0 \f$;
 
 Finding the usual Breight-Wigner peak around expected Z mass. After finding the resonance of the Z and selecting events with \f$ |m_{inv}−m{Z^{0}}|< 15 GeV \f$, we calculate distributions for the following quantities:

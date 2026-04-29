@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['xlabels_0',['xlabels',['../group__GlobalVariables.html#ga9cbf8d9449b7e294b5f8e248b01a99f4',1,'Analysis.cpp']]]
+  ['y_5fcalculator_0',['y_calculator',['../Vars_8cpp.html#a48fcdba400d59692eee5018ee286044a',1,'Vars.cpp']]],
+  ['ylabels_1',['ylabels',['../group__GlobalVariables.html#ga1814acbf9e91aec9850f969a99bc5c5a',1,'Analysis.cpp']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['range_0',['range',['../group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760',1,'Analysis.cpp']]],
-  ['reco_1',['Reco',['../Vars_8cpp.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Vars.cpp']]],
-  ['response_2',['Response',['../Analysis_8cpp.html#adf1bfb1e73f04b4874bc296dcb10a11a',1,'Analysis.cpp']]]
+  ['s_0',['s',['../group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92',1,'Analysis.cpp']]],
+  ['section_20in_20proton_20proton_20collision_20at_2013_20tev_20with_20cms_20open_20data_1',['Differential Z boson production cross section in proton-proton collision at 13 TeV with CMS Open Data',['../index.html',1,'']]]
 ];
