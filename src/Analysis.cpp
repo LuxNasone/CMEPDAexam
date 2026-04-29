@@ -29,69 +29,67 @@
 /** @defgroup GlobalVariables Global Variables */
 
 /// @ingroup GlobalVariables
-/// @brief Number of bins, used both for histograms and response matrix 
+/// @brief Number of bins, used for all histograms and the response matrices. 
 
 int n_b = 100;
 
 /// @ingroup GlobalVariables
-/// @brief variable names, used in loops over RDataFrame columns 
+/// @brief Variable names, used in loops to define new RDataFrame columns 
 
 std::vector<const char*> vars = {"pt", "phi_eta", "y"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots. 
+/// @brief X axis names, used in loops for plots, only meant for aesthetic usage.
 
 std::vector<const char*> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "|y^{Z}|"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots.
+/// @brief Y axis names, used in loops for plots, only meant for aesthetic usage in the final cross section plot.
 
 std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
 
 /// @ingroup GlobalVariables
-/// @brief title for graphs, used in loops for plots.
+/// @brief Title for graphs, used in loops for plots, only meant for aesthetic usage.
 
 std::vector<const char*> titles = {"Transverse momentum", "Optimized angle", "Rapidity abs."};
 /// @ingroup GlobalVariables
-/// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation 
+/// @brief Bounds for variables, both for graphs and ranges in response matrices. 
 
 std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
 
 /// @ingroup GlobalVariables
-/// @brief bounds for y axis, purely aesthetic 
+/// @brief Bounds for y axis, purely aesthetic in unfolded graphs.
 
 std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
 
 /// @ingroup GlobalVariables
-/// @brief integrated luminosity for data used, expressed in [pb^{-1}]
+/// @brief Integrated luminosity for used dataset (expressed in [\f$pb^{-1}\f$]).
 
 double L = 8740.119304;
 
 /// @ingroup GlobalVariables
-/// @brief sigma for Z production in two muons [pb]
+/// @brief Sigma for Z production in two muons used in Montecarlo simulation (expressed [\f$pb\f$]).
 
 double s = 1952;
 
 /**
-*@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
-*        without any unfolding procedures applied.  
-* This function reads input data from a ROOT file in NANOAD format, processes the events, and produces
-* three histograms (TH1D) that can be used for further analysis (e.g. unfolding).
-*@param folder_name : folder path, required to contain at least a proper .root file;
-*@param outname : name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
-*                  Default : "Repo/outFiles/NotUnfolded.root";
-*@param MT :  bool that if true enables multithreading with the option ROOTEnableImplicitMT(). 
-*              Default : true;
-*@param  mute : bool that if true disables some secondary comments. 
-*                Default : false.
-*@return a vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
-*         In order : 
-*         [0] : Z tranverse momentum
-*         [1] : Optimzed angle = tan(($\pi$ - $\Delta_{\phi}$)/2)/cosh($\Delta_{\eta}$/2)
-*         [2] : Z rapidity
-*         Advised to visualize with a TBrowser.
+*@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, 
+*       without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.
+*@param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
+*@param outname Name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
+*               Default : "NotUnfolded.root";
+*@param MT Bool, if true enables multithreading with the option ROOTEnableImplicitMT(). 
+*          Default : true;
+*@param mute Bool that if true disables some secondary comments. 
+*            Default : false.
+*@return Vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
+*        In order : 
+*         - [0] : Z tranverse momentum
+*         - [1] : Optimzed angle = \f$ tan((\pi - \Delta_{\phi})/2)/cosh(\Delta_{\eta}/2)\f$
+*         - [2] : Z rapidity
+*        File are saved and can be visualized with a TBrowser.
 *@note Requires ROOT framework. 
-*@warning Input file must have expected structure, like NanoAD CMS OpenData.
+*@warning Input file must have expected NanoAD format for CMS OpenData.
 */
 
 std::vector<TH1D> CrossSection(const char* folder_name,
@@ -248,26 +246,20 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
 /**
  * @brief Calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
- *
- *        The function builds three RooUnfoldResponse objects (one per observable)
- *        and stores them in an output ROOT file.
- *
- * @param folder_name Path to the input folder cointaining ROOT file with generated and reconstructed data.
- *              The file must follow the expected tree structure of the NANOAD format.
+ *        The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.
+ * @param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
  * @param outname Path to the output ROOT file where the response matrices are saved.
- *                Default: "Repo/outFiles/Response.root".
+ *                Default: "Response.root".
  * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
- *           This improves performance but does not affect results.
  *           Default: true.
  * @param mute If true, suppresses non-essential log messages printed to stdout.
  *             Default: false.
  *
- * @return void. The function writes RooUnfoldResponse objects and related histograms
- *         to the output ROOT file, accessible via TBrowser.
+ * @return Void. The function writes RooUnfoldResponse objects and related histograms to the output ROOT file, accessible via TBrowser.
  *
  * @note Requires ROOT framework and RooUnfold package.
  *
- * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ * @warning Input file must have expected NanoAD format for CMS OpenData.
  */
 
 
@@ -510,21 +502,18 @@ void Response(const char* folder_name,
 }
 
 /**
- * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms
- *        using a precomputed response matrix.
- * @param folder_name : folder path, required to contain at least a proper .root file;
- * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
- *               Typical values range from 2 to 10; higher values may introduce fluctuations.
- * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp).
- *              The matrix must be compatible in binning and observable definition.
+ * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.
+ *
+ * @param folder_name : Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format;
+ * @param n_iter Number of iterations for the Bayesian unfolding algorithm. Typical values range from 2 to 10; higher values may introduce fluctuations;
+ * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition;
  * @param outname Name of the output ROOT file where unfolded histograms will be stored.
  *
- * @return std::vector<TH1D*> Vector containing the three unfolded histograms, in the following order:
- *         [0] variable Pt, [1] variable Phi_eta, [2] variable y (see CrossSection for definitions).
+ * @return Void. The function writes Unfolded histograms to the output ROOT file, accessible via TBrowser.
  *
  * @note Requires ROOT framework and RooUnfold package.
  *
- * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ * @warning Input file must have expected NanoAD format for CMS OpenData.
  */
 
 void Unfolded(const char* folder_name,
@@ -616,21 +605,20 @@ void Unfolded(const char* folder_name,
 }
 
 /**
- * @brief Compares reconstructed (not unfolded) and unfolded distributions by overlaying the corresponding histograms. 
+ * @brief Compares not unfolded and unfolded distributions by overlaying the corresponding histograms. 
  *        Also makes a graphs of normalized measured and simulated distributions.
  *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
  *
- * @param f1 : path to not unfolded histograms, assumed to be output of CrossSection;
- * @param f2 : path to unfolded histograms, assumed to be output of Unfolded;
- * @param f3 : path to MC histograms, assumed to be output of Response
+ * @param f1 : path to file .root containing not unfolded histograms, assumed to be output of CrossSection;
+ * @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded;
+ * @param f3 : path to file .root contaning MC histograms, assumed to be output of Response;
  * @param outname Name of the output ROOT file where comparison plots are saved.
  *
- * @return void. The function produces comparison plots (TCanvas objects)
- *         stored in the output file and accessible via TBrowser.
+ * @return Void. The function produces comparison plots (TCanvas objects) stored in the output file and accessible via TBrowser.
  *
- * @note Requires ROOT framework and RooUnfold package.
+ * @note Requires ROOT framework.
  *
- * @warning Input file must have expected structure, like NanoAD CMS OpenData.
+ * @warning Input file must be output of respectively CrossSection, Response and Unfolded.
  */
 
 void Comp(const char* f1,
