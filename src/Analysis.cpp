@@ -39,16 +39,19 @@ int n_b = 100;
 std::vector<const char*> vars = {"pt", "phi_eta", "y"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method 
+/// @brief x axis names, used in loops for plots. 
 
-std::vector<const char*> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "y^{Z}"};
+std::vector<const char*> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "|y^{Z}|"};
 
 /// @ingroup GlobalVariables
-/// @brief x axis names, used in loops for plots. These are type std::string, must be converted to char to be used in some application, using c_str() method
-
+/// @brief x axis names, used in loops for plots.
 
 std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
 
+/// @ingroup GlobalVariables
+/// @brief title for graphs, used in loops for plots.
+
+std::vector<const char*> titles = {"Transverse momentum", "Optimized angle", "Rapidity abs."};
 /// @ingroup GlobalVariables
 /// @brief bounds for variables, both for graphs but also for ranges in response matrix estimation 
 
@@ -67,7 +70,7 @@ double L = 8740.119304;
 /// @ingroup GlobalVariables
 /// @brief sigma for Z production in two muons [pb]
 
-double s = 204;
+double s = 1952;
 
 /**
 *@brief Macro to reconstruct the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle), 
@@ -168,7 +171,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     for (size_t i = 0; i < h_v.size(); i++){
 
-        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i], vars[i], n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i]));
+        auto h_tmp = new_df.Histo1D(ROOT::RDF::TH1DModel(vars[i], titles[i], n_b, bounds[i].first, bounds[i].second), Form("%s", vars[i]));
 
         TH1D h = h_tmp.GetValue(); 
 
@@ -182,13 +185,39 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Histogram for Invariant Mass;
 
-    auto h_m = new_df.Histo1D({"M_inv", "Z0_mass", n_b, 70, 110}, "mass");
-        
+    auto h_m = new_df.Histo1D({"M_inv", "Z^{0} mass", n_b, 70, 110}, "mass");
+
+    //Styling
+
+    h_m->GetXaxis()->SetTitle("M_{inv} [GeV]");
+
+    h_m->GetYaxis()->SetTitle("Counts [pure]");
+
+    h_m->SetLineColor(kBlue);
+
+    h_m->SetStats(0);
+    
+    h_m->Draw("E1 P");
+
     h_m->Write("InvMass");
 
-    //Writing for other histograms
+    //Writing for other histograms and styling
 
-    for (size_t i = 0; i < vars.size(); i++){h_v[i].Write(Form("%s", vars[i]));}
+    for (size_t i = 0; i < vars.size(); i++){
+
+        h_v[i].GetXaxis()->SetTitle(xlabels[i]);
+
+        h_v[i].GetYaxis()->SetTitle("Counts [pure]");
+
+        h_v[i].SetLineColor(kBlue);
+
+        h_v[i].SetStats(0);
+        
+        h_v[i].Draw("E1 P");
+
+        h_v[i].Write(vars[i]);
+
+    }
 
     //Closing output file
 
@@ -278,7 +307,7 @@ void Response(const char* folder_name,
 
     //Initializing DataFrame, folder must contain a .root file;
 
-    ROOT::RDataFrame df("Events", Form("%s",folder_name));
+    ROOT::RDataFrame df("Events", Form("%s/*.root",folder_name));
 
     //Response matrix for transverse momentum, opt. angle and rapidity
 
@@ -318,15 +347,15 @@ void Response(const char* folder_name,
 
         }
 
-        new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco, Float_t w_1, Float_t w_2) {
+        new_df.Foreach([&](Double_t gen, Double_t reco, bool Gen, bool Reco, Float_t w_1) {
 
-                            if(Gen && Reco){T[i].Fill((double)reco, (double)gen, w_1 * w_2);}
+                            if(Gen && Reco){T[i].Fill((double)reco, (double)gen, w_1);}
 
                             else if (Gen && !Reco){T[i].Miss((double)gen);}
 
                             else if (!Gen && Reco){T[i].Fake((double)reco);}
 
-                        },{Form("gen_%s", vars[i]), Form("reco_%s", vars[i]), "IsGen", "IsReco", "genWeight", "L1PreFiringWeight_Nom"});
+                        },{Form("gen_%s", vars[i]), Form("reco_%s", vars[i]), "IsGen", "IsReco", "genWeight"});
     }
     
     //Output file
@@ -334,9 +363,44 @@ void Response(const char* folder_name,
     TFile output(outname, "RECREATE");
 
     //Final histogram
-    auto h_mc = new_df.Histo1D({"M_invMC", "DiMuon Mass MC", 100, 70, 110}, "gen_mass");
+    auto h_mc = new_df.Histo1D({"M_invMC", "Z^{0} mass (MC)", 100, 70, 110}, "gen_mass");
+
+    h_mc->GetXaxis()->SetTitle("M_{inv} [GeV]");
+
+    h_mc->GetYaxis()->SetTitle("Counts [pure]");
+
+    h_mc->SetLineColor(kBlue);
+
+    h_mc->SetMarkerColor(kBlue);
+
+    h_mc->SetMarkerStyle(20);
+
+    h_mc->SetMarkerSize(1.2);
+
+    h_mc->SetStats(0);
+    
+    h_mc->Draw("E1 P");
+
     h_mc->Write("InvMass_MC");
-    auto h_reco = new_df.Histo1D({"M_inv_reco", "DiMuon Mass reco", 100, 70, 110}, "reco_mass");
+
+    auto h_reco = new_df.Histo1D({"M_inv_reco", "Z^{0} mass (Reco)", 100, 70, 110}, "reco_mass");
+
+    h_reco->GetXaxis()->SetTitle("M_{inv} [GeV]");
+
+    h_reco->GetYaxis()->SetTitle("Counts [pure]");
+
+    h_reco->SetLineColor(kBlue);
+
+    h_reco->SetMarkerColor(kBlue);
+
+    h_reco->SetMarkerStyle(20);
+
+    h_reco->SetMarkerSize(1.2);
+
+    h_reco->SetStats(0);
+    
+    h_reco->Draw("E1 P");
+
     h_reco->Write("InvMass_reco");
 
     //Visualization of response matrix and reconstruction efficiency
@@ -347,6 +411,14 @@ void Response(const char* folder_name,
 
         TH2D* M = (TH2D*) T[i].Hresponse();
 
+        M->GetXaxis()->SetTitle(Form("%s reconstructed", xlabels[i]));
+
+        M->GetYaxis()->SetTitle(Form("%s generated", xlabels[i]));
+
+        M->Draw("COLZ");
+
+        M->Write(Form("Response matrix for %s", titles[i]));
+
         TH1D* h_true = (TH1D*) T[i].Htruth();
 
         TH1D* h_matched = M->ProjectionY();
@@ -355,9 +427,17 @@ void Response(const char* folder_name,
 
         h_eff->Divide(h_matched, h_true, 1.0, 1.0, "B");
 
+        h_reco->GetXaxis()->SetTitle(xlabels[i]);
+
+        h_reco->GetYaxis()->SetTitle("Efficienza [pure]");
+
         h_eff->SetLineColor(kBlue);
+
         h_eff->SetMarkerColor(kBlue);
+
         h_eff->SetMarkerStyle(20);
+
+        h_eff->SetMarkerSize(1.2);
 
         h_eff->Write(Form("Efficiency for %s", vars[i]));
 
@@ -386,8 +466,6 @@ void Response(const char* folder_name,
         h_true.SetMarkerStyle(20);
         
         TH1D h_obt = *h_obt_ptr;
-
-        T[i].UseOverflow();
 
         RooUnfoldBayes unfold(&T[i], &h_obt, 20);
 
@@ -514,8 +592,6 @@ void Unfolded(const char* folder_name,
             continue;
         }
 
-        T[i].UseOverflow();
-
         RooUnfoldBayes unfold(&T[i], h, n_iter);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
@@ -637,7 +713,7 @@ void Comp(const char* f1,
 
             c->Write();
 
-            TH1D h_D = h_u[i]; 
+            TH1D h_D = h_nu[i]; 
 
             h_u[i].Scale(1./(L * h_u[i].GetXaxis()->GetBinWidth(1)));
 

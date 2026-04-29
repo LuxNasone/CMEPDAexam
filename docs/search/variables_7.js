@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ylabels_0',['ylabels',['../group__GlobalVariables.html#ga1814acbf9e91aec9850f969a99bc5c5a',1,'Analysis.cpp']]]
+  ['xlabels_0',['xlabels',['../group__GlobalVariables.html#ga9cbf8d9449b7e294b5f8e248b01a99f4',1,'Analysis.cpp']]]
 ];
