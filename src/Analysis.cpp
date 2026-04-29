@@ -74,8 +74,8 @@ double s = 1952;
 
 /**
 *@brief Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, 
-*       without any unfolding applied. The function takes input data from a ROOT file in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.
-*@param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
+*       without any unfolding applied. The function takes input data from a folder containing .root files in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.
+*@param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. File are expected in the NANOAD format.
 *@param outname Name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
 *               Default : "NotUnfolded.root";
 *@param MT Bool, if true enables multithreading with the option ROOTEnableImplicitMT(). 
@@ -247,12 +247,12 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 /**
  * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
  *        The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.
- * @param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format.
+ * @param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format.
  * @param outname Path to the output ROOT file where the response matrices are saved.
  *                Default: "Response.root".
  * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
  *           Default: true.
- * @param mute If true, suppresses non-essential log messages printed to stdout.
+ * @param mute Bool that if true disables some secondary comments.
  *             Default: false.
  *
  * @return Void. The function writes RooUnfoldResponse objects and related histograms to the output ROOT file, accessible via TBrowser.
@@ -504,8 +504,8 @@ void Response(const char* folder_name,
 /**
  * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.
  *
- * @param folder_name : Path to the input folder cointaining ROOT file with Montecarlo data. The file is expected in the NANOAD format;
- * @param n_iter Number of iterations for the Bayesian unfolding algorithm. Typical values range from 2 to 10; higher values may introduce fluctuations;
+ * @param folder_name : Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format;
+ * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
  * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition;
  * @param outname Name of the output ROOT file where unfolded histograms will be stored.
  *
