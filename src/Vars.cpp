@@ -5,15 +5,14 @@
 //Useful functions:
 
 /**
- * @brief Computes the invariant mass of the sum of the first two four-momenta
- *        in the input vector.
+ * @brief Computes the invariant mass of the sum of the first two four-momentain the input vector.
  *
- * @param p Vector of four-momenta (e.g. TLorentzVector) representing
- *          reconstructed or generated muons.
+ * @param p Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.
  *
  * @return Invariant mass of p[0] + p[1]. Returns 0.0 if the vector size is less than 2.
  *
  */
+
 Double_t Minv_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
 
     if (p.size()>= 2){return (p[0] + p[1]).M();}
@@ -22,11 +21,9 @@ Double_t Minv_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
 }
 
 /**
- * @brief Computes the transverse mmomentum of the sum of the first two four-momenta
- *        in the input vector.
+ * @brief Computes the transverse mmomentum of the sum of the first two four-momenta in the input vector.
  *
- * @param p Vector of four-momenta (e.g. TLorentzVector) representing
- *          reconstructed or generated muons.
+ * @param p Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.
  *
  * @return Transverse momentum of p[0] + p[1]. Returns 0.0 if the vector size is less than 2.
  *
@@ -39,13 +36,11 @@ Double_t Pt_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
     return 0;
 }
 /**
- * @brief Computes the rapidity of the sum of the first two four-momenta
- *        in the input vector.
+ * @brief Computes the rapidity of the sum of the first two four-momenta in the input vector.
  *
- * @param p Vector of four-momenta (e.g. TLorentzVector) representing
- *          reconstructed or generated muons.
+ * @param p Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.
  *
- * @return Rapidity of p[0] + p[1]. Returns 0.0 if the vector size is less than 2.
+ * @return Rapidity absolute value of p[0] + p[1]. Returns 0.0 if the vector size is less than 2.
  *
  */
 
@@ -58,13 +53,11 @@ Double_t y_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
 }
 
 /**
- * @brief Computes the optimized angle of the sum of the first two four-momenta
- *        in the input vector.
+ * @brief Computes the optimized angle of the two four-momenta in the input vector.
  *
- * @param p Vector of four-momenta (e.g. TLorentzVector) representing
- *          reconstructed or generated muons.
+ * @param p Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.
  *
- * @return Optimized angle of p[0] + p[1]. Returns 0.0 if the vector size is less than 2.
+ * @return Optimized angle of p[0] and p[1]. Returns 0.0 if the vector size is less than 2.
  *
  */
 
@@ -90,16 +83,13 @@ Double_t phi_eta_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
 }
 
 /**
- * @brief Determines whether an event contains a generated Z⁰ decay into two muons, based on particle PDG IDs and mother–daughter relationships.
+ * @brief Determines whether an event contains a generated Z decay into two muons, based on particle PDG IDs and mother–daughter relationships.
  *
  * @param n_g Number of generated particles.
  * @param id Vector of PDG IDs for generated particles.
- * @param mid Vector of indices of the mother particle for each generated particle.
- *            The index refers to the position in the `id` vector.
+ * @param mid Vector of indices of the mother particle for each generated particle. The index refers to the position in the id vector.
  *
- * @return true if the event contains a Z⁰ (PDG ID = 23) decaying into the
- *         target final state (e.g. muon pair), with consistent mother–daughter
- *         matching; false otherwise.
+ * @return true if the event contains a Z (PDG ID = 23) decaying into the target final state (e.g. muon pair), with consistent mother–daughter matching; false otherwise.
  */
 
 bool IsTrue(const UInt_t &n_g,const ROOT::RVec<int> &id, const ROOT::RVec<int> &mid){
@@ -133,16 +123,15 @@ bool IsTrue(const UInt_t &n_g,const ROOT::RVec<int> &id, const ROOT::RVec<int> &
 }
 
 /**
- * @brief Determines whether an event is compatible with a reconstructed Z⁰ decay into a muon pair based on kinematic and isolation criteria.
+ * @brief Determines whether an event is compatible with a reconstructed Z decay into a muon pair based on kinematic and isolation criteria.
  *
  * @param n Number of reconstructed particles.
  * @param charge Vector of particle charges.
  * @param Iso Vector of relative isolation values for each particle.
- * @param pt Vector of transverse momentum (pT).
- * @param eta Vector of pseudorapidity (η).
+ * @param pt Vector of transverse momentums.
+ * @param eta Vector of pseudorapidities.
  *
- * @return true if the event contains at least two leptons forming a valid Z⁰ candidate,
- *         typically requiring:
+ * @return true if the event contains at least two leptons forming a valid Z candidate, requiring:
  *         - opposite charge pair,
  *         - transverse momentum above 25 GeV,
  *         - isolation below 0.15,
@@ -166,15 +155,14 @@ bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<flo
 }
 
 /**
- * @brief Computes four-momenta for selected particles in a generated event,
- *        combining generator-level information with reconstructed kinematics.
+ * @brief Computes four-momenta for selected particles in a generated event, combining generator-level information with reconstructed kinematics.
  *
  * @param n Number of generated particles.
  * @param id Vector of PDG IDs for generated particles.
- * @param mid Vector of indices of the mother particle (same indexing as `id`).
- * @param pt Vector of transverse momentum (pT) for reconstructed particles.
- * @param eta Vector of pseudorapidity (η).
- * @param phi Vector of azimuthal angle (φ).
+ * @param mid Vector of indices of the mother particle for each generated particle. The index refers to the position in the id vector.
+ * @param pt Vector of transverse momentums.
+ * @param eta Vector of pseudorapidities.
+ * @param phi Vector of azimuthal angles.
  * @param mass Vector of particle masses.
  *
  * @return Vector of four-momenta of particles that pass the selection criteria.
@@ -209,9 +197,9 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> GenSel(const UInt_t &n, const ROOT::RVec
  * @param n_reco Number of reconstructed particles.
  * @param charge Vector of particle charges.
  * @param Iso Vector of relative isolation values.
- * @param pt Vector of transverse momentum (pT).
- * @param eta Vector of pseudorapidity (η).
- * @param phi Vector of azimuthal angle (φ).
+ * @param pt Vector of transverse momentums .
+ * @param eta Vector of pseudorapidities.
+ * @param phi Vector of azimuthal angles.
  * @param mass Vector of particle masses.
  *
  * @return Vector of four-momenta of reconstructed particles passing the selection criteria.
@@ -238,7 +226,7 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<i
 /**
  * @brief Checks whether an invariant mass value falls within a predefined range.
  *
- * @param m Invariant mass (typically in GeV).
+ * @param m Invariant mass (expressed in GeV).
  *
  * @return true if m is within the selected mass window, false otherwise.
  *

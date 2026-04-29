@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xlabels_0',['xlabels',['../group__GlobalVariables.html#ga9cbf8d9449b7e294b5f8e248b01a99f4',1,'Analysis.cpp']]]
+  ['with_20cms_20open_20data_0',['Differential Z boson production cross section in proton-proton collision at 13 TeV with CMS Open Data',['../index.html',1,'']]]
 ];

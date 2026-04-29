@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['range_0',['range',['../group__GlobalVariables.html#gac8b5c35f3872ae1f0f57bff00260b760',1,'Analysis.cpp']]],
-  ['reco_1',['Reco',['../Vars_8cpp.html#a7de152e73e5c1dcf16038ce6200fe836',1,'Vars.cpp']]],
-  ['response_2',['Response',['../Analysis_8cpp.html#adf1bfb1e73f04b4874bc296dcb10a11a',1,'Analysis.cpp']]]
+  ['phi_5feta_5fcalculator_0',['phi_eta_calculator',['../Vars_8cpp.html#acc083c756600e41e2dc8351c03bbdefb',1,'Vars.cpp']]],
+  ['production_20cross_20section_20in_20proton_20proton_20collision_20at_2013_20tev_20with_20cms_20open_20data_1',['Differential Z boson production cross section in proton-proton collision at 13 TeV with CMS Open Data',['../index.html',1,'']]],
+  ['proton_20proton_20collision_20at_2013_20tev_20with_20cms_20open_20data_2',['Differential Z boson production cross section in proton-proton collision at 13 TeV with CMS Open Data',['../index.html',1,'']]],
+  ['pt_5fcalculator_3',['Pt_calculator',['../Vars_8cpp.html#a5c999833267c93b99a5ed5453cd31c5f',1,'Vars.cpp']]]
 ];
