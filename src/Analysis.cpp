@@ -85,7 +85,8 @@ double s = 1952;
 *@return Vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
 *        In order : 
 *         - [0] : Z tranverse momentum
-*         - [1] : Optimzed angle = \f$ tan((\pi - \Delta_{\phi})/2)/cosh(\Delta_{\eta}/2)\f$
+*         - [1] : Optimzed angle =
+*                 \f$ \tan((\pi - \Delta_{\phi})/2)/cosh(\Delta_{\eta}/2) \f$
 *         - [2] : Z rapidity
 *        File are saved and can be visualized with a TBrowser.
 *@note Requires ROOT framework. 
