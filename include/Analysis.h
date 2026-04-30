@@ -25,7 +25,7 @@
 *@warning Input file must have expected NanoAD format for CMS OpenData.
 */
 
-std::vector<TH1D> CrossSection(const char* folder_name, const char* outname = "Repo/outFiles/NotUnfolded.root", bool MT = true, bool mute = false);
+std::vector<TH1D> NotUnfolded(const char* folder_name, const char* outname = "Repo/outFiles/NotUnfolded.root", bool MT = true, bool mute = false);
 
 /**
 * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
@@ -71,7 +71,7 @@ void Unfolded(const char* folder_name, int n_iter, const char* rpath = "/home/lu
 *        Also makes a graphs of normalized measured and simulated distributions.
 *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
 *
-* @param f1 : path to file .root containing not unfolded histograms, assumed to be output of CrossSection;
+* @param f1 : path to file .root containing not unfolded histograms, assumed to be output of NotUnfolded;
 * @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded;
 * @param f3 : path to file .root contaning MC histograms, assumed to be output of Response;
 * @param outname Name of the output ROOT file where comparison plots are saved.
@@ -84,6 +84,6 @@ void Unfolded(const char* folder_name, int n_iter, const char* rpath = "/home/lu
 * @warning Input file must be output of respectively CrossSection, Response and Unfolded.
 */
 
-void Comp(const char* f1, const char* f2, const char* f3, const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root", bool mute = false);
+void Comparison(const char* f1, const char* f2, const char* f3, const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root", bool mute = false);
 
 #endif

@@ -172,30 +172,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_vars
+# Target rules for targets named test_utils
 
 # Build rule for target.
-test_vars: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_vars
-.PHONY : test_vars
+test_utils: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_utils
+.PHONY : test_utils
 
 # fast build rule for target.
-test_vars/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/build
-.PHONY : test_vars/fast
-
-#=============================================================================
-# Target rules for targets named test_analysis
-
-# Build rule for target.
-test_analysis: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_analysis
-.PHONY : test_analysis
-
-# fast build rule for target.
-test_analysis/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/build
-.PHONY : test_analysis/fast
+test_utils/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/build
+.PHONY : test_utils/fast
 
 #=============================================================================
 # Target rules for targets named gmock
@@ -249,104 +236,53 @@ gtest_main/fast:
 	$(MAKE) $(MAKESILENT) -f external/googletest/googletest/CMakeFiles/gtest_main.dir/build.make external/googletest/googletest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
-src/Analysis.o: src/Analysis.cpp.o
-.PHONY : src/Analysis.o
+src/Utils.o: src/Utils.cpp.o
+.PHONY : src/Utils.o
 
 # target to build an object file
-src/Analysis.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Analysis.cpp.o
-.PHONY : src/Analysis.cpp.o
+src/Utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/src/Utils.cpp.o
+.PHONY : src/Utils.cpp.o
 
-src/Analysis.i: src/Analysis.cpp.i
-.PHONY : src/Analysis.i
+src/Utils.i: src/Utils.cpp.i
+.PHONY : src/Utils.i
 
 # target to preprocess a source file
-src/Analysis.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Analysis.cpp.i
-.PHONY : src/Analysis.cpp.i
+src/Utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/src/Utils.cpp.i
+.PHONY : src/Utils.cpp.i
 
-src/Analysis.s: src/Analysis.cpp.s
-.PHONY : src/Analysis.s
+src/Utils.s: src/Utils.cpp.s
+.PHONY : src/Utils.s
 
 # target to generate assembly for a file
-src/Analysis.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Analysis.cpp.s
-.PHONY : src/Analysis.cpp.s
+src/Utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/src/Utils.cpp.s
+.PHONY : src/Utils.cpp.s
 
-src/Vars.o: src/Vars.cpp.o
-.PHONY : src/Vars.o
+tests/test_utils.o: tests/test_utils.cpp.o
+.PHONY : tests/test_utils.o
 
 # target to build an object file
-src/Vars.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/src/Vars.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Vars.cpp.o
-.PHONY : src/Vars.cpp.o
+tests/test_utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/tests/test_utils.cpp.o
+.PHONY : tests/test_utils.cpp.o
 
-src/Vars.i: src/Vars.cpp.i
-.PHONY : src/Vars.i
-
-# target to preprocess a source file
-src/Vars.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/src/Vars.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Vars.cpp.i
-.PHONY : src/Vars.cpp.i
-
-src/Vars.s: src/Vars.cpp.s
-.PHONY : src/Vars.s
-
-# target to generate assembly for a file
-src/Vars.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/src/Vars.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/src/Vars.cpp.s
-.PHONY : src/Vars.cpp.s
-
-tests/test_analysis.o: tests/test_analysis.cpp.o
-.PHONY : tests/test_analysis.o
-
-# target to build an object file
-tests/test_analysis.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/tests/test_analysis.cpp.o
-.PHONY : tests/test_analysis.cpp.o
-
-tests/test_analysis.i: tests/test_analysis.cpp.i
-.PHONY : tests/test_analysis.i
+tests/test_utils.i: tests/test_utils.cpp.i
+.PHONY : tests/test_utils.i
 
 # target to preprocess a source file
-tests/test_analysis.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/tests/test_analysis.cpp.i
-.PHONY : tests/test_analysis.cpp.i
+tests/test_utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/tests/test_utils.cpp.i
+.PHONY : tests/test_utils.cpp.i
 
-tests/test_analysis.s: tests/test_analysis.cpp.s
-.PHONY : tests/test_analysis.s
-
-# target to generate assembly for a file
-tests/test_analysis.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_analysis.dir/build.make CMakeFiles/test_analysis.dir/tests/test_analysis.cpp.s
-.PHONY : tests/test_analysis.cpp.s
-
-tests/test_vars.o: tests/test_vars.cpp.o
-.PHONY : tests/test_vars.o
-
-# target to build an object file
-tests/test_vars.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/tests/test_vars.cpp.o
-.PHONY : tests/test_vars.cpp.o
-
-tests/test_vars.i: tests/test_vars.cpp.i
-.PHONY : tests/test_vars.i
-
-# target to preprocess a source file
-tests/test_vars.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/tests/test_vars.cpp.i
-.PHONY : tests/test_vars.cpp.i
-
-tests/test_vars.s: tests/test_vars.cpp.s
-.PHONY : tests/test_vars.s
+tests/test_utils.s: tests/test_utils.cpp.s
+.PHONY : tests/test_utils.s
 
 # target to generate assembly for a file
-tests/test_vars.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vars.dir/build.make CMakeFiles/test_vars.dir/tests/test_vars.cpp.s
-.PHONY : tests/test_vars.cpp.s
+tests/test_utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_utils.dir/build.make CMakeFiles/test_utils.dir/tests/test_utils.cpp.s
+.PHONY : tests/test_utils.cpp.s
 
 # Help Target
 help:
@@ -365,20 +301,13 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
-	@echo "... test_analysis"
-	@echo "... test_vars"
-	@echo "... src/Analysis.o"
-	@echo "... src/Analysis.i"
-	@echo "... src/Analysis.s"
-	@echo "... src/Vars.o"
-	@echo "... src/Vars.i"
-	@echo "... src/Vars.s"
-	@echo "... tests/test_analysis.o"
-	@echo "... tests/test_analysis.i"
-	@echo "... tests/test_analysis.s"
-	@echo "... tests/test_vars.o"
-	@echo "... tests/test_vars.i"
-	@echo "... tests/test_vars.s"
+	@echo "... test_utils"
+	@echo "... src/Utils.o"
+	@echo "... src/Utils.i"
+	@echo "... src/Utils.s"
+	@echo "... tests/test_utils.o"
+	@echo "... tests/test_utils.i"
+	@echo "... tests/test_utils.s"
 .PHONY : help
 
 

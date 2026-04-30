@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_5fcalculator_0',['y_calculator',['../Vars_8h.html#a48fcdba400d59692eee5018ee286044a',1,'Vars.h']]]
+  ['unfolded_0',['Unfolded',['../Analysis_8h.html#abe42ac229234c943d837cdc913d00c0d',1,'Analysis.h']]]
 ];

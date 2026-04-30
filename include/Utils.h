@@ -1,5 +1,5 @@
-#ifndef VARS_H
-#define VARS_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <Rtypes.h>
 #include <ROOT/RVec.hxx>

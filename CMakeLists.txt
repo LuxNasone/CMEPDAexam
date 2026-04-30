@@ -12,16 +12,17 @@ include_directories(
     external/googletest/googletest/include
     /home/lux_n/CMEPDA/Exam/RooUnfold/build
     src
+    include
 )
 
 enable_testing()
 
-add_executable(test_vars
-    tests/test_vars.cpp
-    src/Vars.cpp
+add_executable(test_utils
+    tests/test_utils.cpp
+    src/Utils.cpp
 )
 
-target_link_libraries(test_vars
+target_link_libraries(test_utils
     gtest
     gtest_main
     ${ROOT_LIBRARIES}

@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/lux_n/CMEPDA/Exam/Repo/src/Main.cpp" "CMakeFiles/test_main.dir/src/Main.cpp.o" "gcc" "CMakeFiles/test_main.dir/src/Main.cpp.o.d"
-  "/home/lux_n/CMEPDA/Exam/Repo/tests/test_main.cpp" "CMakeFiles/test_main.dir/tests/test_main.cpp.o" "gcc" "CMakeFiles/test_main.dir/tests/test_main.cpp.o.d"
+  "/home/lux_n/CMEPDA/Exam/Repo/src/Utils.cpp" "CMakeFiles/test_utils.dir/src/Utils.cpp.o" "gcc" "CMakeFiles/test_utils.dir/src/Utils.cpp.o.d"
+  "/home/lux_n/CMEPDA/Exam/Repo/tests/test_utils.cpp" "CMakeFiles/test_utils.dir/tests/test_utils.cpp.o" "gcc" "CMakeFiles/test_utils.dir/tests/test_utils.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

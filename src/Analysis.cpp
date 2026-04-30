@@ -1,12 +1,8 @@
-//Standard include
-
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <numbers>
 #include <chrono>
-
-//ROOT include
 
 #include <TSystem.h> 
 #include <TCanvas.h>
@@ -17,83 +13,12 @@
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4D.h>
 
-//Unfolding toolbox
-
 #include "RooUnfoldResponse.h"
 #include "RooUnfoldBayes.h"
 
-//Useful functions
+#include "../include/Utils.h"
 
-#include "../include/Vars.h"
-
-/** @defgroup GlobalVariables Global Variables */
-
-/// @ingroup GlobalVariables
-/// @brief Number of bins, used for all histograms and the response matrices. 
-
-int n_b = 100;
-
-/// @ingroup GlobalVariables
-/// @brief Variable names, used in loops to define new RDataFrame columns 
-
-std::vector<const char*> vars = {"pt", "phi_eta", "y"};
-
-/// @ingroup GlobalVariables
-/// @brief X axis names, used in loops for plots, only meant for aesthetic usage.
-
-std::vector<const char*> xlabels = {"p^{Z}_{T}[GeV]", "#phi^{*}_{#eta}", "|y^{Z}|"};
-
-/// @ingroup GlobalVariables
-/// @brief Y axis names, used in loops for plots, only meant for aesthetic usage in the final cross section plot.
-
-std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d#phi^{*}_{#eta} [pb]", "d#sigma / dy^{Z} [pb]"};
-
-/// @ingroup GlobalVariables
-/// @brief Title for graphs, used in loops for plots, only meant for aesthetic usage.
-
-std::vector<const char*> titles = {"Transverse momentum", "Optimized angle", "Rapidity abs."};
-
-/// @ingroup GlobalVariables
-/// @brief Bounds for variables, both for graphs and ranges in response matrices. 
-
-std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0, 3}, {0, 2.5}};
-
-/// @ingroup GlobalVariables
-/// @brief Bounds for y axis, purely aesthetic in unfolded graphs.
-
-std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
-
-/// @ingroup GlobalVariables
-/// @brief Integrated luminosity for used dataset (expressed in [1/pb]).
-
-double L = 8740.119304;
-
-/// @ingroup GlobalVariables
-/// @brief Sigma for Z production in two muons used in Montecarlo simulation (expressed in [pb]).
-
-double s = 1952;
-
-/**
-*@brief Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, 
-*       without any unfolding applied. The function takes input data from a folder containing .root files in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.
-*@param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. File are expected in the NANOAD format.
-*@param outname Name for the output file, advised to use a .root file in order to easily see results with a TBrowser. 
-*               Default : "NotUnfolded.root";
-*@param MT Bool, if true enables multithreading with the option ROOTEnableImplicitMT(). 
-*          Default : true;
-*@param mute Bool that if true disables some secondary comments. 
-*            Default : false.
-*@return Vector of the three histograms (TH1D) saved on the file called outname, meant to be unfolded later on.
-*        In order : 
-*         - [0] : Z tranverse momentum;
-*         - [1] : Optimzed angle;
-*         - [2] : Z rapidity absolute value;
-*        File are saved and can be visualized with a TBrowser.
-*@note Requires ROOT framework. 
-*@warning Input file must have expected NanoAD format for CMS OpenData.
-*/
-
-std::vector<TH1D> CrossSection(const char* folder_name,
+std::vector<TH1D> NotUnfolded(const char* folder_name,
                                 const char* outname = "Repo/outFiles/NotUnfolded.root", 
                                 bool MT = true,
                                 bool mute = false){
@@ -123,7 +48,7 @@ std::vector<TH1D> CrossSection(const char* folder_name,
 
     //Initializing DataFrame, folder_name must contain a .root file;
 
-    ROOT::RDataFrame df("Events", Form("%s/*",folder_name));
+    ROOT::RDataFrame df("Events", Form("%s/*.root",folder_name));
 
     /* 
 
@@ -242,25 +167,6 @@ std::vector<TH1D> CrossSection(const char* folder_name,
     return h_v;
 
 }
-
-/**
- * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
- *        The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.
- * @param folder_name Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format.
- * @param outname Path to the output ROOT file where the response matrices are saved.
- *                Default: "Response.root".
- * @param MT If true, enables ROOT implicit multithreading via ROOT::EnableImplicitMT().
- *           Default: true.
- * @param mute Bool that if true disables some secondary comments.
- *             Default: false.
- *
- * @return Void. The function writes RooUnfoldResponse objects and related histograms to the output ROOT file, accessible via TBrowser.
- *
- * @note Requires ROOT framework and RooUnfold package.
- *
- * @warning Input file must have expected NanoAD format for CMS OpenData.
- */
-
 
 void Response(const char* folder_name, 
               const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
@@ -446,9 +352,9 @@ void Response(const char* folder_name,
 
         TCanvas* c = new TCanvas(vars[i], vars[i], 800, 600);
 
-        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), 100, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i]));
+        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), n_b, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i]));
 
-        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i]), Form("%s_Reco", vars[i]), 100, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
+        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i]), Form("%s_Reco", vars[i]), n_b, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
 
         TH1D h_true = *h_true_ptr;
 
@@ -458,7 +364,9 @@ void Response(const char* folder_name,
         
         TH1D h_obt = *h_obt_ptr;
 
-        RooUnfoldBayes unfold(&T[i], &h_obt, 20);
+        T[i].UseOverflow();
+
+        RooUnfoldBayes unfold(&T[i], &h_obt, 5);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
@@ -500,23 +408,6 @@ void Response(const char* folder_name,
     gROOT->SetBatch(kFALSE);
 }
 
-/**
- * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.
- *
- * @param folder_name : Path to the input folder cointaining ROOT file with Montecarlo data. Files are expected in the NANOAD format;
- * @param n_iter Number of iterations for the Bayesian unfolding algorithm.
- * @param rpath Path to the ROOT file containing the response matrix (generated with Response.cpp). The matrices must be compatible in binning and observable definition.
-                Default : "Response.root"
- * @param outname Name of the output ROOT file where unfolded histograms will be stored.
- *                Default : "Unfolded.root"
- *
- * @return Void. The function writes Unfolded histograms to the output ROOT file, accessible via TBrowser.
- *
- * @note Requires ROOT framework and RooUnfold package.
- *
- * @warning Input file must have expected NanoAD format for CMS OpenData.
- */
-
 void Unfolded(const char* folder_name,
               int n_iter,
               const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
@@ -557,9 +448,9 @@ void Unfolded(const char* folder_name,
 
     Rfile->Close();
 
-    //Executing CrossSection
+    //Executing NotUnfolded
 
-    std::vector<TH1D> h_v = CrossSection(folder_name, "Repo/outFiles/NotUnfolded.root", true, true);
+    std::vector<TH1D> h_v = NotUnfolded(folder_name, "Repo/outFiles/NotUnfolded.root", true, true);
 
     std::cout << "This run will be saved on file : " << outname << std::endl;
 
@@ -581,6 +472,8 @@ void Unfolded(const char* folder_name,
             std::cerr << "Istogramma nullo per i=" << i << std::endl;
             continue;
         }
+
+        T[i].UseOverflow();
 
         RooUnfoldBayes unfold(&T[i], h, n_iter);
 
@@ -605,29 +498,13 @@ void Unfolded(const char* folder_name,
 
 }
 
-/**
- * @brief Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. 
- *        Also makes a graphs of normalized measured and simulated distributions.
- *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
- *
- * @param f1 : path to file .root containing not unfolded histograms, assumed to be output of CrossSection;
- * @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded;
- * @param f3 : path to file .root contaning MC histograms, assumed to be output of Response;
- * @param outname Name of the output ROOT file where comparison plots are saved.
- *                Default : "Comparison.root".
- *
- * @return Void. The function produces comparison plots (TCanvas objects) stored in the output file and accessible via TBrowser.
- *
- * @note Requires ROOT framework.
- *
- * @warning Input file must be output of respectively CrossSection, Response and Unfolded.
- */
-
-void Comp(const char* f1,
+void Comparison(const char* f1,
           const char* f2,
           const char* f3,  
           const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root",
           bool mute = false){
+
+    gROOT->SetBatch(kTRUE);
 
     //Results not-unfolded and unfolded, and MC
 
@@ -713,6 +590,9 @@ void Comp(const char* f1,
 
             TLegend* legend_MC = new TLegend(0.7, 0.7, 0.9, 0.9);
 
+            h_mc[i].SetLineColor(kRed);
+            h_mc[i].SetMarkerColor(kRed);
+            h_mc[i].SetMarkerStyle(20);
             h_mc[i].SetStats(0);
 
             h_mc[i].Draw();
@@ -735,6 +615,8 @@ void Comp(const char* f1,
     }
 
     output->Close();
+
+    gROOT->SetBatch(kFALSE);
 
 }
 
