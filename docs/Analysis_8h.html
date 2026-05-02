@@ -107,22 +107,22 @@ Include dependency graph for Analysis.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abbca85418c1c4973f4fac42a2826e510" id="r_abbca85418c1c4973f4fac42a2826e510"><td class="memItemLeft" align="right" valign="top">std::vector&lt; TH1D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#abbca85418c1c4973f4fac42a2826e510">NotUnfolded</a> (const char *folder_name, const char *outname=&quot;Repo/outFiles/NotUnfolded.root&quot;, bool MT=true, bool mute=false)</td></tr>
-<tr class="memdesc:abbca85418c1c4973f4fac42a2826e510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a folder containing .root files in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.  <br /></td></tr>
-<tr class="separator:abbca85418c1c4973f4fac42a2826e510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65df88350a747b7317c7ea59643c9727" id="r_a65df88350a747b7317c7ea59643c9727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#a65df88350a747b7317c7ea59643c9727">Response</a> (const char *fname, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, bool MT=true, bool mute=false)</td></tr>
-<tr class="memdesc:a65df88350a747b7317c7ea59643c9727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.  <br /></td></tr>
-<tr class="separator:a65df88350a747b7317c7ea59643c9727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe42ac229234c943d837cdc913d00c0d" id="r_abe42ac229234c943d837cdc913d00c0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#abe42ac229234c943d837cdc913d00c0d">Unfolded</a> (const char *folder_name, int n_iter, const char *rpath=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root&quot;)</td></tr>
-<tr class="memdesc:abe42ac229234c943d837cdc913d00c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.  <br /></td></tr>
-<tr class="separator:abe42ac229234c943d837cdc913d00c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae44e8d5f865743149cf36966abc2b05e" id="r_ae44e8d5f865743149cf36966abc2b05e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#ae44e8d5f865743149cf36966abc2b05e">Comparison</a> (const char *f1, const char *f2, const char *f3, const char *outname=&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root&quot;, bool mute=false)</td></tr>
-<tr class="memdesc:ae44e8d5f865743149cf36966abc2b05e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs.  <br /></td></tr>
-<tr class="separator:ae44e8d5f865743149cf36966abc2b05e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c21200cec1ff355cb9a0624492af870" id="r_a1c21200cec1ff355cb9a0624492af870"><td class="memItemLeft" align="right" valign="top">std::vector&lt; TH1D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#a1c21200cec1ff355cb9a0624492af870">NotUnfolded</a> (const char *folder_name, const char *outname=&quot;NotUnfolded.root&quot;, bool MT=true, bool mute=false)</td></tr>
+<tr class="memdesc:a1c21200cec1ff355cb9a0624492af870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that reconstructs the distributions of variables used to express the differential cross-section (Z transverse momentum, rapidity and optimized angle) from data, without any unfolding applied. The function takes input data from a folder containing .root files in NANOAD format, processes the events, and returns three histograms (TH1D) that are used for further analysis.  <br /></td></tr>
+<tr class="separator:a1c21200cec1ff355cb9a0624492af870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a286dfe56bbef057a5a945a74c4a1069d" id="r_a286dfe56bbef057a5a945a74c4a1069d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#a286dfe56bbef057a5a945a74c4a1069d">Response</a> (const char *fname, const char *outname=&quot;Response.root&quot;, bool MT=true, bool mute=false)</td></tr>
+<tr class="memdesc:a286dfe56bbef057a5a945a74c4a1069d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that calculates the response matrices by matching generated and reconstructed events of interest (Z in dimuon). The function builds three RooUnfoldResponse objects (one per observable) and stores them in an output ROOT file, to be used for further analysis.  <br /></td></tr>
+<tr class="separator:a286dfe56bbef057a5a945a74c4a1069d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae2044e06e095c541f94cbf74ccc5eb" id="r_a2ae2044e06e095c541f94cbf74ccc5eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#a2ae2044e06e095c541f94cbf74ccc5eb">Unfolded</a> (const char *folder_name, int n_iter, const char *rpath=&quot;Response.root&quot;, const char *outname=&quot;Unfolded.root&quot;)</td></tr>
+<tr class="memdesc:a2ae2044e06e095c541f94cbf74ccc5eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.  <br /></td></tr>
+<tr class="separator:a2ae2044e06e095c541f94cbf74ccc5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a494c748fda85064afe5d53061086eca2" id="r_a494c748fda85064afe5d53061086eca2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Analysis_8h.html#a494c748fda85064afe5d53061086eca2">Comparison</a> (const char *f1=&quot;NotUnfolded.root&quot;, const char *f2=&quot;Unfolded.root&quot;, const char *f3=&quot;Response.root&quot;, const char *outname=&quot;Comparison.root&quot;, bool mute=false)</td></tr>
+<tr class="memdesc:a494c748fda85064afe5d53061086eca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs.  <br /></td></tr>
+<tr class="separator:a494c748fda85064afe5d53061086eca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ae44e8d5f865743149cf36966abc2b05e" name="ae44e8d5f865743149cf36966abc2b05e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae44e8d5f865743149cf36966abc2b05e">&#9670;&#160;</a></span>Comparison()</h2>
+<a id="a494c748fda85064afe5d53061086eca2" name="a494c748fda85064afe5d53061086eca2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a494c748fda85064afe5d53061086eca2">&#9670;&#160;</a></span>Comparison()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,25 +131,25 @@ Functions</h2></td></tr>
           <td class="memname">void Comparison </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>f1</em>, </td>
+          <td class="paramname"><em>f1</em> = <code>&quot;NotUnfolded.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>f2</em>, </td>
+          <td class="paramname"><em>f2</em> = <code>&quot;Unfolded.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>f3</em>, </td>
+          <td class="paramname"><em>f3</em> = <code>&quot;Response.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>outname</em> = <code>&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root&quot;</code>, </td>
+          <td class="paramname"><em>outname</em> = <code>&quot;Comparison.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -168,9 +168,9 @@ Functions</h2></td></tr>
 <p>Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. Also makes a graphs of normalized measured and simulated distributions. Mainly intended to make stylish graphs and for diagnostic of previous outputs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">f1</td><td>: path to file .root containing not unfolded histograms, assumed to be output of NotUnfolded; </td></tr>
-    <tr><td class="paramname">f2</td><td>: path to file .root containing unfolded histograms, assumed to be output of Unfolded; </td></tr>
-    <tr><td class="paramname">f3</td><td>: path to file .root contaning MC histograms, assumed to be output of Response; </td></tr>
+    <tr><td class="paramname">f1</td><td>: path to file .root containing not unfolded histograms, assumed to be output of NotUnfolded. Default : "NotUnfolded.root"; </td></tr>
+    <tr><td class="paramname">f2</td><td>: path to file .root containing unfolded histograms, assumed to be output of Unfolded. Default : "Unfolded.root"; </td></tr>
+    <tr><td class="paramname">f3</td><td>: path to file .root contaning MC histograms, assumed to be output of Response. Default : "Response.root"; </td></tr>
     <tr><td class="paramname">outname</td><td>Name of the output ROOT file where comparison plots are saved. Default : "Comparison.root".</td></tr>
   </table>
   </dd>
@@ -181,8 +181,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abbca85418c1c4973f4fac42a2826e510" name="abbca85418c1c4973f4fac42a2826e510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbca85418c1c4973f4fac42a2826e510">&#9670;&#160;</a></span>NotUnfolded()</h2>
+<a id="a1c21200cec1ff355cb9a0624492af870" name="a1c21200cec1ff355cb9a0624492af870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c21200cec1ff355cb9a0624492af870">&#9670;&#160;</a></span>NotUnfolded()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +197,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>outname</em> = <code>&quot;Repo/outFiles/NotUnfolded.root&quot;</code>, </td>
+          <td class="paramname"><em>outname</em> = <code>&quot;NotUnfolded.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -240,8 +240,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a65df88350a747b7317c7ea59643c9727" name="a65df88350a747b7317c7ea59643c9727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65df88350a747b7317c7ea59643c9727">&#9670;&#160;</a></span>Response()</h2>
+<a id="a286dfe56bbef057a5a945a74c4a1069d" name="a286dfe56bbef057a5a945a74c4a1069d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a286dfe56bbef057a5a945a74c4a1069d">&#9670;&#160;</a></span>Response()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +256,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>outname</em> = <code>&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;</code>, </td>
+          <td class="paramname"><em>outname</em> = <code>&quot;Response.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -294,8 +294,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abe42ac229234c943d837cdc913d00c0d" name="abe42ac229234c943d837cdc913d00c0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe42ac229234c943d837cdc913d00c0d">&#9670;&#160;</a></span>Unfolded()</h2>
+<a id="a2ae2044e06e095c541f94cbf74ccc5eb" name="a2ae2044e06e095c541f94cbf74ccc5eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ae2044e06e095c541f94cbf74ccc5eb">&#9670;&#160;</a></span>Unfolded()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,13 +316,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>rpath</em> = <code>&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root&quot;</code>, </td>
+          <td class="paramname"><em>rpath</em> = <code>&quot;Response.root&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>outname</em> = <code>&quot;/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root&quot;</code>&#160;</td>
+          <td class="paramname"><em>outname</em> = <code>&quot;Unfolded.root&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

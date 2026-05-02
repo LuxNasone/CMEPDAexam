@@ -19,7 +19,7 @@
 #include "../include/Utils.h"
 
 std::vector<TH1D> NotUnfolded(const char* folder_name,
-                                const char* outname = "Repo/outFiles/NotUnfolded.root", 
+                                const char* outname = "NotUnfolded.root", 
                                 bool MT = true,
                                 bool mute = false){
 
@@ -190,7 +190,7 @@ std::vector<TH1D> NotUnfolded(const char* folder_name,
 }
 
 void Response(const char* folder_name, 
-              const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
+              const char* outname = "Response.root", 
               bool MT = true, 
               bool mute = false){
 
@@ -523,8 +523,8 @@ void Response(const char* folder_name,
 
 void Unfolded(const char* folder_name,
               int n_iter,
-              const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", 
-              const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root"){
+              const char* rpath = "Response.root", 
+              const char* outname = "Unfolded.root"){
 
     //Matrices file
 
@@ -611,10 +611,10 @@ void Unfolded(const char* folder_name,
 
 }
 
-void Comparison(const char* f1,
-          const char* f2,
-          const char* f3,  
-          const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root",
+void Comparison(const char* f1 = "NotUnfolded.root",
+          const char* f2 = "Unfolded.root",
+          const char* f3 = "Response.root",  
+          const char* outname = "Comparison.root",
           bool mute = false){
 
     gROOT->SetBatch(kTRUE);

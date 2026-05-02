@@ -25,7 +25,7 @@
 *@warning Input file must have expected NanoAD format for CMS OpenData.
 */
 
-std::vector<TH1D> NotUnfolded(const char* folder_name, const char* outname = "Repo/outFiles/NotUnfolded.root", bool MT = true, bool mute = false);
+std::vector<TH1D> NotUnfolded(const char* folder_name, const char* outname = "NotUnfolded.root", bool MT = true, bool mute = false);
 
 /**
 * @brief Block that calculates the  response matrices by matching generated and reconstructed events of interest (Z in dimuon).
@@ -45,7 +45,7 @@ std::vector<TH1D> NotUnfolded(const char* folder_name, const char* outname = "Re
 * @warning Input file must have expected NanoAD format for CMS OpenData.
 */
 
-void Response(const char* fname, const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", bool MT = true, bool mute = false);
+void Response(const char* fname, const char* outname = "Response.root", bool MT = true, bool mute = false);
 
 /**
 * @brief CrossSection wrapper that applies Bayesian unfolding (RooUnfoldBayes) to three reconstructed histograms, using a precomputed response matrix.
@@ -64,16 +64,19 @@ void Response(const char* fname, const char* outname = "/home/lux_n/CMEPDA/Exam/
 * @warning Input file must have expected NanoAD format for CMS OpenData.
 */
 
-void Unfolded(const char* folder_name, int n_iter, const char* rpath = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Response.root", const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Unfolded.root");
+void Unfolded(const char* folder_name, int n_iter, const char* rpath = "Response.root", const char* outname = "Unfolded.root");
 
 /**
 * @brief Block that compares not unfolded and unfolded distributions by overlaying the corresponding histograms. 
 *        Also makes a graphs of normalized measured and simulated distributions.
 *        Mainly intended to make stylish graphs and for diagnostic of previous outputs.
 *
-* @param f1 : path to file .root containing not unfolded histograms, assumed to be output of NotUnfolded;
-* @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded;
-* @param f3 : path to file .root contaning MC histograms, assumed to be output of Response;
+* @param f1 : path to file .root containing not unfolded histograms, assumed to be output of NotUnfolded.
+*             Default : "NotUnfolded.root";
+* @param f2 : path to file .root containing unfolded histograms, assumed to be output of Unfolded.
+*             Default : "Unfolded.root";
+* @param f3 : path to file .root contaning MC histograms, assumed to be output of Response.
+*             Default : "Response.root";
 * @param outname Name of the output ROOT file where comparison plots are saved.
 *                Default : "Comparison.root".
 *
@@ -84,6 +87,6 @@ void Unfolded(const char* folder_name, int n_iter, const char* rpath = "/home/lu
 * @warning Input file must be output of respectively CrossSection, Response and Unfolded.
 */
 
-void Comparison(const char* f1, const char* f2, const char* f3, const char* outname = "/home/lux_n/CMEPDA/Exam/Repo/outFiles/Comparison.root", bool mute = false);
+void Comparison(const char* f1 = "NotUnfolded.root", const char* f2 = "Unfolded.root", const char* f3 = "Response.root", const char* outname = "Comparison.root", bool mute = false);
 
 #endif
