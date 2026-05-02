@@ -11,6 +11,7 @@ We select muon pairs applying the cuts described in the article:
 - $p_{t_{i}}$ > 25 GeV $i = 1, 2$;
 - $|\eta_{i}|$ < 2.4 $i = 1, 2$;
 - $\Delta R_{i}$ < 0.15 $i = 1, 2$;
+- $|m_{i} - 0.1057| < 2.5 \cdot 10^{-5}$ $ i = 1,2$
 - $q_{1} + q_{2}$ = 0;
 
 We find the usual Breight-Wigner peak around expected $Z^{0}$ mass :  
@@ -33,7 +34,15 @@ The generated events are determined to be $Z^{0}$ decays in two muons by:
 
 Then on the same dataset we apply the cut of the article to have a generated-reconstructed match. The response matrix is then obtained by using RooUnfoldResponse. We then use a RooUnfoldBayesian oon measured distribution. For example, here is a comparison between unfolded and not unfolded distribution for transverse momentum:
 
-![PtU vs PtNU](output/PtCOMP.png)
+![PtU vs PtNU](output/COMPMCMEAS_pt.png)
+
+By scaling with the correct integrated luminosity and the bin-width we obtain the following differential cross section:
+
+![DiffCS vs pt](output/DiffCS_pt.png)
+
+![DiffCS vs phieta](output/DiffCS_phieta.png)
+
+![DiffCS vs y](output/DiffCS_y.png)
 
 The differential cross section is obtain by scaling the histograms with the integrated luminosity. The dataset used has an integrated luminosity $L = 8740 pb^{-1}$. 
 Here is the result:
