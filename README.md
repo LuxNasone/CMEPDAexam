@@ -44,5 +44,3 @@ By scaling with the correct integrated luminosity and the bin-width we obtain th
 
 ![DiffCS vs y](output/DiffCS_y.png)
 
-The differential cross section is obtain by scaling the histograms with the integrated luminosity. The dataset used has an integrated luminosity $L = 8740 pb^{-1}$. 
-Here is the result:
