@@ -69,7 +69,8 @@ std::vector<TH1D> NotUnfolded(const char* folder_name,
                               "Muon_charge[0] + Muon_charge[1] == 0 &&"
                               "Muon_pfRelIso03_all[0] < 0.15 && Muon_pfRelIso03_all[1] < 0.15 &&"
                               "Muon_pt[0] > 25 && Muon_pt[1] > 25 &&"
-                              "abs(Muon_eta[0]) < 2.4 && abs(Muon_eta[1]) < 2.4")
+                              "abs(Muon_eta[0]) < 2.4 && abs(Muon_eta[1]) < 2.4 &&"
+                              "abs(Muon_mass[0] - 0.1057) < 2.5e-5  && abs(Muon_mass[1] - 0.1057) < 2.5e-5")
                       .Define("Z0_p", [](const ROOT::RVecF &pt, const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
                                ROOT::Math::PtEtaPhiMVector p_1(pt[0],eta[0],phi[0], mass[0]), p_2(pt[1],eta[1], phi[1], mass[1]);
                                return (ROOT::Math::PtEtaPhiMVector)(p_1 + p_2);}, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
@@ -113,21 +114,33 @@ std::vector<TH1D> NotUnfolded(const char* folder_name,
 
     //Styling
 
+    TCanvas* c_m = new TCanvas("M_inv", "Z^{0} mass", 800, 600);
+
     h_m->GetXaxis()->SetTitle("M_{inv} [GeV]");
 
     h_m->GetYaxis()->SetTitle("Counts [pure]");
 
     h_m->SetLineColor(kBlue);
 
+    h_m->SetMarkerColor(kBlue);
+
+    h_m->SetMarkerStyle(20);
+
     h_m->SetStats(0);
     
-    h_m->Draw("E1 P");
+    h_m->Draw("P E");
+
+    c_m->Update();
 
     h_m->Write("InvMass");
+
+    c_m->Write("InvMassCanvas");
 
     //Writing for other histograms and styling
 
     for (size_t i = 0; i < vars.size(); i++){
+
+        TCanvas* c_v = new TCanvas(vars[i], vars[i], 800, 600);
 
         h_v[i].GetXaxis()->SetTitle(xlabels[i]);
 
@@ -135,11 +148,19 @@ std::vector<TH1D> NotUnfolded(const char* folder_name,
 
         h_v[i].SetLineColor(kBlue);
 
+        h_v[i].SetMarkerColor(kBlue);
+
+        h_v[i].SetMarkerStyle(20);
+
         h_v[i].SetStats(0);
         
-        h_v[i].Draw("E1 P");
+        h_v[i].Draw("P E");
 
         h_v[i].Write(vars[i]);
+
+        c_v->Write(Form("%s_Canvas", vars[i]));
+
+        delete c_v;
 
     }
 
@@ -225,7 +246,7 @@ void Response(const char* folder_name,
     auto new_df = df.Define("genMuon", GenSel, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother", "GenPart_pt", "GenPart_eta", "GenPart_phi", "GenPart_mass"})
                     .Define("IsGen", IsTrue, {"nGenPart", "GenPart_pdgId", "GenPart_genPartIdxMother"})
                     .Define("recoMuon", Reco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
-                    .Define("IsReco", IsReco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta"})
+                    .Define("IsReco", IsReco, {"nMuon", "Muon_charge", "Muon_pfRelIso03_all","Muon_pt", "Muon_eta", "Muon_mass"})
                     .Define("reco_mass", Minv_calculator, {"recoMuon"})
                     .Define("gen_mass", Minv_calculator, {"genMuon"})
                     .Filter(Minv_Range, {"gen_mass"})
@@ -260,7 +281,9 @@ void Response(const char* folder_name,
     TFile output(outname, "RECREATE");
 
     //Final histogram
-    auto h_mc = new_df.Histo1D({"M_invMC", "Z^{0} mass (MC)", 100, 70, 110}, "gen_mass");
+    auto h_mc = new_df.Histo1D({"M_invMC", "Z^{0} mass (MC)", n_b, 70, 110}, "gen_mass");
+
+    TCanvas* c_mc = new TCanvas("M_invMC", "Z^{0} mass (MC)", 800, 600);
 
     h_mc->GetXaxis()->SetTitle("M_{inv} [GeV]");
 
@@ -276,11 +299,17 @@ void Response(const char* folder_name,
 
     h_mc->SetStats(0);
     
-    h_mc->Draw("E1 P");
+    h_mc->Draw("P E");
+
+    c_mc->Update();
 
     h_mc->Write("InvMass_MC");
 
-    auto h_reco = new_df.Histo1D({"M_inv_reco", "Z^{0} mass (Reco)", 100, 70, 110}, "reco_mass");
+    c_mc->Write("InvMass_MCcanvas");
+
+    auto h_reco = new_df.Histo1D({"M_inv_reco", "Z^{0} mass (Reco)", n_b, 70, 110}, "reco_mass");
+
+    TCanvas* c_reco = new TCanvas("M_invReco", "Z^{0} mass (Reco)", 800, 600);
 
     h_reco->GetXaxis()->SetTitle("M_{inv} [GeV]");
 
@@ -296,9 +325,13 @@ void Response(const char* folder_name,
 
     h_reco->SetStats(0);
     
-    h_reco->Draw("E1 P");
+    h_reco->Draw("P E");
+
+    c_reco->Update();
 
     h_reco->Write("InvMass_reco");
+
+    c_reco->Write("InvMass_MCcanvas");
 
     //Visualization of response matrix and reconstruction efficiency
 
@@ -306,15 +339,29 @@ void Response(const char* folder_name,
 
         T[i].Write(Form("Response_%s", vars[i]));
 
+        TCanvas* c_T = new TCanvas(Form("Response : %s", titles[i]), Form("Response : %s", titles[i]), 800, 600);
+
         TH2D* M = (TH2D*) T[i].Hresponse();
 
-        M->GetXaxis()->SetTitle(Form("%s reconstructed", xlabels[i]));
+        M->SetTitle(Form("Response : %s", titles[i]));
 
-        M->GetYaxis()->SetTitle(Form("%s generated", xlabels[i]));
+        M->GetXaxis()->SetTitle(Form("%s (reconstructed)", xlabels[i]));
+
+        M->GetYaxis()->SetTitle(Form("%s (generated)", xlabels[i]));
+
+        M->SetStats(0);
 
         M->Draw("COLZ");
 
+        c_T->Update();
+
         M->Write(Form("Response matrix for %s", titles[i]));
+
+        c_T->Write(Form("Response matrix for %s canvas", titles[i]));
+
+        delete c_T;
+
+        TCanvas* c_eff = new TCanvas(Form("Efficiency for %s", titles[i]), Form("Efficiency for %s", titles[i]), 800, 600);
 
         TH1D* h_true = (TH1D*) T[i].Htruth();
 
@@ -324,9 +371,11 @@ void Response(const char* folder_name,
 
         h_eff->Divide(h_matched, h_true, 1.0, 1.0, "B");
 
-        h_reco->GetXaxis()->SetTitle(xlabels[i]);
+        h_eff->SetTitle(Form("Reconstruction efficiency for %s", titles[i]));
 
-        h_reco->GetYaxis()->SetTitle("Efficienza [pure]");
+        h_eff->GetXaxis()->SetTitle(xlabels[i]);
+
+        h_eff->GetYaxis()->SetTitle("Efficency [pure]");
 
         h_eff->SetLineColor(kBlue);
 
@@ -334,9 +383,19 @@ void Response(const char* folder_name,
 
         h_eff->SetMarkerStyle(20);
 
+        h_eff->SetStats(0);
+
         h_eff->SetMarkerSize(1.2);
 
+        h_eff->Draw();
+
+        c_eff->Update();
+
         h_eff->Write(Form("Efficiency for %s", vars[i]));
+
+        c_eff->Write(Form("Efficiency for %s (canvas)", vars[i]));
+
+        delete c_eff;
 
     }
 
@@ -350,33 +409,87 @@ void Response(const char* folder_name,
 
         }
 
-        TCanvas* c = new TCanvas(vars[i], vars[i], 800, 600);
+        TLegend* leg = new TLegend(0.7, 0.7, 0.9, 0.9);
 
-        auto h_true_ptr = new_df.Histo1D({Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), n_b, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i]));
+        auto h_true_ptr = new_df.Histo1D({Form("%s (MC)", titles[i]), Form("%s (MC)", titles[i]), n_b, bounds[i].first, bounds[i].second}, Form("gen_%s", vars[i]));
 
-        auto h_obt_ptr = new_df.Histo1D({Form("%s_Reco", vars[i]), Form("%s_Reco", vars[i]), n_b, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
+        auto h_obt_ptr = new_df.Histo1D({Form("%s (Reco)", titles[i]), Form("%s (Reco)", titles[i]), n_b, bounds[i].first, bounds[i].second}, Form("reco_%s", vars[i]));
 
         TH1D h_true = *h_true_ptr;
 
+        TCanvas* c_true = new TCanvas(Form("%s (MC)", titles[i]), Form("%s (MC)", titles[i]), 800, 600);
+
+        h_true.GetXaxis()->SetTitle(xlabels[i]);
+
+        h_true.GetYaxis()->SetTitle("Counts [pure]");
+
         h_true.SetLineColor(kBlue);
+
         h_true.SetMarkerColor(kBlue);
+
         h_true.SetMarkerStyle(20);
+
+        h_true.SetStats(0);
+
+        h_true.Draw("P E");
+
+        c_true->Update();
+
+        c_true->Write(Form("%s true (canvas)", vars[i]));
+
+        leg->AddEntry(&h_true, "True", "lep");
+
+        TCanvas* c_obt = new TCanvas(Form("%s (Reco)", titles[i]), Form("%s (Reco)", titles[i]), 800, 600);
         
         TH1D h_obt = *h_obt_ptr;
 
+        h_obt.GetXaxis()->SetTitle(xlabels[i]);
+
+        h_obt.GetYaxis()->SetTitle("Counts [pure]");
+
+        h_obt.SetLineColor(kBlue);
+
+        h_obt.SetMarkerColor(kBlue);
+
+        h_obt.SetMarkerStyle(20);
+
+        h_obt.SetStats(0);
+
+        h_obt.Draw("P E");
+
+        c_obt->Update();
+
+        c_obt->Write(Form("%s obt (canvas)", vars[i]));
+
         T[i].UseOverflow();
+
+        TCanvas* c = new TCanvas(vars[i], vars[i], 800, 600);
 
         RooUnfoldBayes unfold(&T[i], &h_obt, 5);
 
         TH1D* hUnfold = (TH1D*) unfold.Hunfold();
 
-        hUnfold->SetLineColor(kBlue);
-        hUnfold->SetMarkerColor(kBlue);
+        hUnfold->GetXaxis()->SetTitle(xlabels[i]);
+
+        hUnfold->GetYaxis()->SetTitle("Counts [pure]");
+
+        hUnfold->SetTitle(Form("Comparison generated unfolded (%s)", titles[i]));
+
+        hUnfold->SetLineColor(kRed);
+
+        hUnfold->SetMarkerColor(kRed);
+
         hUnfold->SetMarkerStyle(20);
+
+        hUnfold->SetStats(0);
+
+        leg->AddEntry(hUnfold, "Unfolded", "lep");
 
         hUnfold->Draw("P E");
 
-        h_true.Draw("SAME");
+        h_true.Draw("P E SAME");
+
+        leg->Draw("SAME");
 
         c->Update();
 
@@ -555,24 +668,30 @@ void Comparison(const char* f1,
             TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
 
             h_nu[i].SetLineColor(kBlue);
+
             h_nu[i].SetMarkerColor(kBlue);
+
             h_nu[i].SetMarkerStyle(20);
+
             h_nu[i].SetStats(0); 
 
             h_nu[i].GetYaxis()->SetRangeUser(range[i].first, range[i].second);
 
             legend->AddEntry(&h_nu[i],"Not unfolded", "lep");
 
-            h_nu[i].Draw("E");
+            h_nu[i].Draw("P E");
 
             h_u[i].SetLineColor(kRed);
+
             h_u[i].SetMarkerColor(kRed);
+
             h_u[i].SetMarkerStyle(20);
+
             h_u[i].SetStats(0);
 
             legend->AddEntry(&h_u[i], "Unfolded", "lep");
 
-            h_u[i].Draw("E SAME");
+            h_u[i].Draw("P E SAME");
 
             legend->Draw();
 
@@ -582,24 +701,45 @@ void Comparison(const char* f1,
 
             TH1D h_D = h_nu[i]; 
 
+            TCanvas* c_CS = new TCanvas(Form("CrossSection_%s", vars[i]), Form("CrossSection_%s", vars[i]), 800, 600);
+
             h_u[i].Scale(1./(L * h_u[i].GetXaxis()->GetBinWidth(1)));
 
-            h_u[i].Write(Form("CrossSection_%s", vars[i]));
+            h_u[i].GetXaxis()->SetTitle(xlabels[i]);
+
+            h_u[i].GetYaxis()->SetTitle(ylabels[i]);
+
+            h_u[i].SetTitle(Form("Differential Cross Section (%s)", titles[i]));
+
+            h_u[i].Draw("P E");
+
+            c_CS->Update();
+
+            c_CS->Write(Form("CrossSection_%s", vars[i]));
 
             TCanvas* c_MC = new TCanvas(Form("%s_MC", vars[i]), Form("%s_MC", vars[i]), 800, 600);
 
             TLegend* legend_MC = new TLegend(0.7, 0.7, 0.9, 0.9);
 
+            h_mc[i].GetXaxis()->SetTitle(xlabels[i]);
+
+            h_mc[i].GetYaxis()->SetTitle("Norm. counts [pure]");
+
+            h_mc[i].SetTitle(Form("Comparison between MC and measured (%s)", titles[i]));
+
             h_mc[i].SetLineColor(kRed);
+
             h_mc[i].SetMarkerColor(kRed);
+
             h_mc[i].SetMarkerStyle(20);
+
             h_mc[i].SetStats(0);
 
             h_mc[i].Draw();
 
             legend_MC->AddEntry(&h_mc[i], "Montecarlo", "lep");
 
-            h_D.Scale(1./(s*L));
+            h_D.Scale(1./h_D.Integral());
 
             legend_MC->AddEntry(&h_D, "Data", "lep");
 
@@ -619,4 +759,3 @@ void Comparison(const char* f1,
     gROOT->SetBatch(kFALSE);
 
 }
-

@@ -162,8 +162,9 @@ TEST(RecoTest, ValidEvent) {
     ROOT::RVec<float> iso = {0.1, 0.1};
     ROOT::RVec<float> pt = {30, 30};
     ROOT::RVec<float> eta = {1.0, -1.0};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
 
-    EXPECT_TRUE(IsReco(2, charge, iso, pt, eta));
+    EXPECT_TRUE(IsReco(2, charge, iso, pt, eta, mass));
 }
 
 TEST(RecoTest, IsolationFail) {
@@ -171,6 +172,7 @@ TEST(RecoTest, IsolationFail) {
     ROOT::RVec<float> iso = {0.2, 0.1};
     ROOT::RVec<float> pt = {30, 30};
     ROOT::RVec<float> eta = {1.0, -1.0};
+    ROOT::RVec<float> mass = {0.1057, 0.1057}; 
 
     EXPECT_FALSE(IsReco(2, charge, iso, pt, eta));
 }
@@ -183,7 +185,7 @@ TEST(RecoVecTest, ValidRecoBuildsVectors) {
     ROOT::RVec<float> pt   = {30, 35};
     ROOT::RVec<float> eta  = {0.5, -0.5};
     ROOT::RVec<float> phi  = {0.1, -0.1};
-    ROOT::RVec<float> mass = {0.105, 0.105};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
 
     auto v = Reco(2, charge, iso, pt, eta, phi, mass);
 
@@ -196,7 +198,7 @@ TEST(RecoVecTest, FailsSelectionReturnsEmpty) {
     ROOT::RVec<float> pt   = {30, 35};
     ROOT::RVec<float> eta  = {0.5, -0.5};
     ROOT::RVec<float> phi  = {0.1, -0.1};
-    ROOT::RVec<float> mass = {0.105, 0.105};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
 
     auto v = Reco(2, charge, iso, pt, eta, phi, mass);
 

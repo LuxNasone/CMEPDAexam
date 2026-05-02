@@ -129,9 +129,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4d8069a88205e943e6e88190c328c31d" id="r_a4d8069a88205e943e6e88190c328c31d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Utils_8h.html#a4d8069a88205e943e6e88190c328c31d">Minv_Range</a> (Double_t m)</td></tr>
 <tr class="memdesc:a4d8069a88205e943e6e88190c328c31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether an invariant mass value falls within a predefined range.  <br /></td></tr>
 <tr class="separator:a4d8069a88205e943e6e88190c328c31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9ed405d2455e0f94d2b7f5fac8e7bb2" id="r_ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Utils_8h.html#ab9ed405d2455e0f94d2b7f5fac8e7bb2">IsReco</a> (const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta)</td></tr>
-<tr class="memdesc:ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event is compatible with a reconstructed Z decay into a muon pair based on kinematic and isolation criteria.  <br /></td></tr>
-<tr class="separator:ab9ed405d2455e0f94d2b7f5fac8e7bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00d450bc47760e9ae6ddb495b2618c4" id="r_aa00d450bc47760e9ae6ddb495b2618c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Utils_8h.html#aa00d450bc47760e9ae6ddb495b2618c4">IsReco</a> (const UInt_t &amp;n, const ROOT::RVec&lt; int &gt; &amp;charge, const ROOT::RVec&lt; float &gt; &amp;Iso, const ROOT::RVec&lt; float &gt; &amp;pt, const ROOT::RVec&lt; float &gt; &amp;eta, const ROOT::RVec&lt; float &gt; &amp;mass)</td></tr>
+<tr class="memdesc:aa00d450bc47760e9ae6ddb495b2618c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event is compatible with a reconstructed Z decay into a muon pair based on kinematic and isolation criteria.  <br /></td></tr>
+<tr class="separator:aa00d450bc47760e9ae6ddb495b2618c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a639a62e72259e20b29657344f6e89677" id="r_a639a62e72259e20b29657344f6e89677"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Utils_8h.html#a639a62e72259e20b29657344f6e89677">IsTrue</a> (const UInt_t &amp;n_g, const ROOT::RVec&lt; int &gt; &amp;id, const ROOT::RVec&lt; int &gt; &amp;mid)</td></tr>
 <tr class="memdesc:a639a62e72259e20b29657344f6e89677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an event contains a generated Z decay into two muons, based on particle PDG IDs and mother–daughter relationships.  <br /></td></tr>
 <tr class="separator:a639a62e72259e20b29657344f6e89677"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,9 +165,6 @@ Variables</h2></td></tr>
 <tr class="memitem:ga2442c8274ae11905a74c1bf95501af09" id="r_ga2442c8274ae11905a74c1bf95501af09"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#ga2442c8274ae11905a74c1bf95501af09">L</a></td></tr>
 <tr class="memdesc:ga2442c8274ae11905a74c1bf95501af09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrated luminosity for used dataset (expressed in [1/pb]).  <br /></td></tr>
 <tr class="separator:ga2442c8274ae11905a74c1bf95501af09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad62e712560f6344b96d4c080a2ba9c92" id="r_gad62e712560f6344b96d4c080a2ba9c92"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__GlobalVariables.html#gad62e712560f6344b96d4c080a2ba9c92">s</a></td></tr>
-<tr class="memdesc:gad62e712560f6344b96d4c080a2ba9c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sigma for Z production in two muons used in Montecarlo simulation (expressed in [pb]).  <br /></td></tr>
-<tr class="separator:gad62e712560f6344b96d4c080a2ba9c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a1842161d285033580ad8fd269827889a" name="a1842161d285033580ad8fd269827889a"></a>
@@ -243,8 +240,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ab9ed405d2455e0f94d2b7f5fac8e7bb2" name="ab9ed405d2455e0f94d2b7f5fac8e7bb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9ed405d2455e0f94d2b7f5fac8e7bb2">&#9670;&#160;</a></span>IsReco()</h2>
+<a id="aa00d450bc47760e9ae6ddb495b2618c4" name="aa00d450bc47760e9ae6ddb495b2618c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa00d450bc47760e9ae6ddb495b2618c4">&#9670;&#160;</a></span>IsReco()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,7 +274,13 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const ROOT::RVec&lt; float &gt; &amp;&#160;</td>
-          <td class="paramname"><em>eta</em>&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ROOT::RVec&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mass</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -294,15 +297,17 @@ Variables</h2></td></tr>
     <tr><td class="paramname">charge</td><td>Vector of particle charges. </td></tr>
     <tr><td class="paramname">Iso</td><td>Vector of relative isolation values for each particle. </td></tr>
     <tr><td class="paramname">pt</td><td>Vector of transverse momentums. </td></tr>
-    <tr><td class="paramname">eta</td><td>Vector of pseudorapidities.</td></tr>
+    <tr><td class="paramname">eta</td><td>Vector of pseudorapidities. </td></tr>
+    <tr><td class="paramname">mass</td><td>Vector of particle masses.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the event contains at least two leptons forming a valid Z candidate, requiring:<ul>
-<li>opposite charge pair,</li>
-<li>transverse momentum above 25 GeV,</li>
-<li>isolation below 0.15,</li>
-<li>pseudorapidity within 2.4 and -2.4; false otherwise. </li>
+<li>opposite charge pair;</li>
+<li>transverse momentum above 25 GeV;</li>
+<li>isolation below 0.15;</li>
+<li>pseudorapidity within 2.4 and -2.4;</li>
+<li>|mass -0.1057| &lt; 2.5e-5 false otherwise. </li>
 </ul>
 </dd></dl>
 

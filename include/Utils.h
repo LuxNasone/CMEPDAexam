@@ -47,11 +47,6 @@ extern std::vector<std::pair<Float_t, Float_t>> range;
 
 extern double L;
 
-/// @ingroup GlobalVariables
-/// @brief Sigma for Z production in two muons used in Montecarlo simulation (expressed in [pb]).
-
-extern double s;
-
 /**
 * @brief Computes the invariant mass of the sum of the first two four-momentain the input vector.
 *
@@ -148,16 +143,18 @@ bool Minv_Range(Double_t m);
 * @param Iso Vector of relative isolation values for each particle.
 * @param pt Vector of transverse momentums.
 * @param eta Vector of pseudorapidities.
+* @param mass Vector of particle masses.
 *
 * @return true if the event contains at least two leptons forming a valid Z candidate, requiring:
-*         - opposite charge pair,
-*         - transverse momentum above 25 GeV,
-*         - isolation below 0.15,
+*         - opposite charge pair;
+*         - transverse momentum above 25 GeV;
+*         - isolation below 0.15;
 *         - pseudorapidity within 2.4 and -2.4;
+*         - |mass -0.1057| < 2.5e-5
 *         false otherwise.
 */
 
-bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta);
+bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> &mass);
 
 /**
 * @brief Determines whether an event contains a generated Z decay into two muons, based on particle PDG IDs and mother–daughter relationships.

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vars_0',['vars',['../group__GlobalVariables.html#ga3c11b09048246dce2b0ae736799f2f74',1,'Utils.h']]]
+  ['xlabels_0',['xlabels',['../group__GlobalVariables.html#ga9cbf8d9449b7e294b5f8e248b01a99f4',1,'Utils.h']]]
 ];

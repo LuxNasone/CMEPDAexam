@@ -12,13 +12,13 @@ std::vector<const char*> ylabels = {"d#sigma / dp^{Z}_{T}[pb/GeV]", "d#sigma / d
 
 std::vector<const char*> titles = {"Transverse momentum", "Optimized angle", "Rapidity abs."};
  
-std::vector<std::pair<Float_t, Float_t>> bounds = {{1, 100}, {0.01, 3}, {0.01, 2.5}};
+std::vector<std::pair<Float_t, Float_t>> bounds = {{0, 100}, {0.01, 3}, {0.01, 2.5}};
 
-std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e5}, {0, 1.2e6}, {0, 1.2e5}};
+std::vector<std::pair<Float_t, Float_t>> range = {{0, 8.5e6}, {0, 1.2e7}, {0, 1.2e6}};
 
 double L = 8740.119304;
 
-double s = 1952;
+double s = 200;
 
 Double_t Minv_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p){
 
@@ -93,12 +93,12 @@ bool IsTrue(const UInt_t &n_g,const ROOT::RVec<int> &id, const ROOT::RVec<int> &
 
 }
 
-bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta){
+bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<float> &Iso,const ROOT::RVec<float> &pt, const ROOT::RVec<float> &eta, const ROOT::RVec<float> &mass){
     
     bool IsReco = false;
 
     if (n == 2){
-        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4){
+        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4  && abs(mass[0] - 0.1057) < 2.5e-5  && abs(mass[1] - 0.1057) < 2.5e-5){
 
             IsReco = true;
 
@@ -136,7 +136,7 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<i
     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
 
     if (n == 2){
-        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4){
+        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4 && abs(mass[0] - 0.1057) < 2.5e-5  && abs(mass[1] - 0.1057) < 2.5e-5){
 
             vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[0],eta[0],phi[0], mass[0]));
 
