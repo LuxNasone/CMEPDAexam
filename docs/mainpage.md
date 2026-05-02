@@ -13,7 +13,7 @@ We select muon pairs applying the cuts described in the article:
 - \f$ n = 2 \f$;
 - \f$ pt_{i}> 25 GeV \f$; \f$ i=1,2 \f$;
 - \f$ |\eta_{i}| < 2.4 \f$; \f$ i=1,2 \f$;
-- \f$ |mass_{i} - 0.1057| < 2.5 \cdot 10^{-5} \f$; \f$ i=1,2 \f$;
+- \f$ |m_{i} - 0.1057| < 2.5 \cdot 10^{-5} \f$; \f$ i=1,2 \f$;
 - \f$ \Delta R_{i} < 0.15 \f$; \f$ i=1,2 \f$;
 - \f$ q_1 + q_2 = 0 \f$;
 
