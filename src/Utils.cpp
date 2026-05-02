@@ -98,7 +98,7 @@ bool IsReco(const UInt_t &n, const ROOT::RVec<int> &charge, const ROOT::RVec<flo
     bool IsReco = false;
 
     if (n == 2){
-        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4  && abs(mass[0] - 0.1057) < 2.5e-5  && abs(mass[1] - 0.1057) < 2.5e-5){
+        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && std::abs(eta[0]) < 2.4 && std::abs(eta[1]) < 2.4  && std::abs(mass[0] - 0.1057) < 2.5e-5  && std::abs(mass[1] - 0.1057) < 2.5e-5){
 
             IsReco = true;
 
@@ -136,7 +136,7 @@ ROOT::RVec<ROOT::Math::PtEtaPhiMVector> Reco(const UInt_t &n, const ROOT::RVec<i
     ROOT::RVec<ROOT::Math::PtEtaPhiMVector> vecs;
 
     if (n == 2){
-        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && abs(eta[0]) < 2.4 && abs(eta[1]) < 2.4 && abs(mass[0] - 0.1057) < 2.5e-5  && abs(mass[1] - 0.1057) < 2.5e-5){
+        if (charge[0] + charge[1] == 0 && Iso[0] < 0.15 && Iso[1] < 0.15 && pt[0] > 25 && pt[1] > 25 && std::abs(eta[0]) < 2.4 && std::abs(eta[1]) < 2.4 && std::abs(mass[0] - 0.1057) < 2.5e-5  && std::abs(mass[1] - 0.1057) < 2.5e-5){
 
             vecs.push_back(ROOT::Math::PtEtaPhiMVector(pt[0],eta[0],phi[0], mass[0]));
 

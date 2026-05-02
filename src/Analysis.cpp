@@ -69,15 +69,15 @@ std::vector<TH1D> NotUnfolded(const char* folder_name,
                               "Muon_charge[0] + Muon_charge[1] == 0 &&"
                               "Muon_pfRelIso03_all[0] < 0.15 && Muon_pfRelIso03_all[1] < 0.15 &&"
                               "Muon_pt[0] > 25 && Muon_pt[1] > 25 &&"
-                              "abs(Muon_eta[0]) < 2.4 && abs(Muon_eta[1]) < 2.4 &&"
-                              "abs(Muon_mass[0] - 0.1057) < 2.5e-5  && abs(Muon_mass[1] - 0.1057) < 2.5e-5")
+                              "std::abs(Muon_eta[0]) < 2.4 && std::abs(Muon_eta[1]) < 2.4 &&"
+                              "std::abs(Muon_mass[0] - 0.1057) < 2.5e-5  && std::abs(Muon_mass[1] - 0.1057) < 2.5e-5")
                       .Define("Z0_p", [](const ROOT::RVecF &pt, const ROOT::RVecF &eta, const ROOT::RVecF &phi, const ROOT::RVecF &mass){
                                ROOT::Math::PtEtaPhiMVector p_1(pt[0],eta[0],phi[0], mass[0]), p_2(pt[1],eta[1], phi[1], mass[1]);
                                return (ROOT::Math::PtEtaPhiMVector)(p_1 + p_2);}, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"})
                       .Define("mass", "Z0_p.M()")
-                      .Filter("abs(mass- 91.1817) < 15")
+                      .Filter("std::abs(mass- 91.1817) < 15")
                       .Define("pt", "Z0_p.Pt()")
-                      .Define("y", "abs(Z0_p.Rapidity())")
+                      .Define("y", "std::abs(Z0_p.Rapidity())")
                       .Define("phi_eta", [](const ROOT::RVecF &phi, const ROOT::RVecF &eta){
 
                                                                 float dphi = ROOT::VecOps::DeltaPhi(phi[0], phi[1]);

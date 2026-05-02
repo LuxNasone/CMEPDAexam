@@ -26,7 +26,23 @@ TEST(MinvTest, LessThanTwo) {
     EXPECT_DOUBLE_EQ(Minv_calculator(v), 0.0);
 }
 
+TEST(MinvTest, ValMinv){
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> v;
+    v.push_back({45.75, 0, 0, 0.1057});
+    v.push_back({45.75, 0, M_PI, 0.1057});
+
+    EXPECT_NEAR(Minv_calculator(v), 91.5, 1e-3);
+}
+
 //Pt_calculator test
+
+TEST(PtTest, TwoMuons){
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> v;
+    v.push_back({45.75, 0, 0, 0.1057});
+    v.push_back({45.75, 0, 0, 0.1057});
+
+    EXPECT_GT(Pt_calculator(v), 0);
+}
 
 TEST(PtTest, SumPt) {
 
@@ -60,6 +76,18 @@ TEST(RapidityTest, LessThanTwo) {
     EXPECT_DOUBLE_EQ(y_calculator(v), 0.0);
 }
 
+TEST(RapidityTest, ValY){
+
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> v;
+
+    v.push_back({50.0,  0.5, 0.0, 0.1057});
+    v.push_back({50.0, -0.3, 0.0, 0.1057});
+
+    Double_t y = y_calculator(v);
+
+    EXPECT_NEAR(y, 0.1, 1e-1);
+}
+
 //phi_eta_calculator tests
 
 TEST(PhiEtaTest, Basic) {
@@ -75,6 +103,16 @@ TEST(PhiEtaTest, LessThanTwo) {
     v.push_back({50, 0.1, 0.1, 0.105});
 
     EXPECT_DOUBLE_EQ(phi_eta_calculator(v), 0.0);
+}
+
+TEST(PhiEtaTest, ValPhiEta){
+
+    ROOT::RVec<ROOT::Math::PtEtaPhiMVector> v;
+
+    v.push_back({50.0, 0.0, 0.0,      0.1057});
+    v.push_back({50.0, 0.0, M_PI/2.0, 0.1057});
+
+    EXPECT_NEAR(phi_eta_calculator(v), 1.0, 1e-6);
 }
 
 //IsTrue test
@@ -126,7 +164,7 @@ TEST(GenSelTest, ValidZToMuMu) {
 
 TEST(GenSelTest, NoZMotherRejected) {
 
-    ROOT::RVec<int> id  = {24, 13, -13}; // no Z
+    ROOT::RVec<int> id  = {24, 13, -13}; 
     ROOT::RVec<int> mid = {-1, 0, 0};
 
     ROOT::RVec<float> pt   = {0, 40, 45};
@@ -174,7 +212,62 @@ TEST(RecoTest, IsolationFail) {
     ROOT::RVec<float> eta = {1.0, -1.0};
     ROOT::RVec<float> mass = {0.1057, 0.1057}; 
 
-    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta));
+    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta, mass));
+}
+
+TEST(RecoTest, WrongMultiplicity) {
+
+    ROOT::RVec<int> charge = {1};
+    ROOT::RVec<float> iso = {0.1};
+    ROOT::RVec<float> pt = {30};
+    ROOT::RVec<float> eta = {1.0};
+    ROOT::RVec<float> mass = {0.1057};
+
+    EXPECT_FALSE(IsReco(1, charge, iso, pt, eta, mass));
+}
+
+TEST(RecoTest, ChargeFail) {
+
+    ROOT::RVec<int> charge = {1, 1};
+    ROOT::RVec<float> iso = {0.1, 0.1};
+    ROOT::RVec<float> pt = {30, 30};
+    ROOT::RVec<float> eta = {1.0, -1.0};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta, mass));
+}
+
+TEST(RecoTest, PtFail) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso = {0.1, 0.1};
+    ROOT::RVec<float> pt = {20, 30};
+    ROOT::RVec<float> eta = {1.0, -1.0};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta, mass));
+}
+
+TEST(RecoTest, EtaFail) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso = {0.1, 0.1};
+    ROOT::RVec<float> pt = {30, 30};
+    ROOT::RVec<float> eta = {2.5, -1.0};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta, mass));
+}
+
+TEST(RecoTest, MassFail) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso = {0.1, 0.1};
+    ROOT::RVec<float> pt = {30, 30};
+    ROOT::RVec<float> eta = {1.0, -1.0};
+    ROOT::RVec<float> mass = {0.11, 0.1057};
+
+    EXPECT_FALSE(IsReco(2, charge, iso, pt, eta, mass));
 }
 
 //Reco test
@@ -205,7 +298,77 @@ TEST(RecoVecTest, FailsSelectionReturnsEmpty) {
     EXPECT_EQ(v.size(), 0);
 }
 
-//Minv_Range testy
+TEST(RecoVecTest, WrongMultiplicityReturnsEmpty) {
+
+    ROOT::RVec<int> charge = {1};
+    ROOT::RVec<float> iso  = {0.1};
+    ROOT::RVec<float> pt   = {30};
+    ROOT::RVec<float> eta  = {0.5};
+    ROOT::RVec<float> phi  = {0.1};
+    ROOT::RVec<float> mass = {0.1057};
+
+    auto v = Reco(1, charge, iso, pt, eta, phi, mass);
+
+    EXPECT_EQ(v.size(), 0);
+}
+
+TEST(RecoVecTest, ChargeFailReturnsEmpty) {
+
+    ROOT::RVec<int> charge = {1, 1};
+    ROOT::RVec<float> iso  = {0.1, 0.1};
+    ROOT::RVec<float> pt   = {30, 35};
+    ROOT::RVec<float> eta  = {0.5, -0.5};
+    ROOT::RVec<float> phi  = {0.1, -0.1};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    auto v = Reco(2, charge, iso, pt, eta, phi, mass);
+
+    EXPECT_EQ(v.size(), 0);
+}
+
+TEST(RecoVecTest, PtFailReturnsEmpty) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso  = {0.1, 0.1};
+    ROOT::RVec<float> pt   = {20, 35};
+    ROOT::RVec<float> eta  = {0.5, -0.5};
+    ROOT::RVec<float> phi  = {0.1, -0.1};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    auto v = Reco(2, charge, iso, pt, eta, phi, mass);
+
+    EXPECT_EQ(v.size(), 0);
+}
+
+TEST(RecoVecTest, EtaFailReturnsEmpty) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso  = {0.1, 0.1};
+    ROOT::RVec<float> pt   = {30, 35};
+    ROOT::RVec<float> eta  = {2.6, -0.5};
+    ROOT::RVec<float> phi  = {0.1, -0.1};
+    ROOT::RVec<float> mass = {0.1057, 0.1057};
+
+    auto v = Reco(2, charge, iso, pt, eta, phi, mass);
+
+    EXPECT_EQ(v.size(), 0);
+}
+
+TEST(RecoVecTest, MassFailReturnsEmpty) {
+
+    ROOT::RVec<int> charge = {1, -1};
+    ROOT::RVec<float> iso  = {0.1, 0.1};
+    ROOT::RVec<float> pt   = {30, 35};
+    ROOT::RVec<float> eta  = {0.5, -0.5};
+    ROOT::RVec<float> phi  = {0.1, -0.1};
+    ROOT::RVec<float> mass = {0.11, 0.1057};
+
+    auto v = Reco(2, charge, iso, pt, eta, phi, mass);
+
+    EXPECT_EQ(v.size(), 0);
+}
+
+//Minv_Range test
 
 TEST(MassWindow, Inside) {
     EXPECT_TRUE(Minv_Range(91.2));
