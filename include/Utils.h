@@ -59,7 +59,7 @@ extern double L;
 Double_t Minv_calculator(const ROOT::RVec<ROOT::Math::PtEtaPhiMVector> &p);
 
 /**
-* @brief Computes the transverse mmomentum of the sum of the first two four-momenta in the input vector.
+* @brief Computes the transverse momentum of the sum of the first two four-momenta in the input vector.
 *
 * @param p Vector of four-momenta (PtEtaPhiMVector) representing reconstructed or generated muons.
 *

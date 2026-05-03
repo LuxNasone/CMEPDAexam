@@ -28,4 +28,4 @@ target_link_libraries(test_utils
     ${ROOT_LIBRARIES}
 )
 
-add_test(NAME VarsTests COMMAND test_vars)
+add_test(NAME UtilsTests COMMAND test_utils)
