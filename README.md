@@ -1,5 +1,7 @@
 # CMEPDAexam
-Repository on the project made for the exam of Computing Methods for Experimental Physics and Data Analysis.
+Repository on the project made for the exam of Computing Methods for Experimental Physics and Data Analysis. 
+
+Link to documentation : https://luxnasone.github.io/CMEPDAexam/ (Alternatively found in: Settings->Pages)
 
 The task is to reproduce the measurement of the differential production cross section for $Z^{0}$ in p-p collision at 13 TeV made by CMS with open data. 
 
